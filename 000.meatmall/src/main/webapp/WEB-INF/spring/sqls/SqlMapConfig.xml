@@ -5,9 +5,34 @@
 
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.hk.calboard.dtos.CalDto" alias="CalDto" />
+		<typeAlias type="com.hk.meatmall.dtos.AnswerDto" alias="AnswerDto" />
+		<typeAlias type="com.hk.meatmall.dtos.BannerDto" alias="BannerDto" />
+		<typeAlias type="com.hk.meatmall.dtos.BasketDto" alias="BasketDto" />
+		<typeAlias type="com.hk.meatmall.dtos.Board_likeDto" alias="Board_likeDto" />
+		<typeAlias type="com.hk.meatmall.dtos.BoardDto" alias="BoardDto" />
+		<typeAlias type="com.hk.meatmall.dtos.CommentDto" alias="CommentDto" />
+		<typeAlias type="com.hk.meatmall.dtos.CouponDto" alias="CouponDto" />
+		<typeAlias type="com.hk.meatmall.dtos.Detail_imgDto" alias="Detail_imgDto" />
+		<typeAlias type="com.hk.meatmall.dtos.FAQDto" alias="FAQDto" />
+		<typeAlias type="com.hk.meatmall.dtos.Goods_kindDto" alias="Goods_kindDto" />
+		<typeAlias type="com.hk.meatmall.dtos.Goods_optionDto" alias="Goods_optionDto" />
+		<typeAlias type="com.hk.meatmall.dtos.GoodsDto" alias="GoodsDto" />
+		<typeAlias type="com.hk.meatmall.dtos.LicenseDto" alias="LicenseDto" />
+		<typeAlias type="com.hk.meatmall.dtos.Login_recordDto" alias="Login_recordDto" />
+		<typeAlias type="com.hk.meatmall.dtos.LoginDto" alias="LoginDto" />
+		<typeAlias type="com.hk.meatmall.dtos.MessageDto" alias="MessageDto" />
+		<typeAlias type="com.hk.meatmall.dtos.OrderDto" alias="OrderDto" />
+		<typeAlias type="com.hk.meatmall.dtos.QuestionDto" alias="QuestionDto" />
+		<typeAlias type="com.hk.meatmall.dtos.ReviewDto" alias="ReviewDto" />
+		<typeAlias type="com.hk.meatmall.dtos.SearchDto" alias="SearchDto" />
+		<typeAlias type="com.hk.meatmall.dtos.User_couponDto" alias="User_couponDto" />
+		<typeAlias type="com.hk.meatmall.dtos.UserDto" alias="UserDto" />
 	</typeAliases>
 	<mappers>
-		<mapper resource="/sqls/calboard_mapper.xml" />
+		<mapper resource="/sqls/Login_mapper.xml" />
+		<mapper resource="/sqls/Goods_mapper.xml" />
+		<mapper resource="/sqls/QnA_mapper.xml" />
+		<mapper resource="/sqls/Search_mapper.xml" />
+		<mapper resource="/sqls/Board_mapper.xml" />
 	</mappers>	
 </configuration>
