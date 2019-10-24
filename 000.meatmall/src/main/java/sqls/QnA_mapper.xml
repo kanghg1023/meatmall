@@ -4,7 +4,85 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.QnA">
-
+	<select id="qnaboardlist" resultType="FAQDto">
+	SELECT FAQ_NUM
+		 , FAQ_TITLE
+		 , FAQ_CONTENT 
+	  FROM FAQ
+     ORDER BY FAQ_NUM DESC
+	</select>
 	
+	<insert id="faqinsertboard" parameterType="FAQDto">
+		INSERT INTO FAQ
+		VALUES (
+			   FAQ_SEQ.NEXTVAL
+	   		 , #{faq_title}
+	  		 , #{faq_content}
+	   		   )
+	</insert>
+	
+	<update id="faqupdateboard" parameterType="FAQDto">
+		UPDATE FAQ SET FAQ_TITLE=#{faq_title}, FAQ_CONTENT=#{faq_content} 
+		WHERE FAQ_NUM=#{faq_num}
+	</update>
+	
+	<delete id="faqdelboard" parameterType="int">
+		DELETE FROM FAQ
+ 		 WHERE FAQ_NUM=#{faq_num}
+	</delete>
+	
+	
+	
+	
+	
+	<select id="questionlist" parameterType="int" resultType="QuestionDto">
+	SELECT QUESTION_NUM
+		 , USER_NUM
+		 , QUESTION_TITLE
+		 , QUESTION_CONTENT
+		 , QUESTION_READCOUNT
+		 , QUESTION_REGDATE
+		 , QUESTION_STATUS 
+	  FROM QUESTION
+	 WHERE USER_NUM = #{user_num}
+	</select>
+	
+	<insert id="questioninsert" parameterType="QuestionDto">
+		INSERT INTO QUESTION
+		VALUES (
+		 	   QUESTION_SEQ.NEXTVAL
+	   		 , #{user_num}
+	   		 , #{question_title}
+	   		 , #{question_content}
+	  		 , 0
+	 	     , SYSDATE
+	   		 , 'N'
+	   		   )  
+	</insert>
+	
+	<update id="questionupdateboard" parameterType="QuestionDto">
+		UPDATE QUESTION 
+  		   SET QUESTION_TITLE=#{question_title}
+	         , QUESTION_CONTENT=#{question_content}
+			 , QUESTION_REGDATE=SYSDATE 
+		 WHERE QUESTION_NUM=#{question_num}
+	</update>
+	
+	<delete id="questiondelboard" parameterType="int">
+		DELETE FROM QUESTION
+ 		 WHERE QUESTION_NUM=#{question_num}
+	</delete>
+	
+	<select id="questiondetail" parameterType="int" resultType="QuestionDto">
+	SELECT QUESTION_NUM
+		 , USER_NUM
+		 , QUESTION_TITLE
+		 , QUESTION_CONTENT
+		 , QUESTION_READCOUNT
+		 , QUESTION_REGDATE
+		 , QUESTION_STATUS 
+	  FROM QUESTION
+	 WHERE QUESTION_NUM = #{question_num}
+	</select>
 	
 </mapper>
