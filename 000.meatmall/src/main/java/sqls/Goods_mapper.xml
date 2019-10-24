@@ -5,6 +5,93 @@
 
 <mapper namespace="com.goods">
 
+<!-- 전체 상품 -->
+	<select id="allGoods" resultType="GoodsDto">
+		SELECT GOODS_NUM
+	   		 , GOODS_TITLE
+	   		 , USER_NUM
+	   		 , GOODS_DOSO
+	   		 , GOODS_IMG_TITLE
+	   		 , GOODS_COST
+     	  FROM GOODS
+	</select>
+
+<!-- 부위별 카테고리 -->
+	<select id="category" resultType="Goods_kindDto">
+		SELECT KIND_NUM
+			 , KIND_NAME
+ 		  FROM GOODS_KIND
+ 		 ORDER BY KIND_NUM
+	</select>
+	
+<!-- 카테고리 추가 -->
+	<insert id="insertCategory" parameterType="String">
+		INSERT INTO GOODS_KIND
+		VALUES (
+				 GOODS_KIND_SEQ.NEXTVAL
+			   , #{kind_name}
+			   )
+	</insert>
+	
+<!-- 카테고리 삭제 -->
+	<delete id="delCategory" parameterType="Map">
+		DELETE FROM GOODS_KIND
+ 		 WHERE KIND_NUM IN
+ 		 <foreach collection="chk" item="kind_num" open="(" close=")" separator=",">
+			   #{kind_num}
+		</foreach>
+	</delete>
+	
+<!-- 부위별 상품 -->
+	<select id="categoryGoods" resultType="GoodsDto" parameterType="int">
+		SELECT GOODS_NUM
+	 		 , GOODS_TITLE
+			 , USER_NUM
+			 , GOODS_DOSO
+			 , GOODS_IMG_TITLE
+			 , GOODS_COST
+ 		  FROM GOODS
+		 WHERE KIND_NUM = #{kind_num}
+	</select>
+	
+<!-- 상품 추가 -->
+	<insert  id="insertGoods" parameterType="GoodsDto">
+		INSERT INTO GOODS
+		VALUES (
+		 		 GOODS_SEQ.NEXTVAL
+	   		   , #{goods_title}
+	   		   , #{user_num}
+	  		   , #{goods_doso}
+	  		   , #{goods_img_title}
+	  		   , SYSDATE
+	  		   , 'Y'
+	  		   , #{kind_num}
+	  		   , #{goods_history}
+	  		   , #{goods_cost}
+	   		   )
+	</insert>
+	
+<!-- 상품 추가 (상세 이미지) -->
+	<insert id="insertDetail_img" parameterType="Detail_imgDto">
+		INSERT INTO DETAIL_IMG
+		VALUES (
+				 DETAIL_IMG_SEQ.NEXTVAL
+	   		   , (SELECT MAX(GOODS_NUM) FROM GOODS)
+	  		   , #{detail_img_name}
+	  		   )
+	</insert>
+	 
+<!-- 상품 추가 (옵션) -->
+	<insert id="insertGoods_option" parameterType="Goods_optionDto">
+		INSERT INTO GOODS_OPTION
+		VALUES (
+				 GOODS_OPTION_SEQ.NEXTVAL
+	  		   , (SELECT MAX(GOODS_NUM) FROM GOODS)
+	  		   , #{option_name}
+	  		   , #{option_count}
+	  		   , #{option_weight}
+	  		   )
+	</insert>
 	
 	
 </mapper>
