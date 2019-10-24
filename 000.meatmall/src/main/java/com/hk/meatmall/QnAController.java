@@ -1,12 +1,7 @@
 package com.hk.meatmall;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.hk.meatmall.dtos.FAQDto;
 import com.hk.meatmall.dtos.QuestionDto;
-import com.hk.meatmall.dtos.UserDto;
-import com.hk.meatmall.iservices.ILoginService;
 import com.hk.meatmall.iservices.IQnAService;
 
 @Controller
@@ -27,37 +20,7 @@ public class QnAController {
 private static final Logger logger = LoggerFactory.getLogger(QnAController.class);
 	
 	@Autowired
-	private ILoginService loginService;
-	
-	@Autowired
 	private IQnAService qnaService;
-	
-	@RequestMapping(value = "/", method = {RequestMethod.GET,RequestMethod.POST})
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
-	}
-	
-	@RequestMapping(value = "/login.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String login(HttpServletRequest request, Model model, String user_id, String user_pw) {
-		logger.info("로그인");
-		
-		HttpSession session = request.getSession();
-		
-		UserDto ldto = loginService.login(user_id,user_pw);
-		
-		session.setAttribute("ldto", ldto);
-		
-		return "main";
-	}
 	
 	@RequestMapping(value = "/faqlist.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String FAQlist(Locale locale, Model model) {

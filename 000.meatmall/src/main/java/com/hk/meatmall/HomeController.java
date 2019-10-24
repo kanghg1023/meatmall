@@ -40,17 +40,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/login.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String login(HttpServletRequest request, Model model, String user_id, String user_pw) {
-		logger.info("로그인");
-		
-		HttpSession session = request.getSession();
-		
-		UserDto ldto = loginService.login(user_id,user_pw);
-		
-		session.setAttribute("ldto", ldto);
-		
-		return "main";
-	}
+	
 	
 }

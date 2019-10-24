@@ -24,4 +24,51 @@
 		   AND USER_PW = #{user_pw}
 	</select>
 	
+	<select id="idChk" parameterType="String" resultType="String">
+		SELECT USER_NUM
+		  FROM USER_INFO
+		 WHERE USER_ID = #{user_id}
+	</select>
+	
+	<select id="idLockCheck" parameterType="int" resultType="int">
+		SELECT COUNT(1) CNT
+		  FROM LOGIN
+		 WHERE USER_NUM = #{user_num}
+		   AND LOGIN_LOCK = 'Y'
+		   AND LOGIN_LAST_TRY_DATE + ( 1 / 24 / 60 ) > SYSDATE
+	</select>
+	
+	<update id="lockClear" parameterType="int">
+		<![CDATA[
+			UPDATE LOGIN
+			   SET LOGIN_FAIL_COUNT = 0
+				 , LOGIN_LOCK = 'N'
+				 , LOGIN_LAST_TRY_DATE = NULL
+			 WHERE USER_NUM = #{user_num}
+		]]>
+	</update>
+	
+	<update id="stopClear" parameterType="String">
+		<![CDATA[
+			UPDATE USER_INFO
+			   SET USER_STOP_DATE = NULL
+				 , USER_ENABLED = 'Y'
+			 WHERE USER_ID = #{user_id}
+			   AND USER_STOP_DATE < SYSDATE
+		]]>
+	</update>
+	
+	<update id="loginFailCountUp" parameterType="int">
+		UPDATE LOGIN
+		   SET LOGIN_LAST_TRY_DATE = SYSDATE
+		     , LOGIN_FAIL_COUNT = LOGIN_FAIL_COUNT + 1
+		 WHERE USER_NUM = #{user_num}
+	</update>
+	
+	<update id="loginLock" parameterType="int">
+		UPDATE LOGIN
+		   SET LOGIN_LOCK = 'Y'
+		 WHERE USER_NUM = #{user_num}
+		   AND LOGIN_FAIL_COUNT > 4
+	</update>
 </mapper>

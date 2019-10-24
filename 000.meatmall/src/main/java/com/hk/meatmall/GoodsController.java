@@ -2,9 +2,6 @@ package com.hk.meatmall;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hk.meatmall.dtos.Detail_imgDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
-import com.hk.meatmall.dtos.Goods_optionDto;
-import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.IGoodsService;
-import com.hk.meatmall.iservices.ILoginService;
 
 @Controller
 public class GoodsController {
@@ -27,23 +21,7 @@ public class GoodsController {
 private static final Logger logger = LoggerFactory.getLogger(GoodsController.class);
 	
 	@Autowired
-	private ILoginService loginService;
-	
-	@Autowired
 	private IGoodsService GoodsService;
-	
-	@RequestMapping(value = "/login.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String login(HttpServletRequest request, Model model, String user_id, String user_pw) {
-		logger.info("로그인");
-		
-		HttpSession session = request.getSession();
-		
-		UserDto ldto = loginService.login(user_id,user_pw);
-		
-		session.setAttribute("ldto", ldto);
-		
-		return "main";
-	}
 	
 	@RequestMapping(value = "/allGoods.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String allGoods(Model model) {
