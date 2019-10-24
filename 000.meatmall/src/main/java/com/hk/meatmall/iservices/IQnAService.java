@@ -22,7 +22,7 @@ public interface IQnAService {
 	public boolean Questioninsert(QuestionDto dto);
 	//1:1 문의 글 상세보기
 	public QuestionDto Questiondetail(int seq);	
-	//1:1 문의 글수정
+	//1:1 문의 글수정 
 	public boolean Questionupdate(QuestionDto dto);
 	//1:1 문의 글삭제
 	public boolean Questiondelete(int seq);
