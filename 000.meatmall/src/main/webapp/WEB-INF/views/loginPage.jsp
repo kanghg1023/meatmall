@@ -21,11 +21,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp" />
-<c:if test="${msg != null}">
-	<script type="text/javascript">
-		alert("${msg}");
-	</script>
-</c:if>
+
 <form action="login.do" method="post">
 	<table border="1">
 		<tr>

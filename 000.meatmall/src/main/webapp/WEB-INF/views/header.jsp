@@ -9,6 +9,11 @@
 <title></title>
 </head>
 <body>
+<c:if test="${msg != null}">
+	<script type="text/javascript">
+		alert("${msg}");
+	</script>
+</c:if>
 <a href="main.do" class="main"><span>홈</span></a>
 <c:choose>
 	<c:when test="${ldto == null}">
