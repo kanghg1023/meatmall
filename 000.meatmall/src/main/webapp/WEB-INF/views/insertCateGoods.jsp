@@ -31,7 +31,7 @@
 	<jsp:include page="header.jsp" />
 </div>
 <h1>상품 추가</h1>
-<form action="insertGoods.do" method="post">
+<form action="insertCateGoods.do" method="post">
 <table border="1" class="table">
 	<tr>
 		<th>상품명</th>
@@ -56,14 +56,7 @@
 	</tr>
 	<tr>
 		<th>상품종류</th>
-		<td>
-<%-- 			<c:if test="${!empty dto.kind_num}" > --%>
-						<select name="kind_num">
-							<option  value="1">등심</option>
-							<option  value="${kind_num}">${dto.kind_num}</option>
-						</select>
-<%-- 			</c:if> --%>
-		</td>
+		<td><input type="text" name="kind_num" value="${kind_num}" class="inputval" /></td>
 	</tr>
 	<tr>
 		<th>상품이력번호</th>
@@ -91,7 +84,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<input type="button" value="목록" onclick="location.href='allGoods.do'" class="button"/>
+			<input type="button" value="목록" onclick="location.href='categoryGoods.do?kind_num=${kind_num}'" class="button"/>
 			<input type="submit" value="완료" class="button"/>
 		</td>
 	</tr>

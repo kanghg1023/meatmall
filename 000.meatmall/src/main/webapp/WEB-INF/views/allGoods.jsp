@@ -8,20 +8,14 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 function allSel(ele) {
 	$("input[name=chk]").prop("checked", $(ele).prop("checked"));
 }
 
 $(function() {
-	$("#pmoveBtn").click(function() {
-		var pNum = $("#pmove").val();
-		var endPage = ${map.endPage};
-		if(pNum > endPage){
-			pNum = endPage;
-		}
-		location.href = "BoardController.do?command=boardlist&searchType=${searchType}&search=${search}&pNum="+pNum;
-	});
 	$("form").submit(function() {
 		var bool = true;
 		var count = $(this).find("input[name=chk]:checked").length; //체크된 input태그의 개수
@@ -40,9 +34,11 @@ $(function() {
 </script>
 </head>
 <body>
+<div id="header" class="header" style="outline: none;">
+	<jsp:include page="header.jsp" />
+</div>
 <h1>전체 상품</h1>
-	<form action="BoardController.do" method="post">
-		<input type="hidden" name="command" value="muldel" />
+	<form action="delallGoods.do" method="post">
 			<table border="1" class="table">
 				<col width="30px" />
 				<col width="70px" />
@@ -68,30 +64,30 @@ $(function() {
 					</c:when>
 					<c:otherwise>
 						<c:forEach items="${list}" var="dto">
-							<tr align="center">
-								<td id="chk"><c:if test="${dto.user_num == ldto.user_num}">
-										<input type="checkbox" name="chk" value="${dto.goods_num}" />
-									</c:if></td>
-								<td>${dto.goods_num}</td>
-								<c:choose>
-									<c:when test="${dto.goods_enabled eq 'N'}">
-										<td id="goods1">----삭제된 상품입니다.----</td>
-									</c:when>
-									<c:otherwise>
-										<td align="left" id="goods2">
-											<a href="goodsdetail.do?goods_num=${dto.goods_num}">${dto.goods_title}</a>
+							<c:choose>
+								<c:when test="${dto.goods_enabled eq 'N'}">
+								</c:when>
+								<c:otherwise>
+									<tr align="center">
+										<td id="chk">
+											<c:if test="${dto.user_num eq ldto.user_num}">
+												<input type="checkbox" name="chk" value="${dto.goods_num}" />
+											</c:if>
 										</td>
-									</c:otherwise>
-								</c:choose>
-<!-- 								나중에 닉네임으로 바꿔 -->
-								<td id="nick">${dto.user_num}</td>
-<%-- 									<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
-<%-- 									<jsp:getProperty property="emailNick" name="util" /> --%>
-								
-								<td id="DOSO">${dto.goods_doso}</td>
-								<td id="img_title">${dto.goods_img_title}</td>
-								<td id="cost">${dto.goods_cost}</td>
-							</tr>
+										<td>${dto.goods_num}</td>
+												<td align="left">
+													<a href="goodsDetail.do?goods_num=${dto.goods_num}">${dto.goods_title}</a>
+												</td>
+<!-- 											나중에 닉네임으로 바꿔 -->
+										<td id="nick">${dto.user_num}</td>
+<%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
+<%-- 										<jsp:getProperty property="emailNick" name="util" /> --%>
+										<td id="DOSO">${dto.goods_doso}</td>
+										<td id="img_title">${dto.goods_img_title}</td>
+										<td id="cost">${dto.goods_cost}</td>
+									</tr>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 <!-- 						<tr> -->
 <!-- 							<td colspan="6" align="center"> -->
@@ -110,14 +106,15 @@ $(function() {
 <!-- 							</td> -->
 <!-- 						</tr> -->
 					</c:otherwise>
+					
 				</c:choose>
-				<c:if test="${ldto.user_role eq 'ADMIN'}">
-				<tr>
-					<td colspan="7">
-						<input type="button" value="상품추가" onclick="location.href='insertGoodsForm.do'" />
-						<input type="submit" value="상품삭제" />
-					</td>
-				</tr>
+				<c:if test="${ldto != null && ldto.user_role ne 'USER'}">
+					<tr>
+						<td colspan="7">
+							<input type="button" value="상품추가" onclick="location.href='insertGoodsForm.do'" />
+							<input type="submit" value="상품삭제" />
+						</td>
+					</tr>
 				</c:if> 
 			</table>
 	</form>

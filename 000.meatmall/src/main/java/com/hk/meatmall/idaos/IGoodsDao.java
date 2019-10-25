@@ -25,11 +25,25 @@ public interface IGoodsDao {
 	public List<GoodsDto> categoryGoods(int kind_num);
 	
 	//상품 추가
-	public boolean insertGoods(GoodsDto dto);
+	public boolean insertGoods(GoodsDto gDto);
 	
 	//상품 추가 (상세이미지)
-	public boolean insertDetail_img(Detail_imgDto dto);
+	public boolean insertDetail_img(Detail_imgDto iDto);
 	
 	//상품 추가 (옵션)
-	public boolean insertGoods_option(Goods_optionDto dto);
+	public boolean insertGoods_option(Goods_optionDto oDto);
+	
+	//상품 상세
+	public GoodsDto getGoods(int goods_num);
+	
+	//상품 상세 (상세이미지)
+	public Detail_imgDto getDetail_img(int goods_num);
+		
+	//상품 상세 (옵션)
+	public Goods_optionDto getGoods_option(int goods_num);
+	
+	//전체상품에서 삭제
+	public boolean delGoods(String[] chk);
+	
+	
 }

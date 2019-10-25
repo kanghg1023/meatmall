@@ -9,8 +9,31 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+$(function() {
+	$("form").submit(function() {
+		var bool = true;
+		var count = $(this).find("input[name=chk]:checked").length; //체크된 input태그의 개수
+		if (count == 0) {
+			alert("하나이상 선택하시오");
+			bool = false;
+		}else{
+			var isDel = confirm(count+" 개 카테고리를 정말 삭제하시겠습니까?");
+			if(!(isDel)){
+				bool = false;
+			}
+		}
+		return bool;
+	});
+});	
+</script>
 </head>
 <body>
+<div id="header" class="header" style="outline: none;">
+	<jsp:include page="header.jsp" />
+</div>
 <h4>부위별 카테고리</h4>
 <form action="delCategory.do" method="post">
 <div>

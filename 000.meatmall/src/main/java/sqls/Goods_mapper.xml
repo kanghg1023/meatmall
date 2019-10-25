@@ -12,8 +12,10 @@
 	   		 , USER_NUM
 	   		 , GOODS_DOSO
 	   		 , GOODS_IMG_TITLE
+	   		 , GOODS_ENABLED
 	   		 , GOODS_COST
      	  FROM GOODS
+     	 ORDER BY GOODS_NUM DESC
 	</select>
 
 <!-- 부위별 카테고리 -->
@@ -49,9 +51,11 @@
 			 , USER_NUM
 			 , GOODS_DOSO
 			 , GOODS_IMG_TITLE
+			 , GOODS_ENABLED
 			 , GOODS_COST
  		  FROM GOODS
 		 WHERE KIND_NUM = #{kind_num}
+		 ORDER BY GOODS_NUM DESC
 	</select>
 	
 <!-- 상품 추가 -->
@@ -92,6 +96,48 @@
 	  		   , #{option_weight}
 	  		   )
 	</insert>
+	
+<!-- 상품 상세 -->
+	<select id="getGoods" resultType="GoodsDto" parameterType="GoodsDto">
+		SELECT GOODS_NUM
+	 		 , GOODS_TITLE
+			 , USER_NUM
+			 , GOODS_IMG_TITLE
+			 , KIND_NUM
+			 , GOODS_HISTORY
+			 , GOODS_COST
+ 		  FROM GOODS
+ 		 WHERE GOODS_NUM = #{goods_num}
+	</select>
+	
+<!-- 상품 상세 (상세 이미지) -->
+	<select id="getDetail_img" resultType="Detail_imgDto" parameterType="Detail_imgDto">
+		SELECT DETAIL_IMG_NAME
+  		  FROM DETAIL_IMG
+ 		 WHERE GOODS_NUM = #{goods_num}
+ 		 ORDER BY DETAIL_IMG_NUM
+	</select>
+	
+<!-- 상품 상세 (옵션) -->
+	<select id="getGoods_option" resultType="Goods_optionDto" parameterType="Goods_optionDto">
+		SELECT OPTION_NUM
+			 , OPTION_NAME
+			 , OPTION_COUNT
+			 , OPTION_WEIGHT
+ 		  FROM GOODS_OPTION
+ 		 WHERE GOODS_NUM = #{goods_num}
+		 ORDER BY GOODS_NUM
+	</select>
+	
+<!-- 	상품 삭제 -->
+	<update id="delGoods" parameterType="Map">
+		UPDATE GOODS
+ 		   SET GOODS_ENABLED='N'
+ 		 WHERE GOODS_NUM IN
+ 		 <foreach collection="chk" item="goods_num" open="(" close=")" separator=",">
+			   #{goods_num}
+		</foreach>
+	</update>
 	
 	
 </mapper>
