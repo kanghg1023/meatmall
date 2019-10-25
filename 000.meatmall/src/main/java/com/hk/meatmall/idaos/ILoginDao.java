@@ -11,5 +11,7 @@ public interface ILoginDao {
 	public int stopClear(String user_id);
 	public int loginFailCountUp(int user_num);
 	public int loginLock(int user_num);
+	public boolean regist(UserDto dto);
+	public int nickChk(String user_nick);
 	
 }

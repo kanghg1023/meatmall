@@ -71,4 +71,39 @@
 		 WHERE USER_NUM = #{user_num}
 		   AND LOGIN_FAIL_COUNT > 4
 	</update>
+	
+	<insert id="regist" parameterType="UserDto">
+		INSERT INTO USER_INFO
+		VALUES (
+				 USER_INFO_SEQ.NEXTVAL
+			   , #{user_id}
+			   , #{user_pw}
+			   , #{user_name}
+			   , #{user_nick}
+			   , #{user_ph}
+			   , #{user_addr}
+			   , #{user_email}
+			   , 'Y'
+		<choose>
+			<when test="user_businessnum != null">
+			   , #{user_businessnum}
+			   , 1
+			   , 'LICENSE'
+			</when>
+			<otherwise>
+			   , NULL
+			   , NULL
+			   , 'USER'
+			</otherwise>
+		</choose>
+			   , NULL
+			   )
+	</insert>
+	
+	<select id="nickChk" parameterType="String" resultType="String">
+		SELECT USER_NUM
+		  FROM USER_INFO
+		 WHERE USER_NICK = #{user_nick}
+	</select>
+	
 </mapper>

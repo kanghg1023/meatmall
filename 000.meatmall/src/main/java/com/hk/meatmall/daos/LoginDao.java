@@ -35,7 +35,7 @@ public class LoginDao implements ILoginDao {
 		return dto;
 	}
 
-	//user_id를 user_num으로
+	//user_id를 user_num으로 / 아이디 중복체크
 	@Override
 	public int idChk(String user_id) {
 		int user_num = 0;
@@ -76,5 +76,26 @@ public class LoginDao implements ILoginDao {
 	@Override
 	public int loginLock(int user_num) {
 		return sqlSession.update(nameSpace+"loginLock",user_num);
+	}
+
+	@Override
+	public boolean regist(UserDto dto) {
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"regist",dto);
+		return count>0 ? true : false;
+	}
+
+	//닉네임 중복검사
+	@Override
+	public int nickChk(String user_nick) {
+		int user_num = 0;
+		String idNum =sqlSession.selectOne(nameSpace+"nickChk",user_nick);
+		
+		if(idNum == null) {
+			return user_num;
+		}else {
+			user_num = Integer.parseInt(idNum);
+			return user_num;
+		}
 	}
 }

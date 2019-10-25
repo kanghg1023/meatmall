@@ -10,5 +10,8 @@ public interface ILoginService {
 	public int lockClear(int user_num);
 	public int stopClear(String user_id);
 	public int loginFail(int user_num);
+	public boolean regist(UserDto dto);
+	public int nickChk(String user_nick);
+	
 	
 }

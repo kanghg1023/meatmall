@@ -9,21 +9,25 @@
 <title></title>
 </head>
 <body>
-<c:if test="${msg != null}">
-	<script type="text/javascript">
-		alert("${msg}");
-	</script>
-</c:if>
 <a href="main.do" class="main"><span>홈</span></a>
 <c:choose>
 	<c:when test="${ldto == null}">
+		<c:if test="${loginError != null}">
+			<script type="text/javascript">
+				alert("${loginError}");
+			</script>
+		</c:if>
 		<a href="loginPage.do" class="login">로그인</a> | 
 		<a href="registPage.do" class="regist">회원가입</a>
-		
 	</c:when>
 	<c:otherwise>
 		${ldto.user_nick}님 | 
-		<a href="logout.do" class="logout">로그아웃</a>
+		<a href="logout.do" class="logout">로그아웃</a> | 
+		<c:if test="${ldto.user_role eq 'ADMIN'}">
+			<a href="logout.do" class="logout">관리자 페이지</a> |
+		</c:if>
+		<a href="myPage.do" class="myPage">마이페이지</a> | 
+		<a href="logout.do" class="logout">장바구니</a>
 	</c:otherwise>
 </c:choose>
 <div>

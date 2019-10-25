@@ -49,6 +49,18 @@ public class LoginService implements ILoginService {
 		return lfcu+ll;
 	}
 
+	@Override
+	public boolean regist(UserDto dto) {
+		return loginDao.regist(dto);
+	}
+
+	@Override
+	public int nickChk(String user_nick) {
+		int user_num = 0;
+		user_num = loginDao.nickChk(user_nick);
+		return user_num;
+	}
+
 	
 	
 }
