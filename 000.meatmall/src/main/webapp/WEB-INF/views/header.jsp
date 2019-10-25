@@ -39,6 +39,9 @@
 	<dd>
 		<a href="faqlist.do" class="faqlist"><span>1대1 문의</span></a>
 	</dd>
+	<dd>
+		<a href="boardlist.do?pnum=1" class="boardlist"><span>게시판</span></a>
+	</dd>
 </dl>
 </div>
 </div>

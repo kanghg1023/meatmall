@@ -5,6 +5,146 @@
 
 <mapper namespace="com.board">
 
+<!--글목록전체보기+페이징-->
+	<select id="boardlist" resultType="boardDto" parameterType="String">
+		SELECT BOARD_NUM
+			 , USER_NUM
+			 , BOARD_TITLE
+			 , BOARD_CONTENT
+			 , BOARD_REGDATE
+			 , BOARD_READCOUNT
+			 , BOARD_NOTICE
+		  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NUM DESC) AS RN
+		              , BOARD_NUM
+					  , USER_NUM
+			 		  , BOARD_TITLE
+			 		  , BOARD_CONTENT
+			 		  , BOARD_REGDATE
+					  , BOARD_READCOUNT
+			 		  , BOARD_NOTICE    
+		           FROM BOARD
+		       )
+		 WHERE CEIL(RN/5) = #{pnum}
+	</select>
+
+<!-- 글추가하기-->	
+	<insert id="insertboard" parameterType="boardDto">
+		INSERT INTO BOARD 
+	    VALUES (
+	    	   BOARD_SEQ.NEXTVAL
+	    	 , #{user_num}
+	    	 , #{board_title}
+	    	 , #{board_content}
+	    	 , SYSDATE
+	    	 , 0
+	    	 , 'N'
+	    	   )
+	</insert>
+
+<!-- 글상세보기-->	
+	<select id="getboard" resultType="boardDto">
+		SELECT BOARD_NUM
+    		 , USER_NUM
+    		 , BOARD_TITLE
+    		 , BOARD_CONTENT
+    		 , BOARD_REGDATE
+     		 , BOARD_READCOUNT
+    		 , BOARD_NOTICE
+ 		  FROM BOARD
+		 WHERE BOARD_NUM = #{board_num}
+	</select>
+
+<!-- 글수정하기-->	
+	<update id="updateboard" parameterType="boardDto">
+		UPDATE BOARD
+  		   SET BOARD_TITLE = #{board_title}
+     		 , BOARD_CONTENT = #{board_content}
+     		 , BOARD_REGDATE = SYSDATE
+ 		 WHERE BOARD_NUM = #{board_num}
+	</update>
+
+<!-- 글삭제하기-->	
+	<delete id="delboard" parameterType="int">
+		DELETE 
+ 		  FROM BOARD 
+ 		 WHERE BOARD_NUM = #{board_num}
+	</delete>
+
+<!-- 조회수-->	
+	<update id="readcount" parameterType="int">
+		UPDATE BOARD
+  		   SET BOARD_READCOUNT=BOARD_READCOUNT+1 
+		 WHERE BOARD_NUM = #{board_num}
+	</update>
+
+<!-- 공지3개 출력하기-->	
+	<select id="noticelist" resultType="boardDto">
+		<![CDATA[
+		SELECT RN
+     		 , BOARD_NUM
+             , USER_NUM
+             , BOARD_TITLE
+             , BOARD_CONTENT
+             , BOARD_REGDATE
+             , BOARD_READCOUNT
+             , BOARD_NOTICE
+          FROM (
+  		         SELECT ROW_NUMBER() OVER (ORDER BY BOARD_REGDATE DESC) AS RN
+		  	          , BOARD_NUM
+			          , USER_NUM
+			          , BOARD_TITLE
+			          , BOARD_CONTENT
+			          , BOARD_REGDATE
+			          , BOARD_READCOUNT
+			          , BOARD_NOTICE
+		           FROM BOARD
+		          WHERE BOARD_NOTICE = 'Y'
+	           )
+         WHERE RN < 4
+         ]]>
+    </select>
+    
+<!--  페이지 개수 구하기-->         
+	<select id="pcount" resultType="int">
+		SELECT CEIL(COUNT(*)/5) 
+		  FROM BOARD
+	</select>
+	
+<!--  유저넘버 받아서 닉네임으로 변경-->	
+	<select id="numNick" parameterType="int" resultType="String">
+		SELECT USER_NICK  
+		  FROM USER_INFO 
+		 WHERE USER_NUM=#{user_num}
+	</select>
+	
+<!--  좋아요 출력 -->
+	<select id="getLike" parameterType="Board_likeDto" resultType="Board_likeDto">
+		SELECT BOARD_NUM 
+		  FROM BOARD_LIKE
+		 WHERE BOARD_NUM=#{board_num}
+		   AND USER_NUM=#{user_num}
+	</select>
+	
+<!--  좋아요 개수 -->	
+	<select id="likeCount" parameterType="int" resultType="int">
+		SELECT COUNT(BOARD_NUM) 
+		  FROM BOARD_LIKE 
+		 WHERE BOARD_NUM=#{board_num}
+	</select>
+	
+<!--  좋아요 추가 -->
+	<insert id="insertLike" parameterType="Board_likeDto">
+		INSERT INTO BOARD_LIKE 
+		VALUES (#{board_num},#{user_num})
+	</insert>	
+	
+<!--  좋아요 삭제 -->
+	<delete id="deleteLike" parameterType="Board_likeDto">
+		DELETE FROM BOARD_LIKE 
+		 WHERE BOARD_NUM=#{board_num} 
+		   AND USER_NUM=#{user_num}
+	</delete>
 	
 	
 </mapper>
