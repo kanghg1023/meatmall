@@ -187,18 +187,15 @@ function emailChkfun(){
 //사업자 등록번호
 function businessnumChkfun(){
 	var aCount=$("#user_businessnum");
-	if(aCount == null){
-		businessnumChk = true;
+	var businessnum = aCount.val();
+	
+	aCount.next("div").remove();
+	
+	if(businessnum==""){
+		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		businessnumChk = false;
 	}else{
-		var businessnum = aCount.val();
-		aCount.next("div").remove();
-		
-		if(businessnum==""){
-			aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
-			businessnumChk = false;
-		}else{
-			businessnumChk = true;
-		}
+		businessnumChk = true;
 	}
 }
 
@@ -240,6 +237,10 @@ $(function(){
 	});
 	
 	$("form").submit(function(){
+		if($("#user_businessnum").val() == undefined){
+			businessnumChk = true;
+		}
+		
 		if(idChk && pwChk && pw2Chk && nameChk && nickChk 
 				&& phoneChk && addrChk && emailChk && businessnumChk){
 			return true;
@@ -253,8 +254,8 @@ $(function(){
 			addrChkfun();
 			emailChkfun();
 			businessnumChkfun();
+			
 			return false;
 		}
 	});
-	
 });
