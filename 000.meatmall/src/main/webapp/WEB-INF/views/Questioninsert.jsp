@@ -22,7 +22,7 @@
 	</tr>
 	<tr>
 		<th>문의내용</th>
-		<td><textarea rows="10" cols="60" name="question_content" ></textarea> </td>
+		<td><textarea rows="10" cols="60" name="question_content" ></textarea></td>
 	</tr>
 	<tr>
 		<td colspan="2">

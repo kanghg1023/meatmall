@@ -33,7 +33,6 @@
 	.content {
 	padding: 5px 10px;
 	background-color:#E2E2E2;
-	height: 150px;
 	}
 	p { padding: 5px 0; }
 	
@@ -50,35 +49,47 @@
 		});	
 	});
 	
-	
 </script>
 
 </head>
 <body>
-
-	<input type="button" value="1:1문의" 
-	onclick="location.href='questionlist.do?user_num=${ldto.user_num}'">
+<div id="header" class="header" style="outline: none;">
+	<jsp:include page="header.jsp" />
+</div>
+	<c:choose>
+		<c:when test="${ldto.user_role eq 'USER' || ldto.user_role eq 'LICENSE'}">
+			<input type="button" value="1:1문의" 
+			onclick="location.href='questionlist.do?pnum=1'">
+		</c:when>
+		<c:when test="${ldto.user_role eq 'ADMIN'}">
+			<input type="button" value="1:1답변" 
+			onclick="location.href='allqnalist.do?pnum=1'">
+		</c:when>
+	</c:choose>
 <div class=layer1>
 	<h2>자주묻는질문</h2>
 	<p style="border-bottom:3px solid blue"></p>
-	<c:forEach items="${list}" var="list">
-	
-	<div class="heading" >
-<%-- 		<td>${list.faq_num}</td> --%>
-		<p>${list.faq_title}</p>
-	</div>
-	<div class="content">
-		<p>${list.faq_content}</p>
-		<input type="button" value="글 수정" 
-			       onclick="location.href='faqupdateform.do?faq_num=${list.faq_num}'"/>
-		<input type="button" value="글 삭제" 
-			       onclick="location.href='faqdelboard.do?seq=${list.faq_num}'"/>
-	</div>
+	<c:forEach items="${flist}" var="flist">
+		<div class="heading" >
+	<%-- 		<td>${list.faq_num}</td> --%>
+			<p>${flist.faq_title}</p>
+		</div>
+		<div class="content" id="content">
+			<pre>${flist.faq_content}</pre>
+		<c:if test="${ldto.user_role eq 'ADMIN'}">
+			<input type="button" value="글 수정" 
+				       onclick="location.href='faqupdateform.do?faq_num=${flist.faq_num}'"/>
+			<input type="button" value="글 삭제" 
+				       onclick="location.href='faqdelboard.do?seq=${flist.faq_num}'"/>
+		</c:if>
+		</div>
 	</c:forEach>
+	<c:if test="${ldto.user_role eq 'ADMIN'}">	
 	<div>
 		<input type="button" value="자주묻는글 추가" 
 			       onclick="location.href='faqinsertform.do'"/>		
 	</div>
+	</c:if>
 </div>
 
 </body>

@@ -14,11 +14,11 @@
 <table border="1">
 	<tr>
 		<th>제목</th>
-		<td><input type="text" name="faq_title" /></td>
+		<td><input type="text" name="faq_title" maxlength="15" wrap="hard"/></td>
 	</tr>
 	<tr>
 		<th>내용</th>
-		<td><textarea rows="10" cols="60" name="faq_content" ></textarea> </td>
+		<td><textarea rows="10" cols="60" id="textarea" name="faq_content" ></textarea> </td>
 	</tr>
 	<tr>
 		<td colspan="2">

@@ -5,11 +5,19 @@
 
 <mapper namespace="com.QnA">
 	<select id="qnaboardlist" resultType="FAQDto">
-	SELECT FAQ_NUM
-		 , FAQ_TITLE
-		 , FAQ_CONTENT 
-	  FROM FAQ
-     ORDER BY FAQ_NUM DESC
+		SELECT FAQ_NUM
+			 , FAQ_TITLE
+			 , FAQ_CONTENT 
+		  FROM FAQ
+	     ORDER BY FAQ_NUM DESC
+	</select>
+	
+	<select id="faqdetail" resultType="FAQDto">
+		SELECT FAQ_NUM
+			 , FAQ_TITLE
+			 , FAQ_CONTENT
+		  FROM FAQ
+	     WHERE FAQ_NUM = #{faq_num}
 	</select>
 	
 	<insert id="faqinsertboard" parameterType="FAQDto">
@@ -35,7 +43,7 @@
 	
 	
 	
-	<select id="questionlist" parameterType="int" resultType="QuestionDto">
+	<select id="questionlist" parameterType="Map" resultType="QuestionDto">
 	SELECT QUESTION_NUM
 		 , USER_NUM
 		 , QUESTION_TITLE
@@ -43,8 +51,19 @@
 		 , QUESTION_READCOUNT
 		 , QUESTION_REGDATE
 		 , QUESTION_STATUS 
-	  FROM QUESTION
-	 WHERE USER_NUM = #{user_num}
+	  FROM (
+		   SELECT ROW_NUMBER() OVER (ORDER BY QUESTION_REGDATE DESC) AS RN
+		 , QUESTION_NUM
+		 , USER_NUM
+		 , QUESTION_TITLE
+		 , QUESTION_CONTENT
+		 , QUESTION_READCOUNT
+		 , QUESTION_REGDATE
+		 , QUESTION_STATUS
+	   	   FROM QUESTION 	   
+		   )
+		   WHERE CEIL(RN/5) = #{pnum}
+	 	   AND USER_NUM = #{user_num}
 	</select>
 	
 	<insert id="questioninsert" parameterType="QuestionDto">
@@ -60,7 +79,7 @@
 	   		   )  
 	</insert>
 	
-	<update id="questionupdateboard" parameterType="QuestionDto">
+	<update id="questionupdate" parameterType="QuestionDto">
 		UPDATE QUESTION 
   		   SET QUESTION_TITLE=#{question_title}
 	         , QUESTION_CONTENT=#{question_content}
@@ -68,7 +87,7 @@
 		 WHERE QUESTION_NUM=#{question_num}
 	</update>
 	
-	<delete id="questiondelboard" parameterType="int">
+	<delete id="questiondelete" parameterType="int">
 		DELETE FROM QUESTION
  		 WHERE QUESTION_NUM=#{question_num}
 	</delete>
@@ -85,4 +104,71 @@
 	 WHERE QUESTION_NUM = #{question_num}
 	</select>
 	
+	<update id="questionreadcount" parameterType="int">		
+		UPDATE QUESTION SET QUESTION_READCOUNT=QUESTION_READCOUNT+1
+		WHERE QUESTION_NUM=#{question_num}
+	</update>
+	
+	<insert id="answerinsert" parameterType="AnswerDto">
+	INSERT INTO ANSWER
+	VALUES (
+		     ANSWER_SEQ.NEXTVAL
+	   	   , #{question_num}
+	  	   , #{answer_content}
+	  	   , SYSDATE
+	  	   ) 
+	</insert>
+	
+	<select id="answerdetail" parameterType="int" resultType="AnswerDto">
+	SELECT ANSWER_NUM
+		 , QUESTION_NUM
+	 	 , ANSWER_CONTENT
+		 , ANSWER_REGDATE
+  	  FROM ANSWER
+	 WHERE QUESTION_NUM = #{question_num}
+	</select>
+	
+	<update id="statuschange" parameterType="int">
+		UPDATE QUESTION
+  		   SET QUESTION_STATUS = 'Y'
+ 		 WHERE QUESTION_NUM = #{question_num}
+	</update>
+	
+	<select id="allquestionlist" parameterType="String" resultType="QuestionDto">
+	SELECT QUESTION_NUM
+		 , USER_NUM
+		 , QUESTION_TITLE
+		 , QUESTION_CONTENT
+		 , QUESTION_READCOUNT
+		 , QUESTION_REGDATE
+		 , QUESTION_STATUS 
+	  FROM (
+		   SELECT ROW_NUMBER() OVER (ORDER BY QUESTION_REGDATE DESC) AS RN
+		 , QUESTION_NUM
+		 , USER_NUM
+		 , QUESTION_TITLE
+		 , QUESTION_CONTENT
+		 , QUESTION_READCOUNT
+		 , QUESTION_REGDATE
+		 , QUESTION_STATUS
+	   	   FROM QUESTION 	   
+		   )
+		   WHERE CEIL(RN/5) = #{pnum}
+	</select>
+	
+	<!-- 전체 문의글 페이징 처리 -->
+	<select id="qnapcount" resultType="int">
+		SELECT CEIL(COUNT(*)/5) FROM QUESTION
+	</select>
+	
+	<!-- 자신의 문의글만 볼수있는페이지 (페이징처리) -->
+	<select id="qnappcount" resultType="int" parameterType="int">
+		SELECT CEIL(COUNT(*)/5) FROM QUESTION WHERE USER_NUM = #{user_num}
+	</select>
+	
+	<!-- 답변 삭제 -->
+	<delete id="answerdelete" parameterType="int">
+		DELETE FROM ANSWER
+ 		 WHERE QUESTION_NUM=#{question_num}
+	</delete>
 </mapper>

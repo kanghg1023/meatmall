@@ -12,15 +12,15 @@
 <h1>자주묻는질문 수정하기</h1>
 <form action="faqupdateboard.do" method="post">
 <!-- <input type="hidden" name="command" value="updateboard"/> -->
-<input type="hidden" name="faq_num" value="${dto.faq_num}"/>
+<input type="hidden" name="faq_num" value="${fdto.faq_num}"/>
 <table border="1">
 	<tr>
-		<th>제목</th>
-		<td><input type="text" name="faq_title" value="${dto.faq_title}"/></td>
+		<th>문의제목</th>
+		<td><input type="text" name="faq_title" value="${fdto.faq_title}" maxlength="15" wrap="hard"/></td>
 	</tr>
 	<tr>
-		<th>내용</th>
-		<td><textarea rows="10" cols="60" name="faq_content">${dto.faq_content}</textarea> </td>
+		<th>문의내용</th>
+		<td><textarea rows="10" cols="60" name="faq_content">${fdto.faq_content}</textarea></td>
 	</tr>
 	<tr>
 		<td colspan="2">
