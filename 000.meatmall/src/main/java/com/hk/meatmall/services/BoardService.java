@@ -106,6 +106,6 @@ public class BoardService implements IBoardService {
 	public boolean updatecomment(CommentDto dto) {		
 		return boardDao.updatecomment(dto);
 	}
-
+//
 
 }
