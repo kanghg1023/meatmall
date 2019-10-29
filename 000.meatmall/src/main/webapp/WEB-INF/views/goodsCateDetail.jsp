@@ -37,7 +37,9 @@
 		<th>옵션</th>
 		<td>
 			<select>
-				<option>${oDto.option_name}</option>
+				<c:forEach items="${oDto}" var="dto">
+					<option>${dto.option_name}</option>
+				</c:forEach>
 			</select>
 		</td>	
 	</tr>
@@ -52,7 +54,7 @@
 				onclick="window.open
 				('https://www.mtrace.go.kr/mtracesearch/cattleNoSearch.do?btsProgNo=0109008401&btsActionMethod=SELECT&cattleNo=002117250633'
 				,'beef traceability system','width=800px,height=900px,location=no,status=no,scrollbars=no')">축산물이력정보</button>
-				<button onclick="location.href='categoryGoods.do?kind_num=${gDto.kind_num}'">제품목록</button>
+				<button onclick="location.href='categoryGoods.do?pnum=${pnum}&kind_num=${gDto.kind_num}'">제품목록</button>
 <%-- 			</c:if> --%>
 	<tr>
 		<th>상품 상세보기</th>

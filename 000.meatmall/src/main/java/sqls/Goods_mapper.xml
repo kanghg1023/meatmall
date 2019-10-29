@@ -5,8 +5,8 @@
 
 <mapper namespace="com.goods">
 
-<!-- 전체 상품 -->
-	<select id="allGoods" resultType="GoodsDto">
+<!-- 전체 상품+페이징 -->
+	<select id="allGoods" resultType="GoodsDto" parameterType="String">
 		SELECT GOODS_NUM
 	   		 , GOODS_TITLE
 	   		 , USER_NUM
@@ -14,9 +14,56 @@
 	   		 , GOODS_IMG_TITLE
 	   		 , GOODS_ENABLED
 	   		 , GOODS_COST
-     	  FROM GOODS
-     	 ORDER BY GOODS_NUM DESC
+     	  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
+		              , GOODS_NUM
+	   		 		  , GOODS_TITLE
+	   				  , USER_NUM
+	   				  , GOODS_DOSO
+	   				  , GOODS_IMG_TITLE
+	   				  , GOODS_ENABLED
+	   				  , GOODS_COST    
+		           FROM GOODS
+		       )
+		 WHERE CEIL(RN/6) = #{pnum}
 	</select>
+
+<!-- 삭제여부	(전체) -->
+	<select id="getEnabled" resultType="GoodsDto" parameterType="String">
+		SELECT GOODS_NUM
+	   		 , GOODS_TITLE
+	   		 , USER_NUM
+	   		 , GOODS_DOSO
+	   		 , GOODS_IMG_TITLE
+	   		 , GOODS_ENABLED
+	   		 , GOODS_COST
+     	  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
+		              , GOODS_NUM
+	   		 		  , GOODS_TITLE
+	   				  , USER_NUM
+	   				  , GOODS_DOSO
+	   				  , GOODS_IMG_TITLE
+	   				  , GOODS_ENABLED
+	   				  , GOODS_COST    
+		           FROM GOODS
+		       )
+		 WHERE CEIL(RN/6) = #{pnum}
+		   AND GOODS_ENABLED = 'Y'
+	</select>	
+	
+<!-- 페이지 수 (전체) -->         
+	<select id="allPcount" resultType="int">
+		SELECT CEIL(COUNT(*)/5)
+		  FROM GOODS 
+	</select>
+	
+<!-- 페이지 수 (조건) -->         
+	<select id="enabledPcount" resultType="int">
+		SELECT CEIL(COUNT(*)/5)
+		  FROM GOODS
+		 WHERE GOODS_ENABLED = 'Y'
+	</select>	
 
 <!-- 부위별 카테고리 -->
 	<select id="category" resultType="Goods_kindDto">
@@ -45,18 +92,57 @@
 	</delete>
 	
 <!-- 부위별 상품 -->
-	<select id="categoryGoods" resultType="GoodsDto" parameterType="int">
+	<select id="categoryGoods" resultType="GoodsDto" parameterType="Map">
 		SELECT GOODS_NUM
 	 		 , GOODS_TITLE
 			 , USER_NUM
 			 , GOODS_DOSO
 			 , GOODS_IMG_TITLE
 			 , GOODS_ENABLED
+			 , KIND_NUM
 			 , GOODS_COST
- 		  FROM GOODS
+ 		  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
+		              , GOODS_NUM
+	   		 		  , GOODS_TITLE
+	   				  , USER_NUM
+	   				  , GOODS_DOSO
+	   				  , GOODS_IMG_TITLE
+	   				  , GOODS_ENABLED
+	   				  , KIND_NUM
+	   				  , GOODS_COST    
+		           FROM GOODS
+		       )
 		 WHERE KIND_NUM = #{kind_num}
-		 ORDER BY GOODS_NUM DESC
+		   AND CEIL(RN/8) = #{pnum}
 	</select>
+	
+<!-- 삭제여부	(카테고리) -->
+	<select id="getCateEnabled" resultType="GoodsDto" parameterType="String">
+		SELECT GOODS_NUM
+	   		 , GOODS_TITLE
+	   		 , USER_NUM
+	   		 , GOODS_DOSO
+	   		 , GOODS_IMG_TITLE
+	   		 , GOODS_ENABLED
+	   		 , KIND_NUM
+	   		 , GOODS_COST
+     	  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
+		              , GOODS_NUM
+	   		 		  , GOODS_TITLE
+	   				  , USER_NUM
+	   				  , GOODS_DOSO
+	   				  , GOODS_IMG_TITLE
+	   				  , GOODS_ENABLED
+	   				  , KIND_NUM
+	   				  , GOODS_COST    
+		           FROM GOODS
+		       )
+		 WHERE KIND_NUM = #{kind_num}
+		   AND CEIL(RN/8) = #{pnum}
+		   AND GOODS_ENABLED = 'Y'
+	</select>	
 	
 <!-- 상품 추가 -->
 	<insert  id="insertGoods" parameterType="GoodsDto">
@@ -97,6 +183,13 @@
 	  		   )
 	</insert>
 	
+<!-- 상품 추가 (부위 선택) -->
+	<select id="kind_num" resultType="Goods_kindDto">
+		SELECT KIND_NUM, KIND_NAME
+ 		  FROM GOODS_KIND
+ 		 ORDER BY KIND_NUM
+	</select>
+	
 <!-- 상품 상세 -->
 	<select id="getGoods" resultType="GoodsDto" parameterType="GoodsDto">
 		SELECT GOODS_NUM
@@ -112,7 +205,9 @@
 	
 <!-- 상품 상세 (상세 이미지) -->
 	<select id="getDetail_img" resultType="Detail_imgDto" parameterType="Detail_imgDto">
-		SELECT DETAIL_IMG_NAME
+		SELECT DETAIL_IMG_NUM
+			 , DETAIL_IMG_NAME
+			 , GOODS_NUM
   		  FROM DETAIL_IMG
  		 WHERE GOODS_NUM = #{goods_num}
  		 ORDER BY DETAIL_IMG_NUM
@@ -121,6 +216,7 @@
 <!-- 상품 상세 (옵션) -->
 	<select id="getGoods_option" resultType="Goods_optionDto" parameterType="Goods_optionDto">
 		SELECT OPTION_NUM
+			 , GOODS_NUM
 			 , OPTION_NAME
 			 , OPTION_COUNT
 			 , OPTION_WEIGHT

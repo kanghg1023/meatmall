@@ -6,6 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
 <script type="text/javascript">
 
@@ -22,6 +24,23 @@
 				}
 			});
 			return bool;
+		});
+		
+		$("#asd").click(function(){
+			var aCount = $("#asd");
+			aCount.parent().parent().before( "<tr>"
+												+"<th>옵션 이름</th>"
+												+"<td><input type='text' name='option_name' /></td>"
+											+"</tr>"
+											+"<tr>"
+												+"<th>재고</th>"
+												+"<td><input type='text' name='option_count' /></td>"
+											+"</tr>"
+											+"<tr>"
+												+"<th>무게(g)</th>"
+												+"<td><input type='text' name='option_weight' /></td>"
+											+"</tr>");
+			
 		});
 	});
 </script>
@@ -57,42 +76,58 @@
 	<tr>
 		<th>상품종류</th>
 		<td>
-<%-- 			<c:if test="${!empty dto.kind_num}" > --%>
-						<select name="kind_num">
-							<option  value="1">등심</option>
-							<option  value="${kind_num}">${dto.kind_num}</option>
-						</select>
-<%-- 			</c:if> --%>
+			<c:if test="${!empty oList}" >
+  				<select name="kind_num" style="width:80px;">
+      				<c:forEach var="oList" items="${oList}" varStatus="i">
+         				<option value="${oList.kind_num}">${oList.kind_name}</option>
+      				</c:forEach>
+   				</select>
+   			</c:if>	
 		</td>
 	</tr>
 	<tr>
 		<th>상품이력번호</th>
-		<td><input type="text" name="goods_history" class="inputval" /></td>
+		<td><input type="text" name="goods_history" /></td>
 	</tr>
 	<tr>
 		<th>100g당 가격</th>
-		<td><input type="text" name="goods_cost" class="inputval" /></td>
+		<td><input type="text" name="goods_cost" /></td>
 	</tr>
 	<tr>
 		<th>상세이미지 이름</th>
-		<td><input type="text" name="detail_img_name" class="inputval" /></td>
-	</tr>
-	<tr>
-		<th>옵션 이름</th>
-		<td><input type="text" name="option_name" class="inputval" /></td>
-	</tr>
-	<tr>
-		<th>재고</th>
-		<td><input type="text" name="option_count" class="inputval" /></td>
-	</tr>
-	<tr>
-		<th>무게(g)</th>
-		<td><input type="text" name="option_weight" class="inputval" /></td>
+		<td><input type="text" name="detail_img_name" /></td>
 	</tr>
 	<tr>
 		<td colspan="2">
 			<input type="button" value="목록" onclick="location.href='allGoods.do'" class="button"/>
 			<input type="submit" value="완료" class="button"/>
+		</td>
+	</tr>
+</table>
+<table border="1" class="table">
+<!-- 	<tr> -->
+<!-- 		<th>옵션</th> -->
+<!-- 		<td> -->
+<!-- 			<select> -->
+<%-- 				<option>${oList.option_name}</option> --%>
+<!-- 			</select> -->
+<!-- 		</td>	 -->
+<!-- 	</tr> -->
+	<tr>
+		<th>옵션 이름</th>
+		<td><input type="text" name="option_name" /></td>
+	</tr>
+	<tr>
+		<th>재고</th>
+		<td><input type="text" name="option_count" /></td>
+	</tr>
+	<tr>
+		<th>무게(g)</th>
+		<td><input type="text" name="option_weight" /></td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" value="추가" id="asd" class="button"/>
 		</td>
 	</tr>
 </table>

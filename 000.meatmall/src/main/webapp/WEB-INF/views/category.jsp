@@ -45,12 +45,12 @@ $(function() {
 </div>
 <hr />
 <ul>
-<c:forEach items="${list}" var="list">
+<c:forEach items="${cList}" var="cList">
 	<li>
 		<c:if test="${ldto.user_role eq 'ADMIN'}">
-			<input type="checkbox" name="chk" value="${list.kind_num}" />
+			<input type="checkbox" name="chk" value="${cList.kind_num}" />
 		</c:if>
-		<a href="categoryGoods.do?kind_num=${list.kind_num}">${list.kind_name}</a>
+		<a href="categoryGoods.do?kind_num=${cList.kind_num}&pnum=1">${cList.kind_name}</a>
 		</li>
 </c:forEach>
 </ul>

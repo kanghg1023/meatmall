@@ -20,8 +20,32 @@ public class GoodsService implements IGoodsService {
 	
 	//전체 상품
 	@Override
-	public List<GoodsDto> allGoods() {
-		return GoodsDao.allGoods();
+	public List<GoodsDto> allGoods(String pnum) {
+		return GoodsDao.allGoods(pnum);
+	}
+	
+	//페이지 수 (전체)
+	@Override
+	public int getAllPcount() {
+		return GoodsDao.getAllPcount();
+	}
+	
+	//페이지 수 (조건)
+	@Override
+	public int getEnabledPcount() {
+		return GoodsDao.getEnabledPcount();
+	}
+	
+	//삭제여부 (전체)
+	@Override
+	public List<GoodsDto> getEnabled(String pnum) {
+		return GoodsDao.getEnabled(pnum);
+	}
+	
+	//삭제여부 (카테고리)
+	@Override
+	public List<GoodsDto> getCateEnabled(String kind_num, String pnum) {
+		return GoodsDao.getCateEnabled(kind_num, pnum);
 	}
 	
 	//부위별 카테고리
@@ -44,8 +68,8 @@ public class GoodsService implements IGoodsService {
 	
 	//카테고리별 상품
 	@Override
-	public List<GoodsDto> categoryGoods(int kind_num) {
-		return GoodsDao.categoryGoods(kind_num);
+	public List<GoodsDto> categoryGoods(String kind_num, String pnum) {
+		return GoodsDao.categoryGoods(kind_num, pnum);
 	}
 
 	//상품 추가
@@ -65,6 +89,12 @@ public class GoodsService implements IGoodsService {
 	public boolean insertGoods_option(Goods_optionDto oDto) {
 		return GoodsDao.insertGoods_option(oDto);
 	}
+	
+	//상품 추가 (부위 선택)
+	@Override
+	public List<Goods_optionDto> kind_num() {
+		return GoodsDao.kind_num();
+	}
 
 	//상품 상세
 	@Override
@@ -80,7 +110,7 @@ public class GoodsService implements IGoodsService {
 
 	//상품 상세 (옵션)
 	@Override
-	public Goods_optionDto getGoods_option(int goods_num) {
+	public List<Goods_optionDto> getGoods_option(int goods_num) {
 		return GoodsDao.getGoods_option(goods_num);
 	}
 	
@@ -89,6 +119,20 @@ public class GoodsService implements IGoodsService {
 	public boolean delGoods(String[] chk) {
 		return GoodsDao.delGoods(chk);
 	}
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
 	
 	
 

@@ -28,10 +28,30 @@ public class GoodsDao implements IGoodsDao {
 	
 	//전체 상품
 	@Override
-	public List<GoodsDto> allGoods() {
-		return sqlSession.selectList(nameSpace+"allGoods");
+	public List<GoodsDto> allGoods(String pnum) {
+		return sqlSession.selectList(nameSpace+"allGoods",pnum);
 	}
 	
+	//페이지 수 (전체)
+	@Override
+	public int getAllPcount() {
+		int pcount = sqlSession.selectOne(nameSpace+"allPcount");
+		return pcount;
+	}
+	
+	//페이지 수 (조건)
+		@Override
+		public int getEnabledPcount() {
+			int pcount = sqlSession.selectOne(nameSpace+"enabledPcount");
+			return pcount;
+		}
+	
+	//삭제여부 (전체)
+	@Override
+	public List<GoodsDto> getEnabled(String pnum) {
+		return sqlSession.selectList(nameSpace+"getEnabled",pnum);
+	}
+		
 	//부위별 카테고리
 	@Override
 	public List<Goods_kindDto> category() {
@@ -57,8 +77,20 @@ public class GoodsDao implements IGoodsDao {
 	
 	//카테고리별 상품
 	@Override
-	public List<GoodsDto> categoryGoods(int kind_num) {
-		return sqlSession.selectList(nameSpace+"categoryGoods", kind_num);
+	public List<GoodsDto> categoryGoods(String kind_num, String pnum) {
+		Map<String, String> map = new HashMap<>();
+		map.put("kind_num", kind_num);
+		map.put("pnum", pnum);
+		return sqlSession.selectList(nameSpace+"categoryGoods", map);
+	}
+	
+	//삭제여부 (카테고리)
+	@Override
+	public List<GoodsDto> getCateEnabled(String kind_num,String pnum) {
+		Map<String, String> map = new HashMap<>();
+		map.put("kind_num", kind_num);
+		map.put("pnum", pnum);
+		return sqlSession.selectList(nameSpace+"getCateEnabled", map);
 	}
 
 	//상품 추가
@@ -81,6 +113,13 @@ public class GoodsDao implements IGoodsDao {
 		int count = sqlSession.insert(nameSpace+"insertGoods_option",oDto);
 		return count > 0 ? true:false;
 	}
+	
+	//상품 추가 (부위 선택)
+	@Override
+	public List<Goods_optionDto> kind_num() {
+		return sqlSession.selectList(nameSpace+"kind_num");
+	}
+
 
 	//상품 상세
 	@Override
@@ -96,8 +135,8 @@ public class GoodsDao implements IGoodsDao {
 
 	//상품 상세 (옵션)
 	@Override
-	public Goods_optionDto getGoods_option(int goods_num) {
-		return sqlSession.selectOne(nameSpace+"getGoods_option", goods_num);
+	public List<Goods_optionDto> getGoods_option(int goods_num) {
+		return sqlSession.selectList(nameSpace+"getGoods_option", goods_num);
 	}
 	
 	//상품 삭제
@@ -109,6 +148,12 @@ public class GoodsDao implements IGoodsDao {
 		int count = sqlSession.delete(nameSpace+"delGoods", map);
 		return count > 0 ? true:false;
 	}
+
+	
+
+	
+
+	
 
 	
 

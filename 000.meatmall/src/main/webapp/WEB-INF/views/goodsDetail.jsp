@@ -17,7 +17,7 @@
 	
 	<tr>
 		<th>대표이미지 이름</th>
-		<td>${gDto.goods_img_title}</td>
+		<td><img src="/resources/goodsTitleImg/${gDto.goods_img_title}.png" ></td>
 	</tr>
 	<tr>
 		<th>판매자</th>
@@ -37,9 +37,17 @@
 		<th>옵션</th>
 		<td>
 			<select>
-				<option>${oDto.option_name}</option>
+				<c:forEach items="${oDto}" var="dto">
+					<option>${dto.option_name}</option>
+				</c:forEach>
 			</select>
 		</td>	
+	</tr>
+	<tr>
+		<th>합계</th>
+		<td>
+			더해진 값 올꺼임
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2" align="right">
@@ -52,7 +60,7 @@
 				onclick="window.open
 				('https://www.mtrace.go.kr/mtracesearch/cattleNoSearch.do?btsProgNo=0109008401&btsActionMethod=SELECT&cattleNo=002117250633'
 				,'beef traceability system','width=800px,height=900px,location=no,status=no,scrollbars=no')">축산물이력정보</button>
-				<button onclick="location.href='allGoods.do'">제품목록</button>
+				<button onclick="location.href='allGoods.do?pnum=${pnum}'">제품목록</button>
 <%-- 			</c:if> --%>
 	<tr>
 		<th>상품 상세보기</th>

@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
@@ -33,6 +34,9 @@ $(function() {
 });	
 </script>
 </head>
+<%
+Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("map");
+%>
 <body>
 <div id="header" class="header" style="outline: none;">
 	<jsp:include page="header.jsp" />
@@ -56,58 +60,66 @@ $(function() {
 					<th>대표이미지이름</th>
 					<th>100g당 가격</th>
 				</tr>
+				<tr>
 				<c:choose>
-					<c:when test="${empty list}">
+					<c:when test="${empty gList}">
 						<tr>
 							<td colspan="10">----상품이 없습니다.----</td>
 						</tr>
 					</c:when>
 					<c:otherwise>
-						<c:forEach items="${list}" var="dto">
+						<c:forEach items="${gList}" var="dto">
+							<tr align="center">
+								<td id="chk">
+									<c:if test="${dto.user_num eq ldto.user_num}">
+										<input type="checkbox" name="chk" value="${dto.goods_num}" />
+									</c:if>
+								</td>
+								<td>${dto.goods_num}</td>
+							
 							<c:choose>
 								<c:when test="${dto.goods_enabled eq 'N'}">
+									
+										<td colspan="5" align="center">-----삭제된 상품입니다.-----</td>
+									
 								</c:when>
 								<c:otherwise>
-									<tr align="center">
-										<td id="chk">
-											<c:if test="${dto.user_num eq ldto.user_num}">
-												<input type="checkbox" name="chk" value="${dto.goods_num}" />
-											</c:if>
+											
+										<td align="left">
+											<a href="goodsDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}">${dto.goods_title}</a>
 										</td>
-										<td>${dto.goods_num}</td>
-												<td align="left">
-													<a href="goodsDetail.do?goods_num=${dto.goods_num}">${dto.goods_title}</a>
-												</td>
-<!-- 											나중에 닉네임으로 바꿔 -->
+	<!-- 											나중에 닉네임으로 바꿔 -->
 										<td id="nick">${dto.user_num}</td>
-<%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
-<%-- 										<jsp:getProperty property="emailNick" name="util" /> --%>
+		<%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
+		<%-- 										<jsp:getProperty property="emailNick" name="util" /> --%>
 										<td id="DOSO">${dto.goods_doso}</td>
-										<td id="img_title">${dto.goods_img_title}</td>
+										<td id="img_title"><img width="" height="" src="/image/goodsTitle/${dto.goods_img_title}"></td>
 										<td id="cost">${dto.goods_cost}</td>
-									</tr>
+									
 								</c:otherwise>
 							</c:choose>
+							</tr>
 						</c:forEach>
-<!-- 						<tr> -->
-<!-- 							<td colspan="6" align="center"> -->
-<%-- 								<a href="allgoods.do?command=boardlist&searchType=${searchType}&search=${search}&pNum=${map.prePageNum}">◀</a> --%>
-<%-- 								<c:choose> --%>
-<%-- 									<c:when test="${pNum==null || pNum==''}"> --%>
-<!-- 										<input type="text" id="pmove" value="1" /> -->
-<%-- 									</c:when> --%>
-<%-- 									<c:otherwise> --%>
-<%-- 										<input type="text" id="pmove" value="${pNum}" /> --%>
-<%-- 									</c:otherwise> --%>
-<%-- 								</c:choose> --%>
-<%-- 								&nbsp;/&nbsp;${map.endPage} --%>
-<%-- 								<a href="BoardController.do?command=boardlist&searchType=${searchType}&search=${search}&pNum=${map.nextPageNum}">▶</a> --%>
-<!-- 								<input type="button" id="pmoveBtn" value="이동" /> -->
-<!-- 							</td> -->
-<!-- 						</tr> -->
 					</c:otherwise>
-					
-				</c:choose>
+				</c:choose>	
+						<tr>
+							<td colspan="7" align="center">
+								<a href="allGoods.do?pnum=${map.prePageNum}">◀</a>
+								<c:forEach var="i" begin="${map.startPage}" end="${map.endPage}" step="1">
+									<c:choose>
+										<c:when test="${pnum eq i}">
+											${i}
+										</c:when>
+										<c:otherwise>
+											<a href="allGoods.do?pnum=${i}">${i}</a>
+										</c:otherwise>
+									</c:choose>	
+								</c:forEach>
+								<a href="allGoods.do?pnum=${map.nextPageNum}">▶</a>
+							</td>
+						</tr>
+				
+				
 				<c:if test="${ldto != null && ldto.user_role ne 'USER'}">
 					<tr>
 						<td colspan="7">

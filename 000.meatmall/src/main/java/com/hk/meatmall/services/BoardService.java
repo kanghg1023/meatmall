@@ -15,7 +15,7 @@ import com.hk.meatmall.iservices.IBoardService;
 public class BoardService implements IBoardService {
 
 	@Autowired
-	private IBoardDao boardDao;	
+	private IBoardDao boardDao;
 	
 	@Override
 	public List<BoardDto> getAllList(String pnum) {	

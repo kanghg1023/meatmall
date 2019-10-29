@@ -35,7 +35,7 @@
 <dl>
 	<dt>메뉴</dt>
 	<dd>
-		<a href="allGoods.do" class="allGoods"><span>전체상품</span></a>
+		<a href="allGoods.do?pnum=1" class="allGoods"><span>전체상품</span></a>
 	</dd>
 	<dd>
 		<a href="category.do" class="category"><span>부위별 상품</span></a>

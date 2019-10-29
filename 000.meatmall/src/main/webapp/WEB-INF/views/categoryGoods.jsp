@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
@@ -33,6 +34,9 @@ $(function() {
 });	
 </script>
 </head>
+<%
+Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("map");
+%>
 <body>
 <div id="header" class="header" style="outline: none;">
 	<jsp:include page="header.jsp" />
@@ -40,6 +44,7 @@ $(function() {
 <h1>카테고리별 상품</h1>
 	<form action="delcateGoods.do" method="post">
 	<input type="hidden" name="kind_num" value="${kind_num}">
+	<input type="hidden" name="pnum" value="${pnum}">
 			<table border="1" class="table">
 				<col width="30px" />
 				<col width="70px" />
@@ -58,13 +63,13 @@ $(function() {
 					<th>100g당 가격</th>
 				</tr>
 				<c:choose>
-					<c:when test="${empty list}">
+					<c:when test="${empty cList}">
 						<tr>
 							<td colspan="10">----상품이 없습니다.----</td>
 						</tr>
 					</c:when>
 					<c:otherwise>
-						<c:forEach items="${list}" var="dto">
+						<c:forEach items="${cList}" var="dto">
 							<c:choose>
 								<c:when test="${dto.goods_enabled eq 'N'}">
 								</c:when>
@@ -76,9 +81,9 @@ $(function() {
 											</c:if>
 										</td>
 										<td>${dto.goods_num}</td>
-												<td align="left">
-													<a href="goodsCateDetail.do?goods_num=${dto.goods_num}">${dto.goods_title}</a>
-												</td>
+										<td align="left">
+											<a href="goodsCateDetail.do?goods_num=${dto.goods_num}">${dto.goods_title}</a>
+										</td>
 <!-- 											나중에 닉네임으로 바꿔 -->
 										<td id="nick">${dto.user_num}</td>
 <%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
@@ -90,24 +95,24 @@ $(function() {
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-<!-- 						<tr> -->
-<!-- 							<td colspan="6" align="center"> -->
-<%-- 								<a href="allgoods.do?command=boardlist&searchType=${searchType}&search=${search}&pNum=${map.prePageNum}">◀</a> --%>
-<%-- 								<c:choose> --%>
-<%-- 									<c:when test="${pNum==null || pNum==''}"> --%>
-<!-- 										<input type="text" id="pmove" value="1" /> -->
-<%-- 									</c:when> --%>
-<%-- 									<c:otherwise> --%>
-<%-- 										<input type="text" id="pmove" value="${pNum}" /> --%>
-<%-- 									</c:otherwise> --%>
-<%-- 								</c:choose> --%>
-<%-- 								&nbsp;/&nbsp;${map.endPage} --%>
-<%-- 								<a href="BoardController.do?command=boardlist&searchType=${searchType}&search=${search}&pNum=${map.nextPageNum}">▶</a> --%>
-<!-- 								<input type="button" id="pmoveBtn" value="이동" /> -->
-<!-- 							</td> -->
-<!-- 						</tr> -->
-					</c:otherwise>
-				</c:choose>
+		 						<tr>
+									<td colspan="7" align="center">
+										<a href="categoryGoods.do?kind_num=${kind_num}&pnum=${map.prePageNum}">◀</a>
+										<c:forEach var="i" begin="${map.startPage}" end="${map.endPage}" step="1">
+											<c:choose>
+												<c:when test="${pnum eq i}">
+													${i}
+												</c:when>
+												<c:otherwise>
+													<a href="categoryGoods.do?kind_num=${kind_num}&pnum=${i}">${i}</a>
+												</c:otherwise>
+											</c:choose>	
+										</c:forEach>
+										<a href="categoryGoods.do?kind_num=${kind_num}&pnum=${map.nextPageNum}">▶</a>
+									</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>	
 				<c:if test="${ldto != null && ldto.user_role ne 'USER'}">
 				<tr>
 					<td colspan="7">

@@ -1,6 +1,10 @@
 package com.hk.meatmall;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +18,9 @@ import com.hk.meatmall.dtos.Detail_imgDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
+import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.IGoodsService;
+import com.hk.utils.Paging;
 
 @Controller
 public class GoodsController {
@@ -25,14 +31,34 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	private IGoodsService GoodsService;
 	
 	@RequestMapping(value = "/allGoods.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String allGoods(Model model, GoodsDto gDto, Detail_imgDto iDto, Goods_optionDto oDto) {
+	public String allGoods(HttpServletRequest request, Model model, String pnum) {
 		logger.info("전체 상품");
+		HttpSession session=request.getSession();
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
 		
-		List<GoodsDto> list = GoodsService.allGoods();
-		model.addAttribute("list", list);
-		model.addAttribute("gDto", gDto);
-		model.addAttribute("iDto", iDto);
-		model.addAttribute("oDto", oDto);
+		if(ldto == null || ldto.getUser_role().equals("USER") || ldto.getUser_role().equals("LICENSE")) {
+			//enabled Y만 보이게
+			List<GoodsDto> gList = GoodsService.getEnabled(pnum);
+			model.addAttribute("gList", gList);
+		
+			int pcount = GoodsService.getEnabledPcount();
+			Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
+			model.addAttribute("map",map);
+		}else {
+			//enabled 다 보이게
+			List<GoodsDto> gList = GoodsService.allGoods(pnum);
+			model.addAttribute("gList", gList);
+			
+			int pcount = GoodsService.getAllPcount();
+			Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
+			model.addAttribute("map",map);
+		}
+		
+		if(pnum==null) {
+			pnum=(String)request.getSession().getAttribute("pnum");
+		}else {
+			request.getSession().setAttribute("pnum", pnum);
+		}
 		
 		return "allGoods";
 	}
@@ -40,9 +66,9 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	@RequestMapping(value = "/category.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String category(Model model) {
 		logger.info("부위별 카테고리");
-		List<Goods_kindDto> list = GoodsService.category();
+		List<Goods_kindDto> cList = GoodsService.category();
 		
-		model.addAttribute("list", list);
+		model.addAttribute("cList", cList);
 		
 		return "category";
 	}
@@ -80,33 +106,70 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/categoryGoods.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String categoryGoods(Model model, int kind_num) {
+	public String categoryGoods(HttpServletRequest request, Model model, String kind_num, String pnum) {
 		logger.info("카테고리별 상품");
+		HttpSession session=request.getSession();
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
 		
-		List<GoodsDto> list = GoodsService.categoryGoods(kind_num);
+		if(ldto == null || ldto.getUser_role().equals("USER") || ldto.getUser_role().equals("LICENSE")) {
+			//enabled Y만 보이게
+			List<GoodsDto> cList = GoodsService.getCateEnabled(kind_num, pnum);
+			model.addAttribute("cList", cList);
+			model.addAttribute("kind_num",kind_num);
 		
-		model.addAttribute("list", list);
-		model.addAttribute("kind_num",kind_num);
+			int pcount = GoodsService.getEnabledPcount();
+			Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
+			model.addAttribute("map",map);
+		}else {
+			//enabled 다 보이게
+			List<GoodsDto> cList = GoodsService.categoryGoods(kind_num, pnum);
+			model.addAttribute("cList", cList);
+			model.addAttribute("kind_num",kind_num);
+			
+			int pcount = GoodsService.getAllPcount();
+			Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
+			model.addAttribute("map",map);
+		}
+		
+		if(pnum==null) {
+			pnum=(String)request.getSession().getAttribute("pnum");
+		}else {
+			request.getSession().setAttribute("pnum", pnum);
+		}
 		
 		return "categoryGoods";
 	}
 	
 	@RequestMapping(value = "/insertGoodsForm.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String insertForm() {
+	public String insertForm(Model model) {
 		logger.info("전체상품에서 추가 폼");
+		
+		List<Goods_optionDto> oList = GoodsService.kind_num();
+		model.addAttribute("oList",oList);
 		
 		return "insertGoods";
 	}
 	
 	@RequestMapping(value = "/insertGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String insertAllGoods(Model model, GoodsDto gDto, Detail_imgDto iDto, Goods_optionDto oDto) {
+	public String insertAllGoods(Model model, GoodsDto gDto, Detail_imgDto iDto
+			, String[] option_name, int[] option_count, int[] option_weight) {
 		logger.info("전체상품에서 추가");
+		
+		Goods_optionDto oDto = new Goods_optionDto();
+		
 		boolean isS = GoodsService.insertGoods(gDto);
 				isS = GoodsService.insertDetail_img(iDto);
-				isS = GoodsService.insertGoods_option(oDto);
+				
+		for(int i=0;i<option_name.length;i++) {
+			oDto.setOption_name(option_name[i]);
+			oDto.setOption_count(option_count[i]);
+			oDto.setOption_weight(option_weight[i]);
+			isS = GoodsService.insertGoods_option(oDto);
+		}
+				
 		
 		if(isS) {
-			return "redirect:allGoods.do";
+			return "redirect:allGoods.do?pnum=1";
 		}else {
 			return "insertGoods";
 		}
@@ -120,14 +183,24 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/insertCateGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String insertCateGoods(Model model, GoodsDto gDto, Detail_imgDto iDto, Goods_optionDto oDto, String kind_num) {
+	public String insertCateGoods(Model model, GoodsDto gDto, Detail_imgDto iDto
+				, String[] option_name, int[] option_count, int[] option_weight, String kind_num) {
 		logger.info("카테고리상품에서 추가");
+		
+		Goods_optionDto oDto = new Goods_optionDto();
+		
 		boolean isS = GoodsService.insertGoods(gDto);
 				isS = GoodsService.insertDetail_img(iDto);
-				isS = GoodsService.insertGoods_option(oDto);
+				
+		for(int i=0;i<option_name.length;i++) {
+			oDto.setOption_name(option_name[i]);
+			oDto.setOption_count(option_count[i]);
+			oDto.setOption_weight(option_weight[i]);
+			isS = GoodsService.insertGoods_option(oDto);
+		}
 				
 		if(isS) {
-			return "redirect:categoryGoods.do?kind_num="+kind_num;
+			return "redirect:categoryGoods.do?pnum=1&kind_num="+kind_num;
 		}else {
 			return "insertGoods";
 		}
@@ -135,11 +208,10 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/goodsDetail.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String goodsDetail(Model model, int goods_num) {
-		logger.info("상품 상세");
-		
+		logger.info("전체상품에서 상세");
 		GoodsDto gDto = GoodsService.getGoods(goods_num);
 		Detail_imgDto iDto = GoodsService.getDetail_img(goods_num);
-		Goods_optionDto oDto = GoodsService.getGoods_option(goods_num);
+		List<Goods_optionDto> oDto = GoodsService.getGoods_option(goods_num);
 		
 		model.addAttribute("gDto", gDto);
 		model.addAttribute("iDto", iDto);
@@ -150,11 +222,11 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/goodsCateDetail.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String goodsCateDetail(Model model, int goods_num) {
-		logger.info("상품 상세");
-		
+		logger.info("카테고리상품에서 상세");
 		GoodsDto gDto = GoodsService.getGoods(goods_num);
 		Detail_imgDto iDto = GoodsService.getDetail_img(goods_num);
-		Goods_optionDto oDto = GoodsService.getGoods_option(goods_num);
+		List<Goods_optionDto> oDto = GoodsService.getGoods_option(goods_num);
+		System.out.println(oDto);
 		
 		model.addAttribute("gDto", gDto);
 		model.addAttribute("iDto", iDto);
