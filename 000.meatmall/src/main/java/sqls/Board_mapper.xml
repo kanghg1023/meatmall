@@ -110,14 +110,14 @@
 		SELECT CEIL(COUNT(*)/5) 
 		  FROM BOARD
 	</select>
-	
+<!--///////////////////////////////////////////////////////////////////////////////////////////-->		
 <!--  유저넘버 받아서 닉네임으로 변경-->	
 	<select id="numNick" parameterType="int" resultType="String">
 		SELECT USER_NICK  
 		  FROM USER_INFO 
 		 WHERE USER_NUM=#{user_num}
 	</select>
-	
+<!--///////////////////////////////////////////////////////////////////////////////////////////-->		
 <!--  좋아요 출력 -->
 	<select id="getLike" parameterType="Board_likeDto" resultType="Board_likeDto">
 		SELECT BOARD_NUM 
@@ -145,6 +145,66 @@
 		 WHERE BOARD_NUM=#{board_num} 
 		   AND USER_NUM=#{user_num}
 	</delete>
+
+<!--///////////////////////////////////////////////////////////////////////////////////////////-->	
+<!-- 댓글 목록 -->	
+	<select id="commentList" parameterType="int" resultType="CommentDto">
+		SELECT COMMENT_NUM
+	 		 , BOARD_NUM
+  	 		 , USER_NUM
+	 		 , COMMENT_CONTENT
+ 			 , COMMENT_REGDATE
+ 	 		 , COMMENT_REFER
+	 		 , COMMENT_RE_CHECK
+  		  FROM BOARD_COMMENT
+ 		 WHERE BOARD_NUM=#{board_num}
+ 		 ORDER BY COMMENT_REFER, COMMENT_NUM
+	</select>
+	
+<!-- 모댓글 달기 -->
+	<insert id="addcomment" parameterType="CommentDto">
+		INSERT INTO BOARD_COMMENT
+		VALUES (
+				 BOARD_COMMENT_SEQ.NEXTVAL
+			   , #{board_num}
+			   , #{user_num}
+			   , #{comment_content}
+			   , SYSDATE
+			   , (SELECT NVL(MAX(COMMENT_REFER)+1,0) FROM BOARD_COMMENT)
+			   , 'N'	 		
+			   )
+	</insert>	
+
+<!-- 대댓글 달기 -->
+	<insert id="recomment" parameterType="CommentDto">
+		INSERT INTO BOARD_COMMENT
+		VALUES (
+				 BOARD_COMMENT_SEQ.NEXTVAL
+			   , #{board_num}
+			   , #{user_num}
+			   , #{comment_content}
+			   , SYSDATE
+			   , (SELECT COMMENT_REFER FROM BOARD_COMMENT WHERE COMMENT_NUM = #{comment_num} )
+			   , 'Y'
+			   )
+	</insert>
+	
+<!-- 댓글 삭제 -->
+	<delete id="delcomment" parameterType="int">
+		DELETE 
+		  FROM BOARD_COMMENT
+		 WHERE COMMENT_NUM = #{comment_num}  	
+	</delete>
+	
+<!-- 댓글수정하기-->	
+	<update id="updatecomment" parameterType="CommentDto">
+		UPDATE BOARD_COMMENT
+  		   SET COMMENT_CONTENT = #{comment_content}
+     		 , COMMENT_REGDATE = SYSDATE
+ 		 WHERE COMMENT_NUM = #{comment_num}
+	</update>	
+	
+	
 	
 	
 </mapper>

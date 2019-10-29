@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.Board_likeDto;
+import com.hk.meatmall.dtos.CommentDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.IBoardService;
 
@@ -37,14 +38,19 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	@RequestMapping(value = "/boardlist.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String boardlist(HttpServletRequest request, Locale locale, Model model, String pnum) {
 		logger.info("글목록보기 :{}", locale);
-		request.getSession().removeAttribute("readcount");
+		request.getSession().removeAttribute("readcount");		
+		 if(pnum==null) {
+	          pnum=(String)request.getSession().getAttribute("pnum");
+	       }else {
+	          request.getSession().setAttribute("pnum", pnum);
+	       }
 		List<BoardDto> list=boardService.getAllList(pnum);
 		model.addAttribute("list", list );
 		int pcount=boardService.getPcount();
-		Map<String, Integer> map=com.hk.utils.Paging.pagingValue(pcount, pnum, 5);
+		Map<String, Integer> pmap=com.hk.utils.Paging.pagingValue(pcount, pnum, 5);
 		//HttpSession session = request.getSession();
 		//session.setAttribute("pmap", map);
-		model.addAttribute("pmap", map );
+		model.addAttribute("pmap", pmap);
 		List<BoardDto> list1=boardService.noticeList();
 		model.addAttribute("list1", list1 );	
 		return "boardlist";
@@ -71,12 +77,12 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	}
 	
 	@RequestMapping(value = "/boarddetail.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String boarddetail(HttpServletRequest request, Locale locale, Model model, int board_num) {
+	public String boarddetail(HttpServletRequest request, Locale locale, Model model, int board_num,String pnum) {
 		logger.info("글상세보기 :{}", locale);				
 		HttpSession session = request.getSession();		
 		String board_count = (String)session.getAttribute("readcount");
-		
-		UserDto ldto = (UserDto)session.getAttribute("ldto");
+				
+		UserDto ldto = (UserDto)session.getAttribute("ldto");	
 		
 		if(board_count==null) {
 			boardService.readCount(board_num);
@@ -88,10 +94,12 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		}
 		int likecount = boardService.likeCount(board_num);
 		model.addAttribute("likecount",likecount);
-		
+					
 		BoardDto dto1 =boardService.getBoard(board_num);
 		model.addAttribute("dto", dto1);
-								
+		
+		List<CommentDto> clist = boardService.commentList(board_num);
+		model.addAttribute("clist", clist);					
 		return "boarddetail";
 	}
 	
@@ -159,7 +167,75 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	}
 	
 	
+	@RequestMapping(value = "/addcomment.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String addcomment(HttpServletRequest request, Locale locale, Model model, CommentDto dto) {
+		logger.info("모댓글달기:{}", locale);
+		
+		HttpSession session = request.getSession();
+		
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
+		
+		dto.setUser_num(ldto.getUser_num());
+		
+		boolean isS=boardService.addcomment(dto);
+		if(isS) {
+			return "redirect:boarddetail.do?board_num="+dto.getBoard_num();
+		}else {
+			model.addAttribute("msg", "모댓글달기");
+			return "error";
+		}
+	}
+
 	
+	@RequestMapping(value = "/delcomment.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String delcomment(HttpServletRequest request,Locale locale, Model model,String comment_num,CommentDto dto ) {
+		logger.info("댓글삭제:{}", locale);
+		HttpSession session = request.getSession();
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
+		
+		dto.setUser_num(ldto.getUser_num());
+		
+		boolean isS=boardService.delcomment(Integer.parseInt(comment_num));
+		if(isS) {
+			return "redirect:boarddetail.do?board_num="+dto.getBoard_num();
+		}else {
+			model.addAttribute("msg", "글삭제실패");
+			return "error";
+		}
+	}
+	
+	@RequestMapping(value = "/recomment.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String recomment(HttpServletRequest request, Locale locale, Model model, CommentDto dto) {
+		logger.info("대댓글달기:{}", locale);
+		
+		HttpSession session = request.getSession();
+		
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
+		
+		dto.setUser_num(ldto.getUser_num());
+		
+		boolean isS=boardService.recomment(dto);
+		if(isS) {
+			return "redirect:boarddetail.do?board_num="+dto.getBoard_num();
+		}else {
+			model.addAttribute("msg", "대댓글달기");
+			return "error";
+		}
+	}
+	
+
+	@RequestMapping(value = "/updatecomment.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String updatecomment(Locale locale, Model model,CommentDto dto) {
+		logger.info("댓글수정하기:{}", locale);
+		boolean isS=boardService.updatecomment(dto);
+		model.addAttribute("dto", dto);
+		if(isS) {
+			return "redirect:boarddetail.do?board_num="+dto.getBoard_num();
+		}else {
+			model.addAttribute("msg", "댓글수정실패");
+			return "error";
+		}
+	}
 	
 	
 	

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.Board_likeDto;
+import com.hk.meatmall.dtos.CommentDto;
 import com.hk.meatmall.idaos.IBoardDao;
 import com.hk.meatmall.iservices.IBoardService;
 
@@ -79,6 +80,31 @@ public class BoardService implements IBoardService {
 	@Override
 	public boolean deleteLike(Board_likeDto dto) {		
 		return boardDao.deleteLike(dto);
+	}
+
+	@Override
+	public List<CommentDto> commentList(int board_num) {		
+		return boardDao.commentList(board_num);
+	}
+
+	@Override
+	public boolean addcomment(CommentDto dto) {		
+		return boardDao.addcomment(dto);
+	}
+
+	@Override
+	public boolean recomment(CommentDto dto) {		
+		return boardDao.recomment(dto);
+	}
+
+	@Override
+	public boolean delcomment(int comment_num) {		
+		return boardDao.delcomment(comment_num);
+	}
+
+	@Override
+	public boolean updatecomment(CommentDto dto) {		
+		return boardDao.updatecomment(dto);
 	}
 
 

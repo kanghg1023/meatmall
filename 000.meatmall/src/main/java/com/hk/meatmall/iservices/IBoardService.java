@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.Board_likeDto;
+import com.hk.meatmall.dtos.CommentDto;
 
 public interface IBoardService {
 	
@@ -33,7 +34,15 @@ public interface IBoardService {
 	public boolean insertLike(Board_likeDto dto);
 	//좋아요 삭제
 	public boolean deleteLike(Board_likeDto dto);
-	
-	
+	//댓글 목록 보기
+	public List<CommentDto> commentList(int board_num);
+	//모댓글 추가
+	public boolean addcomment(CommentDto dto);
+	//대댓글 추가
+	public boolean recomment(CommentDto dto);
+	// 댓글 삭제
+	public boolean delcomment(int comment_num);
+	// 댓글 수정
+	public boolean updatecomment(CommentDto dto);
 	
 }

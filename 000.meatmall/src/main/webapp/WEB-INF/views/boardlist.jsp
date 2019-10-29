@@ -20,6 +20,9 @@
 Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("pmap");
 %>
 <body>
+<div id="header" class="header" style="outline: none;">
+	<jsp:include page="header.jsp" />
+</div>
 <jsp:useBean id="util" class="com.hk.utils.Util"  />
 <table border="1">	
 	<col width="50px" />
@@ -62,21 +65,24 @@ Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("pmap");
 				</tr>
 			</c:forEach>			
 		</c:otherwise>
-		</c:choose>
+		</c:choose>		
 		<tr>
 			<td colspan="6" style="text-align: center;">
-				<a href="boardlist.do?&pnum=<%=map.get("prePageNum")%>">◀</a>
-				<%
-					int pcount=(Integer)request.getAttribute("pcount");
-					for(int i=map.get("startPage");i<=map.get("endPage");i++){
-						%>
-						<a href="boardlist.do?&pnum=<%=i%>" style="text-decoration: none;"><%=i%></a>				
-						<%
-						}					
-				%>
-				<a href="boardlist.do?&pnum=<%=map.get("nextPageNum")%>">▶</a>
+				<a href="boardlist.do?pnum=${pmap.prePageNum}${statusPage==null?'':statusPage}">◀</a>				
+				<c:forEach var="i" begin="${pmap.startPage}" end="${pmap.endPage}" step="1" >																			
+					<c:choose>
+						<c:when test="${pnum eq i}">
+							${i}
+						</c:when>
+						<c:otherwise>
+							<a href="boardlist.do?pnum=${i}${statusPage==null?'':statusPage}" style="text-decoration: none">${i}</a>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>																		
+				<a href="boardlist.do?pnum=${pmap.nextPageNum}${statusPage==null?'':statusPage}">▶</a>
+				
 			</td>
-		</tr>	
+		</tr>														
 	<tr>
 		<td colspan="10">
 			<input type="button" value="글추가"

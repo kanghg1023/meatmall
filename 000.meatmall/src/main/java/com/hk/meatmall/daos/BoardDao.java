@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.Board_likeDto;
+import com.hk.meatmall.dtos.CommentDto;
 import com.hk.meatmall.idaos.IBoardDao;
 
 @Repository
@@ -64,13 +65,13 @@ public class BoardDao implements IBoardDao {
 		int pcount = sqlSession.selectOne(nameSpace+"pcount");
 		return pcount;
 	}
-
+////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public String numNick(int user_num) {
 		String nick = sqlSession.selectOne(nameSpace+"numNick",user_num);
 		return nick;
 	}
-
+/////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public boolean getLike(Board_likeDto dto) {
 		Board_likeDto likedto = new Board_likeDto();
@@ -93,6 +94,35 @@ public class BoardDao implements IBoardDao {
 	@Override
 	public boolean deleteLike(Board_likeDto dto) {
 		int count = sqlSession.insert(nameSpace+"deleteLike", dto);
+		return count > 0 ? true:false;
+	}
+///////////////////////////////////////////////////////////////////////////
+	@Override
+	public List<CommentDto> commentList(int board_num) {		
+		return sqlSession.selectList(nameSpace+"commentList",board_num);
+	}
+
+	@Override
+	public boolean addcomment(CommentDto dto) {
+		int count=sqlSession.insert(nameSpace+"addcomment",dto);
+		return count > 0 ? true:false;
+	}
+
+	@Override
+	public boolean recomment(CommentDto dto) {
+		int count=sqlSession.insert(nameSpace+"recomment",dto);
+		return count > 0 ? true:false;
+	}
+
+	@Override
+	public boolean delcomment(int comment_num) {
+		int count=sqlSession.delete(nameSpace+"delcomment",comment_num);
+		return count > 0 ? true:false;
+	}
+
+	@Override
+	public boolean updatecomment(CommentDto dto) {
+		int count=sqlSession.update(nameSpace+"updatecomment",dto);
 		return count > 0 ? true:false;
 	}
 	
