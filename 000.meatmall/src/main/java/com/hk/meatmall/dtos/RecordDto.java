@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Login_recordDto {
+public class RecordDto {
 	
 	//회원번호
 	private int user_num;
