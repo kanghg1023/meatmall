@@ -1,12 +1,14 @@
 package com.hk.meatmall.daos;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.idaos.ILoginDao;
 
@@ -63,11 +65,13 @@ public class LoginDao implements ILoginDao {
 		return sqlSession.update(nameSpace+"lockClear",user_num);
 	}
 
+	//계정정지해제
 	@Override
 	public int stopClear(String user_id) {
 		return sqlSession.update(nameSpace+"stopClear",user_id);
 	}
 
+	//로그인 실패시 잠금관리 -----
 	@Override
 	public int loginFailCountUp(int user_num) {
 		return sqlSession.update(nameSpace+"loginFailCountUp",user_num);
@@ -78,6 +82,20 @@ public class LoginDao implements ILoginDao {
 		return sqlSession.update(nameSpace+"loginLock",user_num);
 	}
 
+	//로그인 성공실패여부 기록
+	@Override
+	public boolean loginRecord(String user_id, String ip, String record_check) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("user_id", user_id);
+		map.put("ip", ip);
+		map.put("record_check", record_check);
+		
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"loginRecord",map);
+		return count>0 ? true : false;
+	}
+	
+	//회원가입
 	@Override
 	public boolean regist(UserDto dto) {
 		int count = 0;
@@ -85,17 +103,89 @@ public class LoginDao implements ILoginDao {
 		return count>0 ? true : false;
 	}
 
+	//로그인실패기록 생성
+	@Override
+	public boolean signUpLog(String user_id) {
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"signUpLog",user_id);
+		return count>0 ? true : false;
+	}
+	
 	//닉네임 중복검사
 	@Override
 	public int nickChk(String user_nick) {
 		int user_num = 0;
 		String idNum =sqlSession.selectOne(nameSpace+"nickChk",user_nick);
 		
-		if(idNum == null) {
-			return user_num;
-		}else {
+		if(idNum != null) {
 			user_num = Integer.parseInt(idNum);
-			return user_num;
+		}
+		
+		return user_num;
+	}
+
+	//정보수정을 위한 비밀번호체크
+	@Override
+	public boolean pwChk(String user_id, String user_pw) {
+		Map<String,String> map = new HashMap<>(); 
+		map.put("user_id", user_id);
+		map.put("user_pw", user_pw);
+		
+		String id = sqlSession.selectOne(nameSpace+"pwChk", map);
+		
+		if(id == null) {
+			return false;
+		}else {
+			return true;
 		}
 	}
+
+	//정보수정
+	@Override
+	public boolean userUpdate(UserDto dto) {
+		int count = 0;
+		count = sqlSession.update(nameSpace+"userUpdate",dto);
+		
+		return count>0 ? true : false;
+	}
+
+	//아이디/비밀번호 찾기
+	@Override
+	public List<String> inquiry(UserDto dto) {
+		List<String> list = sqlSession.selectList(nameSpace+"inquiry",dto);
+		return list;
+	}
+
+	//비밀번호 변경
+	@Override
+	public boolean pwChange(String user_id, String user_pw) {
+		int count = 0;
+		Map<String, String> map = new HashMap<>();
+		map.put("user_id", user_id);
+		map.put("user_pw", user_pw);
+		
+		count = sqlSession.update(nameSpace+"pwChange",map);
+		
+		return count>0 ? true : false;
+	}
+
+	//로그인 기록 조회
+	@Override
+	public List<RecordDto> loginRecordList(int user_num) {
+		List<RecordDto> list = sqlSession.selectList(nameSpace+"loginRecordList",user_num);
+		return list;
+	}
+
+	//일주일지난 기록을 삭제
+	@Override
+	public int loginRecordDel() {
+		int count = 0;
+		count = sqlSession.update(nameSpace+"loginRecordDel");
+		
+		return count;
+	}
+
+	
+
+	
 }

@@ -1,9 +1,12 @@
 package com.hk.meatmall.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.idaos.ILoginDao;
 import com.hk.meatmall.iservices.ILoginService;
@@ -50,16 +53,63 @@ public class LoginService implements ILoginService {
 	}
 
 	@Override
+	public boolean loginRecord(String user_id, String ip, String record_check) {
+		return loginDao.loginRecord(user_id, ip, record_check);
+	}
+	
+	@Override
 	public boolean regist(UserDto dto) {
 		return loginDao.regist(dto);
 	}
 
+	@Override
+	public boolean signUpLog(String user_id) {
+		return loginDao.signUpLog(user_id);
+	}
+	
 	@Override
 	public int nickChk(String user_nick) {
 		int user_num = 0;
 		user_num = loginDao.nickChk(user_nick);
 		return user_num;
 	}
+
+	@Override
+	public boolean pwChk(String user_id, String user_pw) {
+		return loginDao.pwChk(user_id,user_pw);
+	}
+
+	@Override
+	public boolean userUpdate(UserDto dto) {
+		return loginDao.userUpdate(dto);
+	}
+
+	@Override
+	public List<String> inquiry(UserDto dto) {
+		return loginDao.inquiry(dto);
+	}
+
+	@Override
+	public boolean inquiryChk(UserDto dto) {
+		List<String> list = loginDao.inquiry(dto);
+		if(list.size()>0) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean pwChange(String user_id, String user_pw) {
+		return loginDao.pwChange(user_id,user_pw);
+	}
+
+	
+	@Override
+	public List<RecordDto> loginRecordList(int user_num) {
+		loginDao.loginRecordDel();
+		return loginDao.loginRecordList(user_num);
+	}
+	
 
 	
 	

@@ -1,5 +1,8 @@
 package com.hk.meatmall.iservices;
 
+import java.util.List;
+
+import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 
 public interface ILoginService {
@@ -10,8 +13,15 @@ public interface ILoginService {
 	public int lockClear(int user_num);
 	public int stopClear(String user_id);
 	public int loginFail(int user_num);
+	public boolean loginRecord(String user_id, String ip, String record_check);
 	public boolean regist(UserDto dto);
+	public boolean signUpLog(String user_id);
 	public int nickChk(String user_nick);
-	
+	public boolean pwChk(String user_id, String user_pw);
+	public boolean userUpdate(UserDto dto);
+	public List<String> inquiry(UserDto dto);
+	public boolean inquiryChk(UserDto dto);
+	public boolean pwChange(String user_id, String user_pw);
+	public List<RecordDto> loginRecordList(int user_num);
 	
 }

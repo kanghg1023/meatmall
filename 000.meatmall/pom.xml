@@ -20,6 +20,13 @@
         </repository>
     </repositories>
 	<dependencies>
+		<!-- 이메일 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.5</version>
+		</dependency>
+		
 		<!-- 롬복 -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>헤더</title>
 </head>
 <body>
 <a href="main.do" class="main"><span>홈</span></a>
