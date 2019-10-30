@@ -182,7 +182,7 @@
 					 , RECORD_CHECK
 					 , RECORD_DATE
 				  FROM LOGIN_RECORD
-				 WHERE USER_NUM = 1
+				 WHERE USER_NUM = #{user_num}
 				   AND RECORD_DATE+7 >= SYSDATE
 			   )
 		 WHERE RN < 10
