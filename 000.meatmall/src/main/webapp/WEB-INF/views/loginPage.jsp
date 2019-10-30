@@ -6,22 +6,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-latest.js"></script>
-<title></title>
-<script type="text/javascript">
-	
-	$(function() {
-		$("#regist").click(function(){
-			location.href="registPage.do";
-		});
-	});
-	
-</script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<title>로그인 페이지</title>
 </head>
 <body>
-<jsp:include page="header.jsp" />
-
+<div id="header" class="header" style="outline: none;">
+	<jsp:include page="header.jsp" />
+</div>
 <form action="login.do" method="post">
 	<table border="1">
 		<tr>
@@ -35,7 +26,13 @@
 		<tr>
 			<td colspan="2">
 				<input type="submit" value="로그인" />
-				<input type="button" id="regist" value="회원가입"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<a href="idInquiryForm.do">아이디 찾기</a> | 
+				<a href="pwInquiryForm.do">비밀번호 찾기</a> | 
+				<a href="registPage.do">회원가입</a>
 			</td>
 		</tr>
 	</table>

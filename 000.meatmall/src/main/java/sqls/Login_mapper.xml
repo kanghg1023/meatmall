@@ -72,6 +72,20 @@
 		   AND LOGIN_FAIL_COUNT > 4
 	</update>
 	
+	<insert id="loginRecord" parameterType="Map">
+		INSERT INTO LOGIN_RECORD
+		VALUES (
+				 (
+				   SELECT USER_NUM
+					 FROM USER_INFO
+					WHERE USER_ID = #{user_id}
+				 )
+			   , #{ip}
+			   , #{record_check}
+			   , SYSDATE
+			   )
+	</insert>
+	
 	<insert id="regist" parameterType="UserDto">
 		INSERT INTO USER_INFO
 		VALUES (
@@ -100,10 +114,85 @@
 			   )
 	</insert>
 	
+	<insert id="signUpLog" parameterType="String">
+		INSERT INTO LOGIN
+		VALUES (
+				 (
+				   SELECT USER_NUM 
+					 FROM USER_INFO 
+					WHERE USER_ID = #{user_id}
+				 )
+			   , 0
+			   , 'N'
+			   , NULL
+			   )
+	</insert>
+	
 	<select id="nickChk" parameterType="String" resultType="String">
 		SELECT USER_NUM
 		  FROM USER_INFO
 		 WHERE USER_NICK = #{user_nick}
 	</select>
 	
+	<select id="pwChk" parameterType="Map" resultType="String">
+		SELECT USER_ID
+		  FROM USER_INFO
+		 WHERE USER_ID = #{user_id}
+		   AND USER_PW = #{user_pw}
+	</select>
+	
+	<update id="userUpdate" parameterType="UserDto">
+		UPDATE USER_INFO
+		   SET USER_PH = #{user_ph}
+			 , USER_ADDR = #{user_addr}
+			 , USER_EMAIL = #{user_email}
+		 <if test="user_pw != null">
+			 , USER_PW = #{user_pw}
+		 </if>
+		 WHERE USER_NUM = #{user_num}
+	</update>
+	
+	<select id="inquiry" parameterType="UserDto" resultType="UserDto">
+		SELECT USER_ID
+		  FROM USER_INFO
+		 WHERE USER_EMAIL = #{user_email}
+		 <if test="user_name != null">
+		   AND USER_NAME = #{user_name}
+		 </if>
+		 <if test="user_id != null">
+		   AND user_id = #{user_id}
+		 </if>
+	</select>
+	
+	<update id="pwChange" parameterType="Map">
+		UPDATE USER_INFO
+		   SET USER_PW = #{user_pw}
+		 WHERE USER_ID = #{user_id}
+	</update>
+	
+	<select id="loginRecordList" parameterType="int" resultType="RecordDto">
+		<![CDATA[
+		SELECT RECORD_IP
+			 , RECORD_CHECK
+			 , RECORD_DATE
+		  FROM (
+				SELECT ROW_NUMBER() OVER (ORDER BY RECORD_DATE DESC) AS RN
+					 , USER_NUM
+					 , RECORD_IP
+					 , RECORD_CHECK
+					 , RECORD_DATE
+				  FROM LOGIN_RECORD
+				 WHERE USER_NUM = 1
+				   AND RECORD_DATE+7 >= SYSDATE
+			   )
+		 WHERE RN < 10
+		]]>
+	</select>
+	
+	<delete id="loginRecordDel">
+		<![CDATA[
+		DELETE FROM LOGIN_RECORD
+		 WHERE RECORD_DATE+7 < SYSDATE
+		]]>
+	</delete>
 </mapper>

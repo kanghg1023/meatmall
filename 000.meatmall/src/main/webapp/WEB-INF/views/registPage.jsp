@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>회원가입 페이지</title>
 </head>
 <body>
 <c:if test="${registError != null}">

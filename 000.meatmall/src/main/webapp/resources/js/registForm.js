@@ -12,6 +12,10 @@ var addrChk;
 var emailChk;
 var businessnumChk;
 
+var falseMsg="<div class='chkFalse'>"
+				+"필수 정보입니다."
+			+"</div>";
+
 //아이디 체크
 function idChkfun(){
 	var aCount = $("#user_id");
@@ -20,7 +24,7 @@ function idChkfun(){
 	aCount.next("div").remove();
 	
 	if(id==""){
-		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		aCount.after(falseMsg);
 		idChk = false;
 	}else{
 		$.ajax({
@@ -30,11 +34,15 @@ function idChkfun(){
 			datatype:"json",
 			async:false,
 			success:function(isS){
-				if(eval(isS)){
-					aCount.after("<div class='chkFalse'>"+"이미 사용중이거나 탈퇴한 아이디입니다."+"</div>");
+				if(isS){
+					aCount.after("<div class='chkFalse'>"
+									+"이미 사용중이거나 탈퇴한 아이디입니다."
+								+"</div>");
 					idChk = false;
 				}else {
-					aCount.after("<div class='chkTrue'>"+"사용 가능한 아이디입니다."+"</div>");
+					aCount.after("<div class='chkTrue'>"
+									+"사용 가능한 아이디입니다."
+								+"</div>");
 					idChk = true;
 				}
 			},
@@ -52,7 +60,7 @@ function pwChkfun(){
 	aCount.next("div").remove();
 	
 	if(pw==""){
-		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		aCount.after(falseMsg);
 		pwChk = false;
 	}else{
 		pwChk = true;
@@ -67,15 +75,19 @@ function pw2Chkfun(){
 	aCount.next("div").remove();
 	
 	if(pw2==""){
-		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		aCount.after(falseMsg);
 		pw2Chk = false;
 	}else{
 		if(pw == pw2){
-			aCount.after("<div class='chkTrue'>"+"비밀번호가 일치합니다."+"</div>");
+			aCount.after("<div class='chkTrue'>"
+							+"비밀번호가 일치합니다."
+						+"</div>");
 			pw2Chk = true;
 		}else {
 			aCount.val("");
-			aCount.after("<div class='chkFalse'>"+"비밀번호가 일치하지 않습니다."+"</div>");
+			aCount.after("<div class='chkFalse'>"
+							+"비밀번호가 일치하지 않습니다."
+						+"</div>");
 			pw2Chk = false;
 		}
 	}
@@ -88,7 +100,7 @@ function nameChkfun(){
 	aCount.next("div").remove();
 	
 	if(name==""){
-		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		aCount.after(falseMsg);
 		nameChk = false;
 	}else{
 		nameChk = true;
@@ -103,7 +115,7 @@ function nickChkfun(){
 	aCount.next("div").remove();
 	
 	if(nick==""){
-		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		aCount.after(falseMsg);
 		nickChk = false;
 	}else{
 		$.ajax({
@@ -113,11 +125,15 @@ function nickChkfun(){
 			datatype:"json",
 			async:false,
 			success:function(isS){
-				if(eval(isS)){
-					aCount.after("<div class='chkFalse'>"+"이미 사용중인 별명입니다."+"</div>");
+				if(isS){
+					aCount.after("<div class='chkFalse'>"
+									+"이미 사용중인 별명입니다."
+								+"</div>");
 					nickChk = false;
 				}else {
-					aCount.after("<div class='chkTrue'>"+"사용 가능한 별명입니다."+"</div>");
+					aCount.after("<div class='chkTrue'>"
+									+"사용 가능한 별명입니다."
+								+"</div>");
 					nickChk = true;
 				}
 			},
@@ -137,14 +153,16 @@ function phoneChkfun(){
 	aCount.next("div").remove();
 	
 	if(phone==""){
-		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		aCount.after(falseMsg);
 		phoneChk = false;
 	}else{
 		if(regexPhone.test(phone)) {
 			phoneChk = true;
 		}else{
 			aCount.val("");
-			aCount.after("<div class='chkFalse'>"+"전화번호 형식이 아닙니다."+"</div>");
+			aCount.after("<div class='chkFalse'>"
+							+"전화번호 형식이 아닙니다."
+						+"</div>");
 			phoneChk = false;
 		}
 	}
@@ -157,7 +175,7 @@ function addrChkfun(){
 	aCount.next("div").remove();
 	
 	if(addr==""){
-		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		aCount.after(falseMsg);
 		addrChk = false;
 	}else{
 		addrChk = true;
@@ -172,13 +190,15 @@ function emailChkfun(){
 	aCount.next("div").remove();
 	
 	if(email==""){
-		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		aCount.after(falseMsg);
 		emailChk = false;
 	}else{
 		if(regexEmail.test(email)) {
 			emailChk = true;
 		}else{
-			aCount.after("<div class='chkFalse'>"+"이메일 형식이 아닙니다."+"</div>");
+			aCount.after("<div class='chkFalse'>"
+							+"이메일 형식이 아닙니다."
+						+"</div>");
 			emailChk = false;
 		}
 	}
@@ -192,7 +212,7 @@ function businessnumChkfun(){
 	aCount.next("div").remove();
 	
 	if(businessnum==""){
-		aCount.after("<div class='chkFalse'>"+"필수 정보입니다."+"</div>");
+		aCount.after(falseMsg);
 		businessnumChk = false;
 	}else{
 		businessnumChk = true;
