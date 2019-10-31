@@ -8,14 +8,14 @@
 <meta charset="UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title>회원가입</title>
-<script type="text/javascript" src="js/registForm.js"></script>
+<script type="text/javascript" src="js/signUpForm.js"></script>
 <script type="text/javascript">
 	$(function(){
 		$("#jusoApi").click(function(){
 			window.open("getAddr.do","","width=500px,height=500px");
 		});
 	});
-</script>
+</script> 
 </head>
 <body>
 <div id="container">
@@ -48,14 +48,13 @@
 			<tr>
 				<th scope="row">주소</th>
 				<td>
-<!-- 				readonly="readonly"  -->
-					<input type="text" name="user_addr" id="user_addr" />
+					<input type="text" name="user_addr" id="user_addr" readonly="readonly"/>
 					<input type="button" id="jusoApi" value="주소검색" />
 				</td>
 			</tr>
 			<tr>
 				<th scope="row">상세주소</th>
-				<td><input type="text" name="user_addr2" id="user_addr2" /></td>
+				<td><input type="text" name="user_addr_detail" id="user_addr_detail" /></td>
 			</tr>
 			<tr>
 				<th scope="row">이메일</th>

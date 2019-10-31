@@ -13,6 +13,7 @@
 			 , USER_NICK
 			 , USER_PH
 			 , USER_ADDR
+			 , USER_ADDR_DETAIL
 			 , USER_EMAIL
 			 , USER_ENABLED
 			 , USER_BUSINESSNUM
@@ -88,6 +89,21 @@
 	
 	<insert id="regist" parameterType="UserDto">
 		INSERT INTO USER_INFO
+			 ( USER_NUM
+			 , USER_ID
+			 , USER_PW
+			 , USER_NAME
+			 , USER_NICK
+			 , USER_PH
+			 , USER_ADDR
+			 , USER_ADDR_DETAIL
+			 , USER_EMAIL
+			 , USER_ENABLED
+			 , USER_BUSINESSNUM
+			 , LICENSE_LEVEL
+			 , USER_ROLE
+			 , USER_STOP_DATE
+			 )
 		VALUES (
 				 USER_INFO_SEQ.NEXTVAL
 			   , #{user_id}
@@ -96,6 +112,7 @@
 			   , #{user_nick}
 			   , #{user_ph}
 			   , #{user_addr}
+			   , #{user_addr_detail}
 			   , #{user_email}
 			   , 'Y'
 		<choose>
@@ -143,8 +160,10 @@
 	
 	<update id="userUpdate" parameterType="UserDto">
 		UPDATE USER_INFO
-		   SET USER_PH = #{user_ph}
+		   SET USER_NICK = #{user_nick}
+			 , USER_PH = #{user_ph}
 			 , USER_ADDR = #{user_addr}
+			 , USER_ADDR_DETAIL = #{user_addr_detail}
 			 , USER_EMAIL = #{user_email}
 		 <if test="user_pw != null">
 			 , USER_PW = #{user_pw}

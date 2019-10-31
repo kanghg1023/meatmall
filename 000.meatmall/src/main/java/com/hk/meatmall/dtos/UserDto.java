@@ -29,6 +29,8 @@ public class UserDto {
 	private String user_ph;
 	//주소
 	private String user_addr;
+	//상세주소
+	private String user_addr_detail;
 	//이메일
 	private String user_email;
 	//회원상태
