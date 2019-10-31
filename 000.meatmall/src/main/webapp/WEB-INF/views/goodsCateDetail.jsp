@@ -17,7 +17,7 @@
 	
 	<tr>
 		<th>대표이미지 이름</th>
-		<td>${gDto.goods_img_title}</td>
+		<td><img src="${gDto.goods_img_title}" ></td>
 	</tr>
 	<tr>
 		<th>판매자</th>

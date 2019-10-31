@@ -9,32 +9,38 @@ import com.hk.meatmall.dtos.Goods_optionDto;
 
 public interface IGoodsService {
 
-	//전체 상품
+	//전체 상품 + 페이징
 	public List<GoodsDto> allGoods(String pnum);
 	
-	//페이지 수 (전체)
-	public int getAllPcount();
-		
-	//페이지 수 (조건)
-	public int getEnabledPcount();
-	
-	//삭제여부 (전체)
+	//전체 상품 (삭제여부) + 페이징
 	public List<GoodsDto> getEnabled(String pnum);
+	
+	//전체 페이지 수
+	public int getAllPcount();
+	
+	//전체 페이지 수 (삭제여부)
+	public int getEnabledPcount();
 	
 	//부위별 카테고리
 	public List<Goods_kindDto> category();
 	
 	//카테고리 추가
-		public boolean insertCategory(String kind_name);
+	public boolean insertCategory(String kind_name);
 		
 	//카테고리 삭제
 	public boolean delCategory(String[] chk);
 	
-	//카테고리 별 상품 
+	//카테고리별 상품 
 	public List<GoodsDto> categoryGoods(String kind_num, String pnum);
 	
-	//삭제여부 (카테고리)
+	//카테고리별 상품 (삭제여부)
 	public List<GoodsDto> getCateEnabled(String kind_num, String pnum);
+	
+	//카테고리 페이지 수
+	public int getAllCatePcount(String kind_num);
+			
+	//카테고리 페이지 수 (삭제여부)
+	public int getEnabledCatePcount(String kind_num);
 	
 	//상품 추가
 	public boolean insertGoods(GoodsDto gDto);
@@ -57,8 +63,11 @@ public interface IGoodsService {
 	//상품 상세 (옵션)
 	public List<Goods_optionDto> getGoods_option(int goods_num);
 	
-	//전체상품에서 삭제
-	public boolean delGoods(String[] chk);
+	//상품 삭제
+	public boolean delGoods(String[] chk, String pnum);
+	
+	//상품 삭제
+	public boolean delCateGoods(String[] chk, String kind_num, String pnum);
 	
 	
 }

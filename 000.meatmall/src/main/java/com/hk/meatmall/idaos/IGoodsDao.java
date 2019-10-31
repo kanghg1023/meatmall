@@ -12,14 +12,14 @@ public interface IGoodsDao {
 	//전체 상품+페이징
 	public List<GoodsDto> allGoods(String pnum);
 	
-	//페이지 수 (전체)
+	//전체 상품 (삭제여부) + 페이징
+	public List<GoodsDto> getEnabled(String pnum);
+	
+	//전체 페이지 수
 	public int getAllPcount();
 	
-	//페이지 수 (조건)
+	//전체 페이지 수 (삭제여부)
 	public int getEnabledPcount();
-	
-	//삭제여부 (전체)
-	public List<GoodsDto> getEnabled(String pnum);
 	
 	//부위별 카테고리
 	public List<Goods_kindDto> category();
@@ -33,8 +33,14 @@ public interface IGoodsDao {
 	//카테고리별 상품
 	public List<GoodsDto> categoryGoods(String kind_num, String pnum);
 	
-	//삭제여부 (카테고리)
+	//카테고리별 상품 (삭제여부)
 	public List<GoodsDto> getCateEnabled(String kind_num, String pnum);
+	
+	//카테고리 페이지 수
+	public int getAllCatePcount(String kind_num);
+		
+	//카테고리 페이지 수 (삭제여부)
+	public int getEnabledCatePcount(String kind_num);
 	
 	//상품 추가
 	public boolean insertGoods(GoodsDto gDto);
@@ -57,8 +63,11 @@ public interface IGoodsDao {
 	//상품 상세 (옵션)
 	public List<Goods_optionDto> getGoods_option(int goods_num);
 	
-	//전체상품에서 삭제
-	public boolean delGoods(String[] chk);
+	//전체 상품에서 삭제
+	public boolean delGoods(String[] chk, String pnum);
+	
+	//카테고리 상품에서 삭제
+	public boolean delCateGoods(String[] chk, String kiind_num, String pnum);
 	
 	
 }

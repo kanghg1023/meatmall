@@ -34,101 +34,94 @@ $(function() {
 });	
 </script>
 </head>
-<%
-Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("map");
-%>
 <body>
 <div id="header" class="header" style="outline: none;">
 	<jsp:include page="header.jsp" />
 </div>
 <h1>전체 상품</h1>
-	<form action="delallGoods.do" method="post">
-			<table border="1" class="table">
-				<col width="30px" />
-				<col width="70px" />
-				<col width="300px" />
-				<col width="60px" />
-				<col width="90px" />
-				<col width="120px" />
-				<col width="100px" />
-				<tr>
-					<th><input type="checkbox" name="all" onclick="allSel(this)" /></th>
-					<th>상품번호</th>
-					<th>상품이름</th>
-					<th>판매자</th>
-					<th>도소매 구분</th>
-					<th>대표이미지이름</th>
-					<th>100g당 가격</th>
-				</tr>
-				<tr>
-				<c:choose>
-					<c:when test="${empty gList}">
-						<tr>
-							<td colspan="10">----상품이 없습니다.----</td>
-						</tr>
-					</c:when>
-					<c:otherwise>
-						<c:forEach items="${gList}" var="dto">
-							<tr align="center">
-								<td id="chk">
-									<c:if test="${dto.user_num eq ldto.user_num}">
-										<input type="checkbox" name="chk" value="${dto.goods_num}" />
-									</c:if>
-								</td>
-								<td>${dto.goods_num}</td>
-							
-							<c:choose>
-								<c:when test="${dto.goods_enabled eq 'N'}">
-									
-										<td colspan="5" align="center">-----삭제된 상품입니다.-----</td>
-									
-								</c:when>
-								<c:otherwise>
-											
-										<td align="left">
-											<a href="goodsDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}">${dto.goods_title}</a>
-										</td>
-	<!-- 											나중에 닉네임으로 바꿔 -->
-										<td id="nick">${dto.user_num}</td>
-		<%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
-		<%-- 										<jsp:getProperty property="emailNick" name="util" /> --%>
-										<td id="DOSO">${dto.goods_doso}</td>
-										<td id="img_title"><img width="" height="" src="/image/goodsTitle/${dto.goods_img_title}"></td>
-										<td id="cost">${dto.goods_cost}</td>
-									
-								</c:otherwise>
-							</c:choose>
-							</tr>
-						</c:forEach>
-					</c:otherwise>
-				</c:choose>	
-						<tr>
-							<td colspan="7" align="center">
-								<a href="allGoods.do?pnum=${map.prePageNum}">◀</a>
-								<c:forEach var="i" begin="${map.startPage}" end="${map.endPage}" step="1">
-									<c:choose>
-										<c:when test="${pnum eq i}">
-											${i}
-										</c:when>
-										<c:otherwise>
-											<a href="allGoods.do?pnum=${i}">${i}</a>
-										</c:otherwise>
-									</c:choose>	
-								</c:forEach>
-								<a href="allGoods.do?pnum=${map.nextPageNum}">▶</a>
-							</td>
-						</tr>
-				
-				
-				<c:if test="${ldto != null && ldto.user_role ne 'USER'}">
+	<form action="delAllGoods.do" method="post">
+		<input type="hidden" name="pnum" value="${pnum}">
+		<table border="1" class="table">
+			<col width="30px" />
+			<col width="70px" />
+			<col width="300px" />
+			<col width="60px" />
+			<col width="90px" />
+			<col width="120px" />
+			<col width="100px" />
+			<tr>
+				<th><input type="checkbox" name="all" onclick="allSel(this)" /></th>
+				<th>상품번호</th>
+				<th>상품이름</th>
+				<th>판매자</th>
+				<th>도소매 구분</th>
+				<th>대표이미지이름</th>
+				<th>100g당 가격</th>
+			</tr>
+			<tr>
+			<c:choose>
+				<c:when test="${empty gList}">
 					<tr>
-						<td colspan="7">
-							<input type="button" value="상품추가" onclick="location.href='insertGoodsForm.do'" />
-							<input type="submit" value="상품삭제" />
+						<td colspan="10">----상품이 없습니다.----</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${gList}" var="dto">
+						<tr align="center">
+							<td id="chk">
+								<c:if test="${dto.user_num eq ldto.user_num}">
+									<input type="checkbox" name="chk" value="${dto.goods_num}" />
+								</c:if>
+							</td>
+							<td>${dto.goods_num}</td>
+						<c:choose>
+							<c:when test="${dto.goods_enabled eq 'N'}">
+									<td colspan="5" align="center">-----삭제된 상품입니다.-----</td>
+							</c:when>
+							<c:otherwise>
+								<td align="left">
+									<a href="goodsDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}">${dto.goods_title}</a>
+								</td>
+<!-- 											나중에 닉네임으로 바꿔 -->
+								<td id="nick">${dto.user_num}</td>
+<%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
+<%-- 										<jsp:getProperty property="emailNick" name="util" /> --%>
+								<td id="DOSO">${dto.goods_doso}</td>
+								<td id="img_title"><img src="${dto.goods_img_thumb}"></td>
+								<td id="cost">${dto.goods_cost}</td>
+								
+							</c:otherwise>
+						</c:choose>
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>	
+					<tr>
+						<td colspan="7" align="center">
+							<a href="allGoods.do?pnum=${map.prePageNum}">◀</a>
+							<c:forEach var="i" begin="${map.startPage}" end="${map.endPage}" step="1">
+								<c:choose>
+									<c:when test="${pnum eq i}">
+										${i}
+									</c:when>
+									<c:otherwise>
+										<a href="allGoods.do?pnum=${i}">${i}</a>
+									</c:otherwise>
+								</c:choose>	
+							</c:forEach>
+							<a href="allGoods.do?pnum=${map.nextPageNum}">▶</a>
 						</td>
 					</tr>
-				</c:if> 
-			</table>
+					
+			<c:if test="${ldto != null && ldto.user_role ne 'USER'}">
+				<tr>
+					<td colspan="7">
+						<input type="button" value="상품추가" onclick="location.href='insertGoodsForm.do'" />
+						<input type="submit" value="상품삭제" />
+					</td>
+				</tr>
+			</c:if> 
+		</table>
 	</form>
 </body>
 </html>

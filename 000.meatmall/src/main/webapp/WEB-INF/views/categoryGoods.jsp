@@ -34,15 +34,12 @@ $(function() {
 });	
 </script>
 </head>
-<%
-Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("map");
-%>
 <body>
 <div id="header" class="header" style="outline: none;">
 	<jsp:include page="header.jsp" />
 </div>
 <h1>카테고리별 상품</h1>
-	<form action="delcateGoods.do" method="post">
+	<form action="delCateGoods.do" method="post">
 	<input type="hidden" name="kind_num" value="${kind_num}">
 	<input type="hidden" name="pnum" value="${pnum}">
 			<table border="1" class="table">
@@ -70,49 +67,51 @@ Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("map");
 					</c:when>
 					<c:otherwise>
 						<c:forEach items="${cList}" var="dto">
-							<c:choose>
-								<c:when test="${dto.goods_enabled eq 'N'}">
-								</c:when>
+							<tr align="center">
+								<td id="chk">
+									<c:if test="${dto.user_num eq ldto.user_num}">
+										<input type="checkbox" name="chk" value="${dto.goods_num}" />
+									</c:if>
+								</td>
+								<td>${dto.goods_num}</td>
+								<c:choose>
+									<c:when test="${dto.goods_enabled eq 'N'}">
+										<td colspan="5" align="center">-----삭제된 상품입니다.-----</td>
+									</c:when>
 								<c:otherwise>
-									<tr align="center">
-										<td id="chk">
-											<c:if test="${dto.user_num eq ldto.user_num}">
-												<input type="checkbox" name="chk" value="${dto.goods_num}" />
-											</c:if>
-										</td>
-										<td>${dto.goods_num}</td>
-										<td align="left">
-											<a href="goodsCateDetail.do?goods_num=${dto.goods_num}">${dto.goods_title}</a>
-										</td>
+									<td align="left">
+										<a href="goodsCateDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}">${dto.goods_title}</a>
+									</td>
 <!-- 											나중에 닉네임으로 바꿔 -->
-										<td id="nick">${dto.user_num}</td>
+									<td id="nick">${dto.user_num}</td>
 <%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
 <%-- 										<jsp:getProperty property="emailNick" name="util" /> --%>
-										<td id="DOSO">${dto.goods_doso}</td>
-										<td id="img_title">${dto.goods_img_title}</td>
-										<td id="cost">${dto.goods_cost}</td>
-									</tr>
+									<td id="DOSO">${dto.goods_doso}</td>
+									<td id="img_title"><img src="${dto.goods_img_thumb}"></td>
+									<td id="cost">${dto.goods_cost}</td>
 								</c:otherwise>
 							</c:choose>
+							</tr>
 						</c:forEach>
-		 						<tr>
-									<td colspan="7" align="center">
-										<a href="categoryGoods.do?kind_num=${kind_num}&pnum=${map.prePageNum}">◀</a>
-										<c:forEach var="i" begin="${map.startPage}" end="${map.endPage}" step="1">
-											<c:choose>
-												<c:when test="${pnum eq i}">
-													${i}
-												</c:when>
-												<c:otherwise>
-													<a href="categoryGoods.do?kind_num=${kind_num}&pnum=${i}">${i}</a>
-												</c:otherwise>
-											</c:choose>	
-										</c:forEach>
-										<a href="categoryGoods.do?kind_num=${kind_num}&pnum=${map.nextPageNum}">▶</a>
-									</td>
-								</tr>
-							</c:otherwise>
-						</c:choose>	
+					</c:otherwise>
+				</c:choose>
+		 				<tr>
+							<td colspan="7" align="center">
+								<a href="categoryGoods.do?kind_num=${kind_num}&pnum=${map.prePageNum}">◀</a>
+								<c:forEach var="i" begin="${map.startPage}" end="${map.endPage}" step="1">
+									<c:choose>
+										<c:when test="${pnum eq i}">
+											${i}
+										</c:when>
+										<c:otherwise>
+											<a href="categoryGoods.do?kind_num=${kind_num}&pnum=${i}">${i}</a>
+										</c:otherwise>
+									</c:choose>	
+								</c:forEach>
+								<a href="categoryGoods.do?kind_num=${kind_num}&pnum=${map.nextPageNum}">▶</a>
+							</td>
+						</tr>
+						
 				<c:if test="${ldto != null && ldto.user_role ne 'USER'}">
 				<tr>
 					<td colspan="7">
@@ -120,8 +119,8 @@ Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("map");
 						<input type="submit" value="상품삭제" id="btn2" />
 					</td>
 				</tr>
-				</c:if> 
-			</table>
+			</c:if> 
+		</table>
 	</form>
 </body>
 </html>

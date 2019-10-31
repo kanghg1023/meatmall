@@ -9,9 +9,14 @@
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
+<style type="text/css">
+	.select_img img {margin:20px;}
+</style>
 <script type="text/javascript">
 
 	$(function(){
+		
+		//필수 입력
 		$("form").submit(function(){
 			var bool = true;
 			var input = $(this).find("td").children().filter("[name]");
@@ -26,6 +31,7 @@
 			return bool;
 		});
 		
+		//옵션 추가
 		$("#asd").click(function(){
 			var aCount = $("#asd");
 			aCount.parent().parent().before( "<tr>"
@@ -42,6 +48,17 @@
 											+"</tr>");
 			
 		});
+		
+		//이미지 미리보기
+		$("#gdsImg").change(function(){
+			   if(this.files && this.files[0]) {
+			    var reader = new FileReader;
+			    reader.onload = function(data) {
+			     $(".select_img img").attr("src", data.target.result).width(500);        
+			    }
+			    reader.readAsDataURL(this.files[0]);
+			   }
+			  });
 	});
 </script>
 </head>
@@ -50,7 +67,7 @@
 	<jsp:include page="header.jsp" />
 </div>
 <h1>상품 추가</h1>
-<form action="insertGoods.do" method="post">
+<form action="insertGoods.do" method="post" enctype="multipart/form-data">
 <table border="1" class="table">
 	<tr>
 		<th>상품명</th>
@@ -71,7 +88,17 @@
 	</tr>
 	<tr>
 		<th>대표이미지</th>
-		<td><input type="text" name="goods_img_title" class="inputval" /></td>
+		<td>
+			<div class="inputArea">
+ 				<label for="gdsImg">이미지</label>
+ 				<input type="file" id="gdsImg" name="file" />
+ 				<div class="select_img" name="goods_img_title">
+ 				<img src="" />
+ 				</div>
+<!--  			실제경로 표시 -->
+ 				<%=request.getRealPath("/") %>
+			</div>
+		</td>
 	</tr>
 	<tr>
 		<th>상품종류</th>

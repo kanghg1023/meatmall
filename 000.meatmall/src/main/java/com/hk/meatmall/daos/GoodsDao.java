@@ -26,30 +26,30 @@ public class GoodsDao implements IGoodsDao {
 		super();
 	}
 	
-	//전체 상품
+	//전체 상품 + 페이징
 	@Override
 	public List<GoodsDto> allGoods(String pnum) {
 		return sqlSession.selectList(nameSpace+"allGoods",pnum);
 	}
 	
-	//페이지 수 (전체)
+	//전체 상품 (삭제여부) + 페이징
+	@Override
+	public List<GoodsDto> getEnabled(String pnum) {
+		return sqlSession.selectList(nameSpace+"getEnabled",pnum);
+	}
+	
+	//전체 페이지 수
 	@Override
 	public int getAllPcount() {
 		int pcount = sqlSession.selectOne(nameSpace+"allPcount");
 		return pcount;
 	}
 	
-	//페이지 수 (조건)
-		@Override
-		public int getEnabledPcount() {
-			int pcount = sqlSession.selectOne(nameSpace+"enabledPcount");
-			return pcount;
-		}
-	
-	//삭제여부 (전체)
+	//전체 페이지 수 (삭제여부)
 	@Override
-	public List<GoodsDto> getEnabled(String pnum) {
-		return sqlSession.selectList(nameSpace+"getEnabled",pnum);
+	public int getEnabledPcount() {
+		int pcount = sqlSession.selectOne(nameSpace+"enabledPcount");
+		return pcount;
 	}
 		
 	//부위별 카테고리
@@ -84,13 +84,27 @@ public class GoodsDao implements IGoodsDao {
 		return sqlSession.selectList(nameSpace+"categoryGoods", map);
 	}
 	
-	//삭제여부 (카테고리)
+	//카테고리별 상품 (삭제여부)
 	@Override
 	public List<GoodsDto> getCateEnabled(String kind_num,String pnum) {
 		Map<String, String> map = new HashMap<>();
 		map.put("kind_num", kind_num);
 		map.put("pnum", pnum);
 		return sqlSession.selectList(nameSpace+"getCateEnabled", map);
+	}
+	
+	//카테고리 페이지 수
+	@Override
+	public int getAllCatePcount(String kind_num) {
+		int pcount = sqlSession.selectOne(nameSpace+"allCatePcount", kind_num);
+		return pcount;
+	}
+		
+	//카테고리 페이지 수 (삭제여부)
+	@Override
+	public int getEnabledCatePcount(String kind_num) {
+		int pcount = sqlSession.selectOne(nameSpace+"enabledCatePcount", kind_num);
+		return pcount;
 	}
 
 	//상품 추가
@@ -139,15 +153,30 @@ public class GoodsDao implements IGoodsDao {
 		return sqlSession.selectList(nameSpace+"getGoods_option", goods_num);
 	}
 	
-	//상품 삭제
+	//전체 상품에서 삭제
 	@Override
-	public boolean delGoods(String[] chk) {
-		Map<String, String[]> map = new HashMap<>();
+	public boolean delGoods(String[] chk, String pnum) {
+		Map<String, Object> map = new HashMap<>();
 		map.put("chk", chk);
+		map.put("pnum", pnum);
 		
-		int count = sqlSession.delete(nameSpace+"delGoods", map);
+		int count = sqlSession.update(nameSpace+"delGoods", map);
 		return count > 0 ? true:false;
 	}
+	
+	//카테고리 상품에서 삭제
+	@Override
+	public boolean delCateGoods(String[] chk, String kind_num, String pnum) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("chk", chk);
+		map.put("kind_num", kind_num);
+		map.put("pnum", pnum);
+		
+		int count = sqlSession.update(nameSpace+"delCateGoods", map);
+		return count > 0 ? true:false;
+	}
+
+	
 
 	
 

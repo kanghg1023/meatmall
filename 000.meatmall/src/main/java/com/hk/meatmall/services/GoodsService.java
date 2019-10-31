@@ -18,34 +18,28 @@ public class GoodsService implements IGoodsService {
 	@Autowired
 	private IGoodsDao GoodsDao;
 	
-	//전체 상품
+	//전체 상품 + 페이징
 	@Override
 	public List<GoodsDto> allGoods(String pnum) {
 		return GoodsDao.allGoods(pnum);
 	}
 	
-	//페이지 수 (전체)
-	@Override
-	public int getAllPcount() {
-		return GoodsDao.getAllPcount();
-	}
-	
-	//페이지 수 (조건)
-	@Override
-	public int getEnabledPcount() {
-		return GoodsDao.getEnabledPcount();
-	}
-	
-	//삭제여부 (전체)
+	//전체 상품 (삭제여부) + 페이징
 	@Override
 	public List<GoodsDto> getEnabled(String pnum) {
 		return GoodsDao.getEnabled(pnum);
 	}
 	
-	//삭제여부 (카테고리)
+	//전체 페이지 수
 	@Override
-	public List<GoodsDto> getCateEnabled(String kind_num, String pnum) {
-		return GoodsDao.getCateEnabled(kind_num, pnum);
+	public int getAllPcount() {
+		return GoodsDao.getAllPcount();
+	}
+	
+	//전체 페이지 수 (삭제여부)
+	@Override
+	public int getEnabledPcount() {
+		return GoodsDao.getEnabledPcount();
 	}
 	
 	//부위별 카테고리
@@ -70,6 +64,25 @@ public class GoodsService implements IGoodsService {
 	@Override
 	public List<GoodsDto> categoryGoods(String kind_num, String pnum) {
 		return GoodsDao.categoryGoods(kind_num, pnum);
+	}
+	
+	
+	//카테고리별 상품 (삭제여부)
+	@Override
+	public List<GoodsDto> getCateEnabled(String kind_num, String pnum) {
+		return GoodsDao.getCateEnabled(kind_num, pnum);
+	}
+	
+	//카테고리 페이지 수
+	@Override
+	public int getAllCatePcount(String kind_num) {
+		return GoodsDao.getAllCatePcount(kind_num);
+	}
+
+	//카테고리 페이지 수 (삭제여부)
+	@Override
+	public int getEnabledCatePcount(String kind_num) {
+		return GoodsDao.getEnabledCatePcount(kind_num);
 	}
 
 	//상품 추가
@@ -114,11 +127,19 @@ public class GoodsService implements IGoodsService {
 		return GoodsDao.getGoods_option(goods_num);
 	}
 	
-	//전체상품에서 삭제
+	//전체 상품에서 삭제
 	@Override
-	public boolean delGoods(String[] chk) {
-		return GoodsDao.delGoods(chk);
+	public boolean delGoods(String[] chk, String pnum) {
+		return GoodsDao.delGoods(chk, pnum);
 	}
+	
+	//카테고리 상품에서 삭제
+	@Override
+	public boolean delCateGoods(String[] chk, String kind_num, String pnum) {
+		return GoodsDao.delCateGoods(chk, kind_num, pnum);
+	}
+
+	
 
 	
 

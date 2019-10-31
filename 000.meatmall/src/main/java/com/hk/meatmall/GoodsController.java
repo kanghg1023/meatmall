@@ -1,8 +1,11 @@
 package com.hk.meatmall;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hk.meatmall.dtos.Detail_imgDto;
 import com.hk.meatmall.dtos.GoodsDto;
@@ -21,18 +25,23 @@ import com.hk.meatmall.dtos.Goods_optionDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.IGoodsService;
 import com.hk.utils.Paging;
+import com.hk.utils.UploadFileUtils;
 
 @Controller
 public class GoodsController {
 
 private static final Logger logger = LoggerFactory.getLogger(GoodsController.class);
 	
+	@Resource(name="uploadPath")
+	private String uploadPath;
+
 	@Autowired
 	private IGoodsService GoodsService;
 	
 	@RequestMapping(value = "/allGoods.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String allGoods(HttpServletRequest request, Model model, String pnum) {
 		logger.info("전체 상품");
+		
 		HttpSession session=request.getSession();
 		UserDto ldto = (UserDto)session.getAttribute("ldto");
 		
@@ -117,7 +126,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			model.addAttribute("cList", cList);
 			model.addAttribute("kind_num",kind_num);
 		
-			int pcount = GoodsService.getEnabledPcount();
+			int pcount = GoodsService.getEnabledCatePcount(kind_num);
 			Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
 			model.addAttribute("map",map);
 		}else {
@@ -126,7 +135,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			model.addAttribute("cList", cList);
 			model.addAttribute("kind_num",kind_num);
 			
-			int pcount = GoodsService.getAllPcount();
+			int pcount = GoodsService.getAllCatePcount(kind_num);
 			Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
 			model.addAttribute("map",map);
 		}
@@ -152,11 +161,23 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/insertGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String insertAllGoods(Model model, GoodsDto gDto, Detail_imgDto iDto
-			, String[] option_name, int[] option_count, int[] option_weight) {
+			, String[] option_name, int[] option_count, int[] option_weight, MultipartFile file) throws IOException, Exception {
 		logger.info("전체상품에서 추가");
 		
 		Goods_optionDto oDto = new Goods_optionDto();
 		
+		String imgUploadPath = uploadPath + File.separator + "imgUpload";
+		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
+		String fileName = null;
+
+		if(file != null) {
+		 fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
+		} else {
+		 fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+		}
+
+		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
+		gDto.setGoods_img_thumb("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
 		boolean isS = GoodsService.insertGoods(gDto);
 				isS = GoodsService.insertDetail_img(iDto);
 				
@@ -167,12 +188,13 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			isS = GoodsService.insertGoods_option(oDto);
 		}
 				
-		
 		if(isS) {
 			return "redirect:allGoods.do?pnum=1";
 		}else {
 			return "insertGoods";
 		}
+		
+		
 	}
 	
 	@RequestMapping(value = "/insertCateGoodsForm.do", method = {RequestMethod.POST, RequestMethod.GET})
@@ -235,10 +257,17 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		return "goodsCateDetail";
 	}
 	
-	@RequestMapping(value = "/delallGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String delAllGoods(Model model, String[] chk) {
+	@RequestMapping(value = "/delAllGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String delAllGoods(HttpServletRequest request, Model model, String[] chk, String pnum) {
 		logger.info("전체 상품에서 삭제");
-		boolean isS = GoodsService.delGoods(chk);
+		boolean isS = GoodsService.delGoods(chk, pnum);
+		model.addAttribute("pnum",pnum);
+		
+		if(pnum==null) {
+			pnum=(String)request.getSession().getAttribute("pnum");
+		}else {
+			request.getSession().setAttribute("pnum", pnum);
+		}
 		
 		if(isS) {
 			return "redirect:allGoods.do";
@@ -247,13 +276,21 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}
 	}
 	
-	@RequestMapping(value = "/delcateGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String delCateGoods(Model model, String[] chk,String kind_num) {
+	@RequestMapping(value = "/delCateGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String delCateGoods(HttpServletRequest request, Model model, String[] chk, String kind_num, String pnum) {
 		logger.info("카테고리 상품에서 삭제");
-		boolean isS = GoodsService.delGoods(chk);
+		boolean isS = GoodsService.delCateGoods(chk, kind_num, pnum);
+		model.addAttribute("kind_num",kind_num);
+		model.addAttribute("pnum",pnum);
+		
+		if(pnum==null) {
+			pnum=(String)request.getSession().getAttribute("pnum");
+		}else {
+			request.getSession().setAttribute("pnum", pnum);
+		}
 		
 		if(isS) {
-			return "redirect:categoryGoods.do?kind_num="+kind_num;
+			return "redirect:categoryGoods.do";
 		}else {
 			return "redirect:categoryGoods.do";
 		}

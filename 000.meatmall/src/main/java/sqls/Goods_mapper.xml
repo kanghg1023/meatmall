@@ -5,7 +5,7 @@
 
 <mapper namespace="com.goods">
 
-<!-- 전체 상품+페이징 -->
+<!-- 전체 상품 + 페이징 -->
 	<select id="allGoods" resultType="GoodsDto" parameterType="String">
 		SELECT GOODS_NUM
 	   		 , GOODS_TITLE
@@ -14,6 +14,7 @@
 	   		 , GOODS_IMG_TITLE
 	   		 , GOODS_ENABLED
 	   		 , GOODS_COST
+	   		 , GOODS_IMG_THUMB
      	  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
@@ -23,12 +24,13 @@
 	   				  , GOODS_IMG_TITLE
 	   				  , GOODS_ENABLED
 	   				  , GOODS_COST    
+	   				  , GOODS_IMG_THUMB
 		           FROM GOODS
 		       )
 		 WHERE CEIL(RN/6) = #{pnum}
 	</select>
 
-<!-- 삭제여부	(전체) -->
+<!-- 전체상품 (삭제여부) + 페이징 -->
 	<select id="getEnabled" resultType="GoodsDto" parameterType="String">
 		SELECT GOODS_NUM
 	   		 , GOODS_TITLE
@@ -37,6 +39,7 @@
 	   		 , GOODS_IMG_TITLE
 	   		 , GOODS_ENABLED
 	   		 , GOODS_COST
+	   		 , GOODS_IMG_THUMB
      	  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
@@ -45,25 +48,26 @@
 	   				  , GOODS_DOSO
 	   				  , GOODS_IMG_TITLE
 	   				  , GOODS_ENABLED
-	   				  , GOODS_COST    
+	   				  , GOODS_COST
+	   				  , GOODS_IMG_THUMB
 		           FROM GOODS
+		          WHERE GOODS_ENABLED = 'Y'
 		       )
 		 WHERE CEIL(RN/6) = #{pnum}
-		   AND GOODS_ENABLED = 'Y'
 	</select>	
 	
-<!-- 페이지 수 (전체) -->         
+<!-- 전체 페이지 수 -->         
 	<select id="allPcount" resultType="int">
-		SELECT CEIL(COUNT(*)/5)
-		  FROM GOODS 
+		SELECT CEIL(COUNT(*)/6)
+		  FROM GOODS
 	</select>
 	
-<!-- 페이지 수 (조건) -->         
+<!-- 전체 페이지 수 (삭제여부) -->         
 	<select id="enabledPcount" resultType="int">
-		SELECT CEIL(COUNT(*)/5)
+		SELECT CEIL(COUNT(*)/6)
 		  FROM GOODS
 		 WHERE GOODS_ENABLED = 'Y'
-	</select>	
+	</select>
 
 <!-- 부위별 카테고리 -->
 	<select id="category" resultType="Goods_kindDto">
@@ -91,7 +95,7 @@
 		</foreach>
 	</delete>
 	
-<!-- 부위별 상품 -->
+<!-- 카테고리별 상품 -->
 	<select id="categoryGoods" resultType="GoodsDto" parameterType="Map">
 		SELECT GOODS_NUM
 	 		 , GOODS_TITLE
@@ -101,6 +105,7 @@
 			 , GOODS_ENABLED
 			 , KIND_NUM
 			 , GOODS_COST
+			 , GOODS_IMG_THUMB
  		  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
@@ -110,14 +115,15 @@
 	   				  , GOODS_IMG_TITLE
 	   				  , GOODS_ENABLED
 	   				  , KIND_NUM
-	   				  , GOODS_COST    
+	   				  , GOODS_COST  
+	   				  , GOODS_IMG_THUMB  
 		           FROM GOODS
+		          WHERE KIND_NUM = #{kind_num} 
 		       )
-		 WHERE KIND_NUM = #{kind_num}
-		   AND CEIL(RN/8) = #{pnum}
+		 WHERE CEIL(RN/6) = #{pnum}
 	</select>
 	
-<!-- 삭제여부	(카테고리) -->
+<!-- 카테고리별 상품 (삭제여부) -->
 	<select id="getCateEnabled" resultType="GoodsDto" parameterType="String">
 		SELECT GOODS_NUM
 	   		 , GOODS_TITLE
@@ -127,6 +133,7 @@
 	   		 , GOODS_ENABLED
 	   		 , KIND_NUM
 	   		 , GOODS_COST
+	   		 , GOODS_IMG_THUMB
      	  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
@@ -136,11 +143,27 @@
 	   				  , GOODS_IMG_TITLE
 	   				  , GOODS_ENABLED
 	   				  , KIND_NUM
-	   				  , GOODS_COST    
+	   				  , GOODS_COST 
+	   				  , GOODS_IMG_THUMB   
 		           FROM GOODS
+		          WHERE GOODS_ENABLED = 'Y'
+		            AND KIND_NUM = #{kind_num}
 		       )
+		   WHERE CEIL(RN/6) = #{pnum}
+	</select>
+	
+	<!-- 카테고리 페이지 수 -->         
+	<select id="allCatePcount" resultType="int" parameterType="String">
+		SELECT CEIL(COUNT(*)/6)
+		  FROM GOODS
 		 WHERE KIND_NUM = #{kind_num}
-		   AND CEIL(RN/8) = #{pnum}
+	</select>
+	
+	<!-- 카테고리 페이지 수 (삭제여부) -->         
+	<select id="enabledCatePcount" resultType="int" parameterType="String">
+		SELECT CEIL(COUNT(*)/6)
+		  FROM GOODS
+		 WHERE KIND_NUM = #{kind_num}
 		   AND GOODS_ENABLED = 'Y'
 	</select>	
 	
@@ -158,6 +181,7 @@
 	  		   , #{kind_num}
 	  		   , #{goods_history}
 	  		   , #{goods_cost}
+	  		   , #{goods_img_thumb}
 	   		   )
 	</insert>
 	
@@ -225,7 +249,7 @@
 		 ORDER BY GOODS_NUM
 	</select>
 	
-<!-- 	상품 삭제 -->
+<!-- 전체 상품에서 삭제 -->
 	<update id="delGoods" parameterType="Map">
 		UPDATE GOODS
  		   SET GOODS_ENABLED='N'
@@ -234,6 +258,17 @@
 			   #{goods_num}
 		</foreach>
 	</update>
+	
+<!-- 카테고리 상품에서 삭제 -->
+	<update id="delCateGoods" parameterType="Map">
+		UPDATE GOODS
+ 		   SET GOODS_ENABLED='N'
+ 		 WHERE GOODS_NUM IN
+ 		 <foreach collection="chk" item="goods_num" open="(" close=")" separator=",">
+			   #{goods_num}
+		</foreach>
+		   AND KIND_NUM = #{kind_num}
+	</update>	
 	
 	
 </mapper>

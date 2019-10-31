@@ -35,5 +35,7 @@ public class GoodsDto {
 	private String goods_history;
 	//100g당 가격
 	private int goods_cost;
+	//썸네일이미지 이름
+	private String goods_img_thumb;
 
 }
