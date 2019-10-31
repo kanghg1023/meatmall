@@ -65,7 +65,11 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	@RequestMapping(value = "/insertboard.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String insertBoard(HttpServletRequest request, Locale locale, Model model,BoardDto dto) {
 		logger.info("글추가하기:{}", locale);
-//		String id=request.getParameter("id");
+						
+		if(dto.getBoard_notice() == null) {
+			dto.setBoard_notice("N");
+		}
+		
 		System.out.println(dto);
 		boolean isS=boardService.insertBoard(dto);
 		if(isS) {

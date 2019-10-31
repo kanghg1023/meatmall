@@ -72,10 +72,13 @@
 	
 	
 	<tr>
-		<td colspan="2">
+		<td colspan="3">
 			<input type="submit" value="글등록"/>
 			<input type="button" value="목록" 
-			          onclick="location.herf='boardlist.do'"/>
+			          onclick="location.href='boardlist.do?pnum=1'"/>
+			<c:if test="${ldto.user_num == 1}">
+			<label><input type="checkbox" name="board_notice" value="Y" />공지</label>
+			</c:if>
 		</td>
 	</tr>
 </table>
