@@ -89,18 +89,24 @@
 			location.href="recomment.do?&board_num=${dto.board_num}&comment_num="+comment_num+"&comment_content="+content.val();
 		});
 		
-		
+// 		parent() children() append()
 		
 		$("body").on("click",".updatecommentForm",function(){
-			$("#updatecomment").remove();
+//			$("#updatecomment").remove();
 			$(".cancelBtn1").attr('class','updatecommentForm');
 			comment_num = $(this).val();
 			var aCount = $(this).parent().parent().next();
-			aCount.after("<tr id='updatecomment'>"+
-					"<td></td>"+
-					"<td colspan='2'><textarea rows='2' cols='55' id='content2' ></textarea>"+
-					"<input type='button' id='updatecommentBtn' value='수정' />"+
-					"</td></tr>");
+				
+			var txt=aCount.children('td').text();
+			aCount.children('td').text("");
+			aCount.children("td").append("<textarea rows='2' cols='55' id='content2' >"+txt+"</textarea>"+
+					"<input type='button' id='updatecommentBtn' value='수정' />"
+					);
+// 			aCount.after("<tr id='updatecomment'>"+
+// 					"<td></td>"+
+// 					"<td colspan='2'><textarea rows='2' cols='55' id='content2' ></textarea>"+
+// 					"<input type='button' id='updatecommentBtn' value='뭐지' />"+
+// 					"</td></tr>");
 			$(this).attr('class','cancelBtn1');
 		});
 		
@@ -119,8 +125,7 @@
 			location.href="updatecomment.do?&board_num=${dto.board_num}&comment_num="+comment_num+"&comment_content="+content.val();
 		});
 		
-		
-		
+	
 		
 								
 	});
@@ -129,7 +134,7 @@
 		location.href="delcomment.do?&comment_num="+comment_num+"&board_num=${dto.board_num}";
 	}
 	
-
+	
 	
 </script>
 
