@@ -253,6 +253,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		if(isUpdate) {
 			ldto.setUser_ph(dto.getUser_ph());
 			ldto.setUser_addr(dto.getUser_addr());
+			ldto.setUser_addr_detail(dto.getUser_addr_detail());
 			ldto.setUser_email(dto.getUser_email());
 			
 			session.setAttribute("ldto", ldto);

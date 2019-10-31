@@ -9,6 +9,7 @@ var nameChk;
 var nickChk;
 var phoneChk;
 var addrChk;
+var addrDetailChk;
 var emailChk;
 var businessnumChk;
 
@@ -168,17 +169,31 @@ function phoneChkfun(){
 	}
 }
 
-//주소 체크
+//도로명주소 체크
 function addrChkfun(){
 	var aCount=$("#user_addr");
+	var addr = aCount.val();
+	aCount.next().next("div").remove();
+	
+	if(addr==""){
+		aCount.next().after(falseMsg);
+		addrChk = false;
+	}else{
+		addrChk = true;
+	}
+}
+
+//상세주소 체크
+function addrDetailChkfun(){
+	var aCount=$("#user_addr_detail");
 	var addr = aCount.val();
 	aCount.next("div").remove();
 	
 	if(addr==""){
 		aCount.after(falseMsg);
-		addrChk = false;
+		addrDetailChk = false;
 	}else{
-		addrChk = true;
+		addrDetailChk = true;
 	}
 }
 
@@ -248,6 +263,10 @@ $(function(){
 		addrChkfun();
 	});
 	
+	$("#user_addr_detail").blur(function(){
+		addrDetailChkfun();
+	});
+	
 	$("#user_email").blur(function(){
 		emailChkfun();
 	});
@@ -262,7 +281,7 @@ $(function(){
 		}
 		
 		if(idChk && pwChk && pw2Chk && nameChk && nickChk 
-				&& phoneChk && addrChk && emailChk && businessnumChk){
+				&& phoneChk && addrChk && addrDetailChk && emailChk && businessnumChk){
 			return true;
 		}else{
 			idChkfun();
@@ -272,10 +291,15 @@ $(function(){
 			nickChkfun();
 			phoneChkfun();
 			addrChkfun();
+			addrDetailChkfun();
 			emailChkfun();
 			businessnumChkfun();
 			
-			return false;
+			if(pw2Chk && nickChk && phoneChk && addrChk && addrDetailChk && emailChk){
+				return true;
+			}else{
+				return false;
+			}
 		}
 	});
 });

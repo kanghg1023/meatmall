@@ -163,24 +163,24 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	public String insertAllGoods(Model model, GoodsDto gDto, Detail_imgDto iDto
 			, String[] option_name, int[] option_count, int[] option_weight, MultipartFile file) throws IOException, Exception {
 		logger.info("전체상품에서 추가");
-		
+	      
 		Goods_optionDto oDto = new Goods_optionDto();
-		
+  
 		String imgUploadPath = uploadPath + File.separator + "imgUpload";
 		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
 		String fileName = null;
 
 		if(file != null) {
-		 fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
+			fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
 		} else {
-		 fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+			fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
 		}
 
 		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
 		gDto.setGoods_img_thumb("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
 		boolean isS = GoodsService.insertGoods(gDto);
-				isS = GoodsService.insertDetail_img(iDto);
-				
+		isS = GoodsService.insertDetail_img(iDto);
+        
 		for(int i=0;i<option_name.length;i++) {
 			oDto.setOption_name(option_name[i]);
 			oDto.setOption_count(option_count[i]);
@@ -193,8 +193,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}else {
 			return "insertGoods";
 		}
-		
-		
 	}
 	
 	@RequestMapping(value = "/insertCateGoodsForm.do", method = {RequestMethod.POST, RequestMethod.GET})

@@ -49,7 +49,7 @@ function makeListJson(jsonStr){
 	htmlStr += "</tr>";
 	$(jsonStr.results.juso).each(function(){
 		htmlStr += "<tr>";
-		htmlStr += "<td><a href=''>"+this.roadAddr+"</a></td>";
+		htmlStr += "<td><a href='#'>"+this.roadAddr+"</a></td>";
 		htmlStr += "<td>"+this.jibunAddr+"</td>";
 		htmlStr += "<td>"+this.zipNo+"</td>";
 		htmlStr += "</tr>";
@@ -97,18 +97,20 @@ function enterSearch() {
 		getAddr(); //jsonp사용시 enter검색 
 	} 
 }
-</script>
-<script type="text/javascript">
+
+$(function(){
 	$("body").on("click","a",function(){
-		var user_addr = $("#user_addr",opener.document);
-		var user_addr2 = $("#user_addr2",opener.document);
-		alert(this.val());
-		user_addr.val(this.val());
-		user_addr2.focus();
+	 	var addr = $("#user_addr",opener.document);
+	 	var addr_detail = $("#user_addr_detail",opener.document);
+	 	
+	 	addr.val($(this).text());
+	 	$(opener.location).attr("href", "javascript:addrChkfun();");
+	 	addr_detail.focus();
 		
-		self.close();
+	 	self.close();
 	});
-	
+});
+
 </script>
 </head>
 <body>
@@ -121,5 +123,6 @@ function enterSearch() {
 	<input type="button" onClick="getAddr();" value="주소검색하기"/>
 	<div id="list" ></div><!-- 검색 결과 리스트 출력 영역 -->
 </form>
+
 </body>
 </html>
