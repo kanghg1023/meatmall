@@ -15,7 +15,7 @@
 			window.open("getAddr.do","","width=500px,height=500px");
 		});
 	});
-</script>
+</script> 
 </head>
 <body>
 <div id="container">
