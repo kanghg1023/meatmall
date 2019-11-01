@@ -32,13 +32,13 @@
 	<insert id="insertboard" parameterType="boardDto">
 		INSERT INTO BOARD 
 	    VALUES (
-	    	   BOARD_SEQ.NEXTVAL
-	    	 , #{user_num}
-	    	 , #{board_title}
-	    	 , #{board_content}
-	    	 , SYSDATE
-	    	 , 0
-	    	 , #{board_notice}
+				 BOARD_SEQ.NEXTVAL
+			   , #{user_num}
+			   , #{board_title}
+			   , #{board_content}
+			   , SYSDATE
+			   , 0
+			   , #{board_notice}
 	    	   )
 	</insert>
 
@@ -74,7 +74,7 @@
 <!-- 조회수-->	
 	<update id="readcount" parameterType="int">
 		UPDATE BOARD
-  		   SET BOARD_READCOUNT=BOARD_READCOUNT+1 
+  		   SET BOARD_READCOUNT = BOARD_READCOUNT+1 
 		 WHERE BOARD_NUM = #{board_num}
 	</update>
 
@@ -110,43 +110,46 @@
 		SELECT CEIL(COUNT(*)/5) 
 		  FROM BOARD
 	</select>
-<!--///////////////////////////////////////////////////////////////////////////////////////////-->		
+		
 <!--  유저넘버 받아서 닉네임으로 변경-->	
 	<select id="numNick" parameterType="int" resultType="String">
 		SELECT USER_NICK  
 		  FROM USER_INFO 
-		 WHERE USER_NUM=#{user_num}
+		 WHERE USER_NUM = #{user_num}
 	</select>
-<!--///////////////////////////////////////////////////////////////////////////////////////////-->		
+		
 <!--  좋아요 출력 -->
 	<select id="getLike" parameterType="Board_likeDto" resultType="Board_likeDto">
 		SELECT BOARD_NUM 
 		  FROM BOARD_LIKE
-		 WHERE BOARD_NUM=#{board_num}
-		   AND USER_NUM=#{user_num}
+		 WHERE BOARD_NUM = #{board_num}
+		   AND USER_NUM = #{user_num}
 	</select>
 	
 <!--  좋아요 개수 -->	
 	<select id="likeCount" parameterType="int" resultType="int">
 		SELECT COUNT(BOARD_NUM) 
 		  FROM BOARD_LIKE 
-		 WHERE BOARD_NUM=#{board_num}
+		 WHERE BOARD_NUM = #{board_num}
 	</select>
 	
 <!--  좋아요 추가 -->
 	<insert id="insertLike" parameterType="Board_likeDto">
 		INSERT INTO BOARD_LIKE 
-		VALUES (#{board_num},#{user_num})
+		VALUES (
+				 #{board_num}
+			   , #{user_num}
+			   )
 	</insert>	
 	
 <!--  좋아요 삭제 -->
 	<delete id="deleteLike" parameterType="Board_likeDto">
-		DELETE FROM BOARD_LIKE 
-		 WHERE BOARD_NUM=#{board_num} 
-		   AND USER_NUM=#{user_num}
+		DELETE
+		  FROM BOARD_LIKE 
+		 WHERE BOARD_NUM = #{board_num} 
+		   AND USER_NUM = #{user_num}
 	</delete>
-
-<!--///////////////////////////////////////////////////////////////////////////////////////////-->	
+	
 <!-- 댓글 목록 -->	
 	<select id="commentList" parameterType="int" resultType="CommentDto">
 		SELECT COMMENT_NUM
@@ -157,8 +160,9 @@
  	 		 , COMMENT_REFER
 	 		 , COMMENT_RE_CHECK
   		  FROM BOARD_COMMENT
- 		 WHERE BOARD_NUM=#{board_num}
- 		 ORDER BY COMMENT_REFER, COMMENT_NUM
+ 		 WHERE BOARD_NUM = #{board_num}
+ 		 ORDER BY COMMENT_REFER
+ 			 , COMMENT_NUM
 	</select>
 	
 <!-- 모댓글 달기 -->
@@ -170,7 +174,10 @@
 			   , #{user_num}
 			   , #{comment_content}
 			   , SYSDATE
-			   , (SELECT NVL(MAX(COMMENT_REFER)+1,0) FROM BOARD_COMMENT)
+			   , (
+				   SELECT NVL(MAX(COMMENT_REFER)+1,0)
+				     FROM BOARD_COMMENT
+				 )
 			   , 'N'	 		
 			   )
 	</insert>	
@@ -184,7 +191,11 @@
 			   , #{user_num}
 			   , #{comment_content}
 			   , SYSDATE
-			   , (SELECT COMMENT_REFER FROM BOARD_COMMENT WHERE COMMENT_NUM = #{comment_num} )
+			   , (
+				   SELECT COMMENT_REFER
+				     FROM BOARD_COMMENT
+				    WHERE COMMENT_NUM = #{comment_num}
+				 )
 			   , 'Y'
 			   )
 	</insert>

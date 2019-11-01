@@ -18,7 +18,6 @@ public class BoardDao implements IBoardDao {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-				
 
 	@Override
 	public List<BoardDto> getAllList(String pnum) {		
@@ -29,7 +28,6 @@ public class BoardDao implements IBoardDao {
 	public boolean insertBoard(BoardDto dto) {
 		int count=sqlSession.insert(nameSpace+"insertboard", dto);
 		return count > 0 ? true:false;
-		
 	}
 
 	@Override
@@ -65,13 +63,13 @@ public class BoardDao implements IBoardDao {
 		int pcount = sqlSession.selectOne(nameSpace+"pcount");
 		return pcount;
 	}
-////////////////////////////////////////////////////////////////////////////////
+
 	@Override
 	public String numNick(int user_num) {
 		String nick = sqlSession.selectOne(nameSpace+"numNick",user_num);
 		return nick;
 	}
-/////////////////////////////////////////////////////////////////////////////////
+
 	@Override
 	public boolean getLike(Board_likeDto dto) {
 		Board_likeDto likedto = new Board_likeDto();
@@ -96,7 +94,8 @@ public class BoardDao implements IBoardDao {
 		int count = sqlSession.insert(nameSpace+"deleteLike", dto);
 		return count > 0 ? true:false;
 	}
-///////////////////////////////////////////////////////////////////////////
+
+	
 	@Override
 	public List<CommentDto> commentList(int board_num) {		
 		return sqlSession.selectList(nameSpace+"commentList",board_num);

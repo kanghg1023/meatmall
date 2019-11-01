@@ -13,17 +13,16 @@
 <script type="text/javascript">
 
 	$(function(){
-		
 		$("#like").click(function(){
 			var aCount = $(this);
 		
 			$.ajax({
 				url:"likechange.do",
-				data:{"board_num":"${dto.board_num}"
+				data:{"board_num":"${boarddto.board_num}"
 					, "user_num":"${ldto.user_num}"},
 				method:"post",
 				datatype:"text",
-				async:false, // t=비동기 (되는대로 실행) / f=동기 (순서대로 실행)
+				async:false,
 				success:function(likechange){
 					var a = likechange.split(",");
 					if(eval(a[0])){
@@ -48,7 +47,6 @@
 			},1000);
 		});
 		
-		
 		$("form").submit(function(){
 			var content = $(this).find("textarea[name=comment_content]");
 			if(content.val().length == 0){
@@ -66,11 +64,13 @@
 			$(".cancelBtn").attr('class','recommentForm');
 			comment_num = $(this).val();
 			var aCount = $(this).parent().parent().next();
-			aCount.after("<tr id='recomment'>"+
-					"<td></td>"+
-					"<td colspan='2'><textarea rows='2' cols='55' id='content2' ></textarea>"+
-					"<input type='button' id='recommentBtn' value='등록' />"+
-					"</td></tr>");
+			aCount.after("<tr id='recomment'>"
+							+"<td></td>"
+							+"<td colspan='2'>"
+							+"<textarea rows='2' cols='55' id='content2' ></textarea>"
+							+"<input type='button' id='recommentBtn' value='등록' />"
+							+"</td>"
+						+"</tr>");
 			$(this).attr('class','cancelBtn');
 		});
 		
@@ -86,27 +86,21 @@
 				content.focus();
 				return false;
 			}
-			location.href="recomment.do?&board_num=${dto.board_num}&comment_num="+comment_num+"&comment_content="+content.val();
+			location.href="recomment.do?&board_num=${boarddto.board_num}&comment_num="
+					+comment_num+"&comment_content="+content.val();
 		});
 		
-// 		parent() children() append()
-		
 		$("body").on("click",".updatecommentForm",function(){
-//			$("#updatecomment").remove();
 			$(".cancelBtn1").attr('class','updatecommentForm');
 			comment_num = $(this).val();
 			var aCount = $(this).parent().parent().next();
 				
 			var txt=aCount.children('td').text();
 			aCount.children('td').text("");
-			aCount.children("td").append("<textarea rows='2' cols='55' id='content2' >"+txt+"</textarea>"+
-					"<input type='button' id='updatecommentBtn' value='수정' />"
+			aCount.children("td").append("<textarea rows='2' cols='55' id='content2' >"
+					+txt+"</textarea>"
+					+"<input type='button' id='updatecommentBtn' value='수정' />"
 					);
-// 			aCount.after("<tr id='updatecomment'>"+
-// 					"<td></td>"+
-// 					"<td colspan='2'><textarea rows='2' cols='55' id='content2' ></textarea>"+
-// 					"<input type='button' id='updatecommentBtn' value='뭐지' />"+
-// 					"</td></tr>");
 			$(this).attr('class','cancelBtn1');
 		});
 		
@@ -122,64 +116,61 @@
 				content.focus();
 				return false;
 			}
-			location.href="updatecomment.do?&board_num=${dto.board_num}&comment_num="+comment_num+"&comment_content="+content.val();
-		});
-		
-	
-		
-								
+			location.href="updatecomment.do?&board_num=${boarddto.board_num}&comment_num="
+					+comment_num+"&comment_content="+content.val();
+		});				
 	});
 			
 	function delcomment(comment_num){
-		location.href="delcomment.do?&comment_num="+comment_num+"&board_num=${dto.board_num}";
+		location.href="delcomment.do?&comment_num="+comment_num+"&board_num=${boarddto.board_num}";
 	}
 	
-	
-	
 </script>
-
+<script type="text/javascript">
+	//글삭제하기
+	function delBoard(board_num){
+		location.href="delboard.do?board_num="+board_num;
+	}
+	//글수정하기
+	function updateForm(board_num){
+		location.href="updateform.do?board_num="+board_num;
+	}
+</script>
 <style type="text/css">
 	img{width: 12px; height: 12px;}
-	
+
 </style>
 </head>
-<%
-Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("pmap");
-%>
 <body>
 <div id="container">
 <h1>게시글상세보기</h1>
 <table border="1">
 	<tr>
 		<th>번호</th>
-		<td>${dto.board_num}</td>
+		<td>${boarddto.board_num}</td>
 	</tr>
 	<tr>
 		<th>작성자</th>
-		<td>${dto.user_num}</td>
+		<td>${boarddto.user_num}</td>
 	</tr>
 	<tr>
 		<th>제목</th>
-		<td>${dto.board_title}</td>
+		<td>${boarddto.board_title}</td>
 	</tr>
 	<tr>
 		<th>내용</th>
-		<td><textarea rows="10" cols="60" readonly="readonly">${dto.board_content}</textarea> </td>
+		<td><textarea rows="10" cols="60" readonly="readonly">${boarddto.board_content}</textarea> </td>
 	</tr>
-	
-	
-			
 	<tr>
 		<td colspan="2">
-			<c:if test="${dto.user_num eq ldto.user_num}">
-			<button onclick="updateForm(${dto.board_num})">수정</button>
-			<button onclick="delBoard(${dto.board_num})">삭제</button>
+			<c:if test="${boarddto.user_num eq ldto.user_num}">
+				<button onclick="updateForm(${boarddto.board_num})">수정</button>
+				<button onclick="delBoard(${boarddto.board_num})">삭제</button>
 			</c:if>					
-			<button onclick="location.href='boardlist.do?pnum=${pnum}'">글목록</button>			
-			
+			<button onclick="location.href='boardlist.do?pnum=${pnum}'">글목록</button>
 			<button id="commentBtn">댓글</button>
 			<c:choose>
-				<c:when test="${dto != null}">			
+				<c:when test="${boarddto != null}">			
 					<a href="" id="like"><img alt="좋아요" src="img/heart${like ? '2' : '1'}.png">${likecount}</a>								
 				</c:when>
 				<c:otherwise>
@@ -191,10 +182,10 @@ Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("pmap");
 </table>
 <div id="commentForm">
 	<form action="addcomment.do" method="post">		
-		<input type="hidden" name="board_num" value="${dto.board_num}" />
-		<c:if test="${dto != null || clist != null}">
+		<input type="hidden" name="board_num" value="${boarddto.board_num}" />
+		<c:if test="${boarddto != null || clist != null}">
 			<table border="1" class="commentTable">
-				<c:if test="${dto != null}">
+				<c:if test="${boarddto != null}">
 					<tr>
 						<td colspan="3">
 							<textarea rows="2" cols="75" name="comment_content" ></textarea>
@@ -211,7 +202,7 @@ Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("pmap");
 						<td>${cdto.user_num}</td>
 						<td colspan="2">
 							<fmt:formatDate value="${cdto.comment_regdate}" pattern="yyyy-MM-dd HH:mm"/>
-							<c:if test="${dto != null}">
+							<c:if test="${boarddto != null}">
 								<button type="button" class="recommentForm" value="${cdto.comment_num}">답글</button>
 							</c:if>
 							<c:if test="${cdto.user_num eq ldto.user_num}">
@@ -231,14 +222,4 @@ Map<String,Integer>map=(Map<String,Integer>)request.getAttribute("pmap");
 </div>	
 </div>	
 </body>
-<script type="text/javascript">
-	//글삭제하기
-	function delBoard(board_num){
-		location.href="delboard.do?board_num="+board_num;
-	}
-	//글수정하기
-	function updateForm(board_num){
-		location.href="updateform.do?board_num="+board_num;
-	}
-</script>
 </html>
