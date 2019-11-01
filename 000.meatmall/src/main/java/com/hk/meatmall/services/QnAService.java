@@ -34,14 +34,14 @@ public class QnAService implements IQnAService {
 	}
 	//자주묻는질문 상세보기
 	@Override
-	public FAQDto FAQdetail(int seq) {
-		return qnaDao.FAQdetail(seq);
+	public FAQDto FAQdetail(int faq_num) {
+		return qnaDao.FAQdetail(faq_num);
 	}
 	
 	//자주묻는질문 글삭제
 	@Override
-	public boolean FAQdelBoard(int seq) {
-		return qnaDao.FAQdelBoard(seq);
+	public boolean FAQdelBoard(int faq_num) {
+		return qnaDao.FAQdelBoard(faq_num);
 	}
 	
 	
@@ -59,8 +59,8 @@ public class QnAService implements IQnAService {
 	}
 	//1:1문의 글 상세보기
 	@Override
-	public QuestionDto Questiondetail(int seq) {
-		return qnaDao.Questiondetail(seq);
+	public QuestionDto Questiondetail(int question_num) {
+		return qnaDao.Questiondetail(question_num);
 	}
 	//1:1문의 글 수정
 	@Override
@@ -69,13 +69,13 @@ public class QnAService implements IQnAService {
 	}
 	//1:1문의 글 삭제
 	@Override
-	public boolean Questiondelete(int seq) {
-		return qnaDao.Questiondelete(seq);
+	public boolean Questiondelete(int question_num) {
+		return qnaDao.Questiondelete(question_num);
 	}
 	////1:1문의 글 조회수
 	@Override
-	public boolean QuestionreadCount(int seq) {
-		return qnaDao.QuestionreadCount(seq);
+	public boolean QuestionreadCount(int question_num) {
+		return qnaDao.QuestionreadCount(question_num);
 	}
 	
 	
@@ -87,18 +87,18 @@ public class QnAService implements IQnAService {
 	}
 	//1:1답변 글 상세보기
 	@Override
-	public AnswerDto Answerdetail(int seq) {
-		return qnaDao.Answerdetail(seq);
+	public AnswerDto Answerdetail(int question_num) {
+		return qnaDao.Answerdetail(question_num);
 	}	
 	//1:1답변 글 삭제
 	@Override
-	public boolean Answerdelete(int seq) {
-		return qnaDao.Answerdelete(seq);
+	public boolean Answerdelete(int question_num) {
+		return qnaDao.Answerdelete(question_num);
 	}
 	//답변완료시 답변상태 변경
 	@Override
-	public boolean StatusChange(int seq) {
-		return qnaDao.StatusChange(seq);
+	public boolean StatusChange(int question_num) {
+		return qnaDao.StatusChange(question_num);
 	}
 	//1:1 문의 글 전체 리스트	
 	@Override
