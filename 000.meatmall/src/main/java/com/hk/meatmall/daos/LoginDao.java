@@ -97,9 +97,9 @@ public class LoginDao implements ILoginDao {
 	
 	//회원가입
 	@Override
-	public boolean regist(UserDto dto) {
+	public boolean signUp(UserDto dto) {
 		int count = 0;
-		count = sqlSession.insert(nameSpace+"regist",dto);
+		count = sqlSession.insert(nameSpace+"signUp",dto);
 		return count>0 ? true : false;
 	}
 

@@ -19,7 +19,7 @@
 </head>
 <body>
 <div id="container">
-	<form action="regist.do" method="post">
+	<form action="signUp.do" method="post">
 		<table border="1" class="table">
 			<tr>
 				<th scope="row">아이디</th>
@@ -60,7 +60,7 @@
 				<th scope="row">이메일</th>
 				<td><input type="email" name="user_email" id="user_email" /></td>
 			</tr>
-			<c:if test="${licenseeRegist != null}">
+			<c:if test="${licenseeSignUp != null}">
 				<tr>
 					<th scope="row">사업자 등록번호</th>
 					<td><input type="text" name="user_businessnum" id="user_businessnum" /></td>

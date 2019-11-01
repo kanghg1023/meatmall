@@ -6,31 +6,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
+<script type="text/javascript" src="js/formCheck.js"></script>
 <style type="text/css">
 	.select_img img {margin:20px;}
 </style> 
 <script type="text/javascript">
-
 	$(function(){
-		
-		//필수 입력
-		$("form").submit(function(){
-			var bool = true;
-			var input = $(this).find("td").children().filter("[name]");
-			input.each(function(i){
-				if($(this).val()==""){
-					alert($(this).parent().prev().text()+"를 입력하세요");
-					$(this).focus();
-					bool = false;
-					return false;
-				}
-			});
-			return bool;
-		});
-		
 		//옵션 추가
 		$("#asd").click(function(){
 			var aCount = $("#asd");
@@ -51,14 +34,14 @@
 		
 		//이미지 미리보기
 		$("#gdsImg").change(function(){
-			   if(this.files && this.files[0]) {
-			    var reader = new FileReader;
-			    reader.onload = function(data) {
-			     $(".select_img img").attr("src", data.target.result).width(500);        
-			    }
-			    reader.readAsDataURL(this.files[0]);
-			   }
-			  });
+			if(this.files && this.files[0]) {
+				var reader = new FileReader;
+				reader.onload = function(data) {
+					$(".select_img img").attr("src", data.target.result).width(500);        
+				}
+				reader.readAsDataURL(this.files[0]);
+			}
+		});
 	});
 </script>
 </head>
@@ -78,7 +61,6 @@
 		<th>판매자</th>
 		<td>
 			<input type="text" name="user_num" class="inputval" value="${gDto.user_num}" />
-<%-- 			${gdto.user_num} --%>
 		</td>
 	</tr>
 	<tr>
@@ -97,10 +79,8 @@
  				<label for="gdsImg">이미지</label>
  				<input type="file" id="gdsImg" name="file" />
  				<div class="select_img">
- 				<img src="${gDto.goods_img_title}" />
+ 					<img src="${gDto.goods_img_title}" />
  				</div>
-				<!--  실제경로 표시 -->
-<%--  				<%=request.getRealPath("/") %> --%>
 			</div>
 		</td>
 	</tr>

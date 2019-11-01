@@ -34,6 +34,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	
 	@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String main() {
+		logger.info("메인");
 		//메인페이지 출력에 필요한 것들 추가요망
 		
 		return "main";
@@ -47,7 +48,10 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	}
 	
 	@RequestMapping(value = "/login.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String login(HttpServletRequest request, Model model, String user_id, String pw) throws NoSuchAlgorithmException {
+	public String login( HttpServletRequest request
+					   , Model model
+					   , String user_id
+					   , String pw) throws NoSuchAlgorithmException {
 		logger.info("로그인");
 		
 		HttpSession session = request.getSession();
@@ -131,61 +135,55 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		logger.info("로그아웃");
 		
 		HttpSession session = request.getSession();
-		String page = (String)session.getAttribute("page");
-		
 		session.removeAttribute("ldto");
 		
-		return page;
+		return "redirect:main.do";
 	}
 	
-	@RequestMapping(value = "/registPage.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String registPage(Model model) {
+	@RequestMapping(value = "/signUpPage.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String SignUpPage(Model model) {
 		logger.info("회원가입 페이지로");
 		
-		model.addAttribute("registError");
-		
-		return "registPage";
+		return "signUpPage";
 	}
 	
-	@RequestMapping(value = "/licenseeRegist.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String licenseeRegist(Model model) {
+	@RequestMapping(value = "/licenseeSignUp.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String licenseeSignUp(Model model) {
 		logger.info("사업자 회원가입폼");
 
-		model.addAttribute("licenseeRegist", "licenseeRegist");
-		
-		return "registForm";
+		model.addAttribute("licenseeSignUp", "licenseeSignUp");
+		return "signUpForm";
 	}
 	
-	@RequestMapping(value = "/normalRegist.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String normalRegist(Model model) {
+	@RequestMapping(value = "/normalSignUp.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String normalSignUp(Model model) {
 		logger.info("일반 회원가입폼");
 		
-		model.addAttribute("licenseeRegist");
-		
-		return "registForm";
+		return "signUpForm";
 	}
 	
-	@RequestMapping(value = "/regist.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String regist(Model model, UserDto dto) throws NoSuchAlgorithmException {
+	@RequestMapping(value = "/signUp.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String signUp(Model model, UserDto dto) throws NoSuchAlgorithmException {
 		logger.info("회원가입");
 		
 		String pw = dto.getUser_pw();
 		dto.setUser_pw(Util.sha256(dto.getUser_pw()));
 		
-		boolean isRegist = loginService.regist(dto);
+		boolean isSignUp = loginService.signUp(dto);
 		
-		if(isRegist) {
-			boolean issignUpLog = loginService.signUpLog(dto.getUser_id());
+		if(isSignUp) {
+			boolean isSignUpLog = loginService.signUpLog(dto.getUser_id());
 			
-			if(issignUpLog) {
+			if(isSignUpLog) {
 				model.addAttribute("user_id",dto.getUser_id());
 				model.addAttribute("pw",pw);
 				return "redirect:login.do";
 			}
 		}
 		
-		model.addAttribute("registError", "회원가입에 실패하였습니다.\n같은문제가 계속될 경우 관리자에게 문의 주십시오");
-		return "redirect:registPage.do";
+		model.addAttribute("msg", "회원가입 실패");
+		model.addAttribute("url", "signUpPage.do");
+		return "error";
 	}
 	
 	@RequestMapping(value = "/myPage.do", method = {RequestMethod.GET,RequestMethod.POST})
@@ -235,7 +233,9 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	}
 	
 	@RequestMapping(value = "/userUpdate.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String userUpdate(HttpServletRequest request, Model model, UserDto dto) throws NoSuchAlgorithmException {
+	public String userUpdate( HttpServletRequest request
+							, Model model
+							, UserDto dto) throws NoSuchAlgorithmException {
 		logger.info("정보 수정하기");
 		
 		HttpSession session = request.getSession();
@@ -260,8 +260,9 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			model.addAttribute("updateSuccess","변경되었습니다.");
 			return "myPage";
 		}else {
-			model.addAttribute("updateError","수정실패!\n같은문제가 반복될경우 관리자에게 문의주세요.");
-			return "userInfo";
+			model.addAttribute("msg", "추가 실패");
+			model.addAttribute("url", "userInfo.do");
+			return "error";
 		}
 	}
 	
@@ -320,7 +321,6 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		boolean pwSuccess = loginService.pwChange(user_id,user_pw);
 		
 		model.addAttribute("pwSuccess",pwSuccess);
-		
 		return "pwInquiryForm";
 	}
 	
@@ -330,9 +330,9 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		
 		HttpSession session = request.getSession();
 		UserDto ldto = (UserDto)session.getAttribute("ldto");
+		
 		List<RecordDto> recordList = loginService.loginRecordList(ldto.getUser_num());
 		
-		System.out.println(recordList.get(0).getRecord_date());
 		model.addAttribute("recordList", recordList);
 		return "loginRecord";
 	}
@@ -343,8 +343,4 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		
 		return "getAddr";
 	}
-	
-	
-	
-	
 }

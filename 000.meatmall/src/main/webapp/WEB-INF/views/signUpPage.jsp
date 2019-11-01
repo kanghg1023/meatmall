@@ -9,12 +9,7 @@
 <title>회원가입 페이지</title>
 </head>
 <body>
-<c:if test="${registError != null}">
-	<script type="text/javascript">
-		alert("${registError}");
-	</script>
-</c:if>
-<a href="licenseeRegist.do" class="licenseeRegist">사업자 회원가입</a> | 
-<a href="normalRegist.do" class="normalRegist">일반 회원가입</a>
+<a href="licenseeSignUp.do" class="licenseeSignUp">사업자 회원가입</a> | 
+<a href="normalSignUp.do" class="normalSignUp">일반 회원가입</a>
 </body>
 </html>

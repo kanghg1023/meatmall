@@ -18,7 +18,7 @@
 			</script>
 		</c:if>
 		<a href="loginPage.do" class="login">로그인</a> | 
-		<a href="registPage.do" class="regist">회원가입</a>
+		<a href="signUpPage.do" class="signUp">회원가입</a>
 	</c:when>
 	<c:otherwise>
 		${ldto.user_nick}님 | 

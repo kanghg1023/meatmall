@@ -8,7 +8,7 @@
 <title></title>
 </head>
 <body>
-	<h1>카테고리 추가하기</h1> 
+<h1>카테고리 추가하기</h1> 
 <form action="insertCategory.do" method="get">
 	<table border="1">
 		<col width="100px"><col width="300px">

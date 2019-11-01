@@ -87,7 +87,7 @@
 			   )
 	</insert>
 	
-	<insert id="regist" parameterType="UserDto">
+	<insert id="signUp" parameterType="UserDto">
 		INSERT INTO USER_INFO
 			 ( USER_NUM
 			 , USER_ID

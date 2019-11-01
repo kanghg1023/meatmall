@@ -39,20 +39,20 @@ $(function() {
 <div>
 <c:if test="${ldto.user_role eq 'ADMIN'}">
 	<input type="button" value="카테고리 추가" 
-	onclick="window.open('insertCategoryForm.do','insertCategory','width=450px,height=200px,location=no,status=no,scrollbars=no')" />
+		onclick="window.open('insertCategoryForm.do','insertCategory','width=450px,height=200px,location=no,status=no,scrollbars=no')" />
 	<input type="submit" value="카테고리 삭제" />
 </c:if>	
 </div>
 <hr />
 <ul>
-<c:forEach items="${cList}" var="cList">
-	<li>
-		<c:if test="${ldto.user_role eq 'ADMIN'}">
-			<input type="checkbox" name="chk" value="${cList.kind_num}" />
-		</c:if>
-		<a href="categoryGoods.do?kind_num=${cList.kind_num}&pnum=1">${cList.kind_name}</a>
+	<c:forEach items="${cList}" var="cList">
+		<li>
+			<c:if test="${ldto.user_role eq 'ADMIN'}">
+				<input type="checkbox" name="chk" value="${cList.kind_num}" />
+			</c:if>
+			<a href="categoryGoods.do?kind_num=${cList.kind_num}&pnum=1">${cList.kind_name}</a>
 		</li>
-</c:forEach>
+	</c:forEach>
 </ul>
 </form>
 </body>

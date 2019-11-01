@@ -32,7 +32,7 @@
 			<td colspan="2">
 				<a href="idInquiryForm.do">아이디 찾기</a> | 
 				<a href="pwInquiryForm.do">비밀번호 찾기</a> | 
-				<a href="registPage.do">회원가입</a>
+				<a href="signUpPage.do">회원가입</a>
 			</td>
 		</tr>
 	</table>

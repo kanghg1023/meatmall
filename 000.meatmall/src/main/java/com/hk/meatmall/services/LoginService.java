@@ -58,8 +58,8 @@ public class LoginService implements ILoginService {
 	}
 	
 	@Override
-	public boolean regist(UserDto dto) {
-		return loginDao.regist(dto);
+	public boolean signUp(UserDto dto) {
+		return loginDao.signUp(dto);
 	}
 
 	@Override
