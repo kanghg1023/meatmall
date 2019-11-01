@@ -69,5 +69,12 @@ public interface IGoodsService {
 	//상품 삭제
 	public boolean delCateGoods(String[] chk, String kind_num, String pnum);
 	
+	//상품 수정
+	public boolean upGoods(GoodsDto gDto);
 	
+	//상품 수정 (상세 이미지)
+	public boolean upDetail_img(Detail_imgDto iDto);
+	
+	//상품 수정 (옵션)
+	public boolean upGoods_option(Goods_optionDto oDto);
 }

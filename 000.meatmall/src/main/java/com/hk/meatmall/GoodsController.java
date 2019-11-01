@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hk.meatmall.dtos.Detail_imgDto;
 import com.hk.meatmall.dtos.GoodsDto;
@@ -103,7 +104,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/delCategory.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String delBoard(Model model, String[] chk) {
+	public String delCategory(Model model, String[] chk) {
 		logger.info("카테고리 삭제");
 		boolean isS = GoodsService.delCategory(chk);
 		
@@ -163,24 +164,24 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	public String insertAllGoods(Model model, GoodsDto gDto, Detail_imgDto iDto
 			, String[] option_name, int[] option_count, int[] option_weight, MultipartFile file) throws IOException, Exception {
 		logger.info("전체상품에서 추가");
-	      
+		
 		Goods_optionDto oDto = new Goods_optionDto();
-  
+		
 		String imgUploadPath = uploadPath + File.separator + "imgUpload";
 		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
 		String fileName = null;
 
 		if(file != null) {
-			fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
+		 fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
 		} else {
-			fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+		 fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
 		}
 
 		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
 		gDto.setGoods_img_thumb("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
 		boolean isS = GoodsService.insertGoods(gDto);
-		isS = GoodsService.insertDetail_img(iDto);
-        
+				isS = GoodsService.insertDetail_img(iDto);
+				
 		for(int i=0;i<option_name.length;i++) {
 			oDto.setOption_name(option_name[i]);
 			oDto.setOption_count(option_count[i]);
@@ -193,6 +194,8 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}else {
 			return "insertGoods";
 		}
+		
+		
 	}
 	
 	@RequestMapping(value = "/insertCateGoodsForm.do", method = {RequestMethod.POST, RequestMethod.GET})
@@ -204,10 +207,24 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/insertCateGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String insertCateGoods(Model model, GoodsDto gDto, Detail_imgDto iDto
-				, String[] option_name, int[] option_count, int[] option_weight, String kind_num) {
+				, String[] option_name, int[] option_count, int[] option_weight, String kind_num
+				, MultipartFile file) throws IOException, Exception {
 		logger.info("카테고리상품에서 추가");
 		
 		Goods_optionDto oDto = new Goods_optionDto();
+		
+		String imgUploadPath = uploadPath + File.separator + "imgUpload";
+		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
+		String fileName = null;
+
+		if(file != null) {
+		 fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
+		} else {
+		 fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+		}
+
+		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
+		gDto.setGoods_img_thumb("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
 		
 		boolean isS = GoodsService.insertGoods(gDto);
 				isS = GoodsService.insertDetail_img(iDto);
@@ -294,6 +311,80 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}
 	}
 	
+	@RequestMapping(value = "/upGoodsForm.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String upAllGoodsForm(Model model, int goods_num) {
+		logger.info("전체상품에서 수정 폼");
+		
+		List<Goods_optionDto> oList = GoodsService.kind_num();
+		model.addAttribute("oList",oList);
+		
+		GoodsDto gDto = GoodsService.getGoods(goods_num);
+		Detail_imgDto iDto = GoodsService.getDetail_img(goods_num);
+		List<Goods_optionDto> oDto = GoodsService.getGoods_option(goods_num);
+		
+		model.addAttribute("gDto", gDto);
+		model.addAttribute("iDto", iDto);
+		model.addAttribute("oDto", oDto);
+		
+		return "updateGoods";
+	}
+	
+	@RequestMapping(value = "/upGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String upAllGoods( Model model
+							, HttpServletRequest request
+							, GoodsDto gDto
+							, Detail_imgDto iDto
+							, int[] option_num
+							, String[] option_name
+							, int[] option_count
+							, int[] option_weight
+							, MultipartFile file
+							) throws IOException, Exception {
+		
+		logger.info("전체상품에서 수정");
+	
+		MultipartHttpServletRequest multi=(MultipartHttpServletRequest)request;
+		multi.getAttribute("");
+		Goods_optionDto oDto = new Goods_optionDto();
+		
+		String imgUploadPath = uploadPath + File.separator + "imgUpload";
+		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
+		String fileName = null;
+
+		if(file != null) {
+		 fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
+		} else {
+		 fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+		}
+
+		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
+		gDto.setGoods_img_thumb("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
+		boolean isS = GoodsService.upGoods(gDto);
+				isS = GoodsService.upDetail_img(iDto);
+		int i = 0;
+		
+		for(i=0;i<option_num.length;i++) {
+			oDto.setOption_num(option_num[i]);
+			oDto.setOption_name(option_name[i]);
+			oDto.setOption_count(option_count[i]);
+			oDto.setOption_weight(option_weight[i]);
+			isS = GoodsService.upGoods_option(oDto);
+		}
+		
+		if(i < option_name.length) {
+			for(int j=i;j<option_name.length;j++) {
+				oDto.setOption_name(option_name[i]);
+				oDto.setOption_count(option_count[i]);
+				oDto.setOption_weight(option_weight[i]);
+				GoodsService.insertGoods_option(oDto);
+			}
+		}
+		if(isS) {
+			return "redirect:goodsDetail.do?goods_num="+gDto.getGoods_num();
+		}else {
+			return "updateAllGoods";
+		}		
+	}
 	
 	
 }

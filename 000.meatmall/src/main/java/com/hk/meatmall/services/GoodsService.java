@@ -139,6 +139,26 @@ public class GoodsService implements IGoodsService {
 		return GoodsDao.delCateGoods(chk, kind_num, pnum);
 	}
 
+	//상품 수정
+	@Override
+	public boolean upGoods(GoodsDto gDto) {
+		return GoodsDao.upGoods(gDto);
+	}
+
+	//상품 수정 (상세 이미지)
+	@Override
+	public boolean upDetail_img(Detail_imgDto iDto) {
+		return GoodsDao.upDetail_img(iDto);
+	}
+
+	//상품 수정 (옵션)
+	@Override
+	public boolean upGoods_option(Goods_optionDto oDto) {
+		return GoodsDao.upGoods_option(oDto);
+	}
+
+	
+
 	
 
 	

@@ -23,7 +23,7 @@
 	   				  , GOODS_DOSO
 	   				  , GOODS_IMG_TITLE
 	   				  , GOODS_ENABLED
-	   				  , GOODS_COST    
+	   				  , GOODS_COST
 	   				  , GOODS_IMG_THUMB
 		           FROM GOODS
 		       )
@@ -152,18 +152,19 @@
 		   WHERE CEIL(RN/6) = #{pnum}
 	</select>
 	
+	<sql id="pcount">
+		SELECT CEIL(COUNT(*)/6)
+		  FROM GOODS
+		 WHERE KIND_NUM = #{kind_num}
+	</sql>
 	<!-- 카테고리 페이지 수 -->         
 	<select id="allCatePcount" resultType="int" parameterType="String">
-		SELECT CEIL(COUNT(*)/6)
-		  FROM GOODS
-		 WHERE KIND_NUM = #{kind_num}
+		<include refid="pcount" />
 	</select>
 	
-	<!-- 카테고리 페이지 수 (삭제여부) -->         
+	<!-- 카테고리 페이지 수 (삭제여부) -->        
 	<select id="enabledCatePcount" resultType="int" parameterType="String">
-		SELECT CEIL(COUNT(*)/6)
-		  FROM GOODS
-		 WHERE KIND_NUM = #{kind_num}
+		<include refid="pcount" />
 		   AND GOODS_ENABLED = 'Y'
 	</select>	
 	
@@ -246,7 +247,7 @@
 			 , OPTION_WEIGHT
  		  FROM GOODS_OPTION
  		 WHERE GOODS_NUM = #{goods_num}
-		 ORDER BY GOODS_NUM
+		 ORDER BY OPTION_NUM
 	</select>
 	
 <!-- 전체 상품에서 삭제 -->
@@ -268,7 +269,39 @@
 			   #{goods_num}
 		</foreach>
 		   AND KIND_NUM = #{kind_num}
-	</update>	
+	</update>
+	
+<!-- 상품 수정 -->
+	<update id="upGoods" parameterType="GoodsDto">
+		UPDATE GOODS
+  		   SET GOODS_TITLE = #{goods_title}
+			 , GOODS_DOSO = #{goods_doso}
+			 , GOODS_IMG_TITLE = #{goods_img_title}
+			 , GOODS_DATE = SYSDATE
+	  		 , GOODS_ENABLED = 'Y'
+			 , KIND_NUM = #{kind_num}
+			 , GOODS_HISTORY = #{goods_history}
+			 , GOODS_COST = #{goods_cost}
+			 , GOODS_IMG_THUMB = #{goods_img_thumb}
+ 		 WHERE GOODS_NUM = #{goods_num}
+	</update>
+	
+<!-- 상품 수정 (상세 이미지) -->
+	<update id="upDetail_img" parameterType="Detail_imgDto">
+		UPDATE DETAIL_IMG
+  		   SET DETAIL_IMG_NAME = #{detail_img_name}
+ 		 WHERE GOODS_NUM = #{goods_num}
+	</update>
+	
+<!-- 상품 수정 (옵션) -->
+	<update id="upGoods_option" parameterType="Goods_optionDto">
+		UPDATE GOODS_OPTION
+  		   SET OPTION_NAME = #{option_name}
+			 , OPTION_COUNT = #{option_count}
+			 , OPTION_WEIGHT = #{option_weight}
+ 		 WHERE OPTION_NUM = #{option_num}
+	</update>
+
 	
 	
 </mapper>

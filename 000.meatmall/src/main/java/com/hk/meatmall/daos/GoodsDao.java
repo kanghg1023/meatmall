@@ -176,6 +176,29 @@ public class GoodsDao implements IGoodsDao {
 		return count > 0 ? true:false;
 	}
 
+	//상품 수정
+	@Override
+	public boolean upGoods(GoodsDto gDto) {
+		int count = sqlSession.update(nameSpace+"upGoods", gDto);
+		return count > 0 ? true:false;
+	}
+
+	//상품 수정 (상세 이미지)
+	@Override
+	public boolean upDetail_img(Detail_imgDto iDto) {
+		int count = sqlSession.update(nameSpace+"upDetail_img", iDto);
+		return count > 0 ? true:false;
+	}
+	
+	//상품 수정 (옵션)
+	@Override
+	public boolean upGoods_option(Goods_optionDto oDto) {
+		int count = sqlSession.update(nameSpace+"upGoods_option", oDto);
+		return count > 0 ? true:false;
+	}
+
+	
+
 	
 
 	

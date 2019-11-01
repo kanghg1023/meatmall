@@ -14,7 +14,12 @@
 <table border="1">
 	<col width="150px" />
 	<col width="400px" />
-	
+	<tr>
+		<td colspan="2">
+			<button onclick="location.href='upGoodsForm.do?goods_num=${gDto.goods_num}'">수정</button>
+			<button onclick="location.href='delCateGoods.do?chk=${gDto.goods_num}&kind_num=${gDto.kind_num}&pnum=${pnum}'">삭제</button>
+		</td>
+	</tr>
 	<tr>
 		<th>대표이미지 이름</th>
 		<td><img src="${gDto.goods_img_title}" ></td>

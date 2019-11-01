@@ -9,6 +9,9 @@
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
+<style type="text/css">
+	.select_img img {margin:20px;}
+</style>
 <script type="text/javascript">
 
 	$(function(){
@@ -56,7 +59,6 @@
 			    reader.readAsDataURL(this.files[0]);
 			   }
 			  });
-		
 	});
 </script>
 </head>
@@ -64,16 +66,20 @@
 <div id="header" class="header" style="outline: none;">
 	<jsp:include page="header.jsp" />
 </div>
-<h1>상품 추가</h1>
-<form action="insertCateGoods.do" method="post" enctype="multipart/form-data">
+<h1>상품 수정</h1>
+<form action="upGoods.do" method="post" enctype="multipart/form-data">
+<input type="hidden" name="goods_num" value="${gDto.goods_num}"/>
 <table border="1" class="table">
 	<tr>
 		<th>상품명</th>
-		<td><input type="text" name="goods_title" class="inputval" /></td>
+		<td><input type="text" name="goods_title" class="inputval" value="${gDto.goods_title}" /></td>
 	</tr>
 	<tr>
 		<th>판매자</th>
-		<td><input type="text" name="user_num" value="${ldto.user_num}" /></td>
+		<td>
+			<input type="text" name="user_num" class="inputval" value="${gDto.user_num}" />
+<%-- 			${gdto.user_num} --%>
+		</td>
 	</tr>
 	<tr>
 		<th>도소매구분</th>
@@ -90,52 +96,65 @@
 			<div class="inputArea">
  				<label for="gdsImg">이미지</label>
  				<input type="file" id="gdsImg" name="file" />
- 				<div class="select_img" name="goods_img_title">
- 				<img src="" />
+ 				<div class="select_img">
+ 				<img src="${gDto.goods_img_title}" />
  				</div>
 				<!--  실제경로 표시 -->
- 				<%=request.getRealPath("/") %>
+<%--  				<%=request.getRealPath("/") %> --%>
 			</div>
 		</td>
 	</tr>
 	<tr>
 		<th>상품종류</th>
-		<td><input type="text" name="kind_num" value="${kind_num}" class="inputval" /></td>
+		<td>
+			<c:if test="${!empty oList}" >
+  				<select name="kind_num" style="width:80px;">
+      				<c:forEach var="oList" items="${oList}" varStatus="i">
+         				<option value="${oList.kind_num}">${oList.kind_name}</option>
+      				</c:forEach>
+   				</select>
+   			</c:if>	
+		</td>
 	</tr>
 	<tr>
 		<th>상품이력번호</th>
-		<td><input type="text" name="goods_history" class="inputval" /></td>
+		<td><input type="text" name="goods_history" placeholder="12자리" value="${gDto.goods_history}"/></td>
 	</tr>
 	<tr>
 		<th>100g당 가격</th>
-		<td><input type="text" name="goods_cost" class="inputval" /></td>
+		<td><input type="text" name="goods_cost" value="${gDto.goods_cost}"/></td>
 	</tr>
 	<tr>
 		<th>상세이미지 이름</th>
-		<td><input type="text" name="detail_img_name" class="inputval" /></td>
+		<td><input type="text" name="detail_img_name" value="${iDto.detail_img_name}"/></td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<input type="button" value="목록" onclick="location.href='categoryGoods.do?kind_num=${kind_num}'" class="button"/>
+			<input type="button" value="수정취소" onclick="location.href='goodsDetail.do?goods_num=${gDto.goods_num}'" class="button"/>
 			<input type="submit" value="완료" class="button"/>
 		</td>
 	</tr>
 </table>
 <table border="1" class="table">
+	<c:forEach items="${oDto}" var="dto">
 	<tr>
 		<th>옵션 이름</th>
-		<td><input type="text" name="option_name" /></td>
+		<td>
+			<input type="text" name="option_name" value="${dto.option_name}" />
+			<input type="hidden" name="option_num" value="${dto.option_num}" />
+		</td>
 	</tr>
 	<tr>
 		<th>재고</th>
-		<td><input type="text" name="option_count" /></td>
+		<td><input type="text" name="option_count" value="${dto.option_count}" /></td>
 	</tr>
 	<tr>
 		<th>무게(g)</th>
-		<td><input type="text" name="option_weight" /></td>
+		<td><input type="text" name="option_weight" value="${dto.option_weight}" /></td>
 	</tr>
+	</c:forEach>
 	<tr>
-		<td>
+		<td colspan="2">
 			<input type="button" value="추가" id="asd" class="button"/>
 		</td>
 	</tr>

@@ -95,7 +95,7 @@
  				<div class="select_img" name="goods_img_title">
  				<img src="" />
  				</div>
-<!--  			실제경로 표시 -->
+				<!--  실제경로 표시 -->
  				<%=request.getRealPath("/") %>
 			</div>
 		</td>
@@ -105,6 +105,7 @@
 		<td>
 			<c:if test="${!empty oList}" >
   				<select name="kind_num" style="width:80px;">
+  					<option>부위 선택</option>
       				<c:forEach var="oList" items="${oList}" varStatus="i">
          				<option value="${oList.kind_num}">${oList.kind_name}</option>
       				</c:forEach>
@@ -132,14 +133,6 @@
 	</tr>
 </table>
 <table border="1" class="table">
-<!-- 	<tr> -->
-<!-- 		<th>옵션</th> -->
-<!-- 		<td> -->
-<!-- 			<select> -->
-<%-- 				<option>${oList.option_name}</option> --%>
-<!-- 			</select> -->
-<!-- 		</td>	 -->
-<!-- 	</tr> -->
 	<tr>
 		<th>옵션 이름</th>
 		<td><input type="text" name="option_name" /></td>

@@ -78,19 +78,19 @@ $(function() {
 									<c:when test="${dto.goods_enabled eq 'N'}">
 										<td colspan="5" align="center">-----삭제된 상품입니다.-----</td>
 									</c:when>
-								<c:otherwise>
-									<td align="left">
-										<a href="goodsCateDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}">${dto.goods_title}</a>
-									</td>
-<!-- 											나중에 닉네임으로 바꿔 -->
-									<td id="nick">${dto.user_num}</td>
-<%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
-<%-- 										<jsp:getProperty property="emailNick" name="util" /> --%>
-									<td id="DOSO">${dto.goods_doso}</td>
-									<td id="img_title"><img src="${dto.goods_img_thumb}"></td>
-									<td id="cost">${dto.goods_cost}</td>
-								</c:otherwise>
-							</c:choose>
+									<c:otherwise>
+										<td align="left">
+											<a href="goodsCateDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}&kind_num=${dto.kind_num}">${dto.goods_title}</a>
+										</td>
+	<!-- 											나중에 닉네임으로 바꿔 -->
+										<td id="nick">${dto.user_num}</td>
+	<%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
+	<%-- 										<jsp:getProperty property="emailNick" name="util" /> --%>
+										<td id="DOSO">${dto.goods_doso}</td>
+										<td id="img_title"><img src="${dto.goods_img_thumb}"></td>
+										<td id="cost">${dto.goods_cost}</td>
+									</c:otherwise>
+								</c:choose>
 							</tr>
 						</c:forEach>
 					</c:otherwise>
