@@ -9,7 +9,7 @@
 <title></title>
 </head>
 <body>
-<h1>상품 상세</h1>
+<h1>상품 상세</h1> 
 <div>
 <table border="1">
 	<col width="150px" />

@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.js"></script>
-<title></title>
+<title></title> 
 <style type="text/css">
 	.select_img img {margin:20px;}
 </style>

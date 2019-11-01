@@ -133,7 +133,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}else {
 			//enabled 다 보이게
 			List<GoodsDto> cList = GoodsService.categoryGoods(kind_num, pnum);
-			model.addAttribute("cList", cList);
+			model.addAttribute("cList", cList); 
 			model.addAttribute("kind_num",kind_num);
 			
 			int pcount = GoodsService.getAllCatePcount(kind_num);

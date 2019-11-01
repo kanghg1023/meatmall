@@ -10,7 +10,7 @@
 </head>
 <body>
 <h1>상품 상세</h1>
-<div>
+<div> 
 <table border="1">
 	<col width="150px" />
 	<col width="400px" />

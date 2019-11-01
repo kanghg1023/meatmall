@@ -16,7 +16,7 @@ import com.hk.meatmall.iservices.IGoodsService;
 public class GoodsService implements IGoodsService {
 
 	@Autowired
-	private IGoodsDao GoodsDao;
+	private IGoodsDao GoodsDao; 
 	
 	//전체 상품 + 페이징
 	@Override

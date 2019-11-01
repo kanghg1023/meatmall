@@ -11,7 +11,7 @@
 <title></title>
 <style type="text/css">
 	.select_img img {margin:20px;}
-</style>
+</style> 
 <script type="text/javascript">
 
 	$(function(){

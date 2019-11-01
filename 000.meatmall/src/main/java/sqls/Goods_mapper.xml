@@ -5,7 +5,7 @@
 
 <mapper namespace="com.goods">
 
-<!-- 전체 상품 + 페이징 -->
+<!-- 전체 상품 + 페이징 --> 
 	<select id="allGoods" resultType="GoodsDto" parameterType="String">
 		SELECT GOODS_NUM
 	   		 , GOODS_TITLE

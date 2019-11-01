@@ -7,7 +7,7 @@ import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
 
-public interface IGoodsDao {
+public interface IGoodsDao { 
 
 	//전체 상품+페이징
 	public List<GoodsDto> allGoods(String pnum);

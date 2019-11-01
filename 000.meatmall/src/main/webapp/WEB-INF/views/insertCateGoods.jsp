@@ -9,7 +9,7 @@
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
-<script type="text/javascript">
+<script type="text/javascript"> 
 
 	$(function(){
 		

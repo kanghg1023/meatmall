@@ -15,7 +15,7 @@ import com.hk.meatmall.dtos.Goods_optionDto;
 import com.hk.meatmall.idaos.IGoodsDao;
 
 @Repository
-public class GoodsDao implements IGoodsDao {
+public class GoodsDao implements IGoodsDao { 
 
 	private String nameSpace="com.goods.";
 	
