@@ -79,7 +79,7 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		}else {
 			model.addAttribute("msg", "글작성 실패");
 			model.addAttribute("url", "insertForm.do");
-			return "error";			
+			return "error";
 		}
 	}
 	
@@ -164,6 +164,7 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		logger.info("좋아요 추가 및 삭제");
 		
 		boolean like = boardService.getLike(dto);
+		
 		if(like) {
 			//좋아요 삭제
 			boolean isS=boardService.deleteLike(dto);
