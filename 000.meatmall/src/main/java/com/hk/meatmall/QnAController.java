@@ -125,12 +125,8 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 				request.getSession().setAttribute("pnum", pnum);
 			}
 			
-<<<<<<< HEAD
 			List<QnADto> qlist = new ArrayList<>();
-=======
-			List<QuestionDto> qlist = new ArrayList<>();
 			
->>>>>>> branch 'master' of https://github.com/kanghg1023/meatmall.git
 			if(ldto.getUser_role().equals("ADMIN")) {
 				qlist = qnaService.AllQuestionList(pnum);
 			}else {
@@ -223,7 +219,7 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 			
 			UserDto ldto=(UserDto)session.getAttribute("ldto");
 			
-			QuestionDto dto = qnaService.Questiondetail(question_num);
+			QnADto dto = qnaService.Questiondetail(question_num);
 			
 			boolean isAnswerdelete = false;
 			
