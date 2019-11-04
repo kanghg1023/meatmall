@@ -2,7 +2,6 @@ package com.hk.meatmall.iservices;
 
 import java.util.List;
 
-import com.hk.meatmall.dtos.Detail_imgDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
@@ -45,9 +44,6 @@ public interface IGoodsService {
 	//상품 추가
 	public boolean insertGoods(GoodsDto gDto);
 		
-	//상품 추가 (상세이미지)
-	public boolean insertDetail_img(Detail_imgDto iDto);
-		
 	//상품 추가 (옵션)
 	public boolean insertGoods_option(Goods_optionDto oDto);
 	
@@ -56,9 +52,6 @@ public interface IGoodsService {
 	
 	//상품 상세
 	public GoodsDto getGoods(int goods_num);
-	
-	//상품 상세 (상세이미지)
-	public Detail_imgDto getDetail_img(int goods_num);
 		
 	//상품 상세 (옵션)
 	public List<Goods_optionDto> getGoods_option(int goods_num);
@@ -71,9 +64,6 @@ public interface IGoodsService {
 	
 	//상품 수정
 	public boolean upGoods(GoodsDto gDto);
-	
-	//상품 수정 (상세 이미지)
-	public boolean upDetail_img(Detail_imgDto iDto);
 	
 	//상품 수정 (옵션)
 	public boolean upGoods_option(Goods_optionDto oDto);

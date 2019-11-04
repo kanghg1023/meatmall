@@ -47,13 +47,12 @@ public class LoginService implements ILoginService {
 	@Transactional
 	@Override
 	public int loginFail(int user_num) {
-		int lfcu = loginDao.loginFailCountUp(user_num);
-		int ll = loginDao.loginLock(user_num);
-		return lfcu+ll;
+		int lfcu = loginDao.loginFail(user_num);
+		return lfcu;
 	}
 
 	@Override
-	public boolean loginRecord(String user_id, String ip, String record_check) {
+	public boolean loginRecord(String user_id, String ip, int record_check) {
 		return loginDao.loginRecord(user_id, ip, record_check);
 	}
 	

@@ -12,9 +12,8 @@ public interface ILoginDao {
 	public boolean idLockCheck(int user_num);
 	public int lockClear(int user_num);
 	public int stopClear(String user_id);
-	public int loginFailCountUp(int user_num);
-	public int loginLock(int user_num);
-	public boolean loginRecord(String user_id, String ip, String record_check);
+	public int loginFail(int user_num);
+	public boolean loginRecord(String user_id, String ip, int record_check);
 	public boolean signUp(UserDto dto);
 	public boolean signUpLog(String user_id);
 	public int nickChk(String user_nick);

@@ -43,5 +43,10 @@ public class UserDto {
 	private String user_role;
 	//계정 제재기한
 	private Date user_stop_date;
+	//로그인 실패횟수
+	private int login_fail_count;
+	//마지막으로 로그인 시도한 시간
+	private Date login_last_try_date;
+
 	
 }

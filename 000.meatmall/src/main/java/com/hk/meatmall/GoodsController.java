@@ -19,9 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.hk.meatmall.dtos.Detail_imgDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
@@ -170,7 +168,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	@RequestMapping(value = "/insertGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String insertAllGoods( Model model
 								, GoodsDto gDto
-								, Detail_imgDto iDto
 								, String[] option_name
 								, int[] option_count
 								, int[] option_weight
@@ -190,9 +187,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}
 
 		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
-		gDto.setGoods_img_thumb("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
 		boolean isInsertGoods = GoodsService.insertGoods(gDto);
-		boolean isInsertImg = GoodsService.insertDetail_img(iDto);
 		
 		boolean isInsertOption = false;
 		
@@ -207,7 +202,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			}
 		}
 				
-		if(isInsertGoods && isInsertImg && isInsertOption) {
+		if(isInsertGoods && isInsertOption) {
 			return "redirect:allGoods.do?pnum=1";
 		}else {
 			model.addAttribute("msg", "추가 실패");
@@ -227,7 +222,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	@RequestMapping(value = "/insertCateGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String insertCateGoods( Model model
 								 , GoodsDto gDto
-								 , Detail_imgDto iDto
 								 , String[] option_name
 								 , int[] option_count
 								 , int[] option_weight
@@ -248,10 +242,8 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}
 
 		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
-		gDto.setGoods_img_thumb("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
 		
 		boolean isS = GoodsService.insertGoods(gDto);
-				isS = GoodsService.insertDetail_img(iDto);
 				
 		for(int i=0;i<option_name.length;i++) {
 			oDto.setOption_name(option_name[i]);
@@ -274,11 +266,9 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		logger.info("전체상품에서 상세");
 		
 		GoodsDto gDto = GoodsService.getGoods(goods_num);
-		Detail_imgDto iDto = GoodsService.getDetail_img(goods_num);
 		List<Goods_optionDto> oDto = GoodsService.getGoods_option(goods_num);
 		
 		model.addAttribute("gDto", gDto);
-		model.addAttribute("iDto", iDto);
 		model.addAttribute("oDto", oDto);
 		return "goodsDetail";
 	}
@@ -288,11 +278,9 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		logger.info("카테고리상품에서 상세");
 		
 		GoodsDto gDto = GoodsService.getGoods(goods_num);
-		Detail_imgDto iDto = GoodsService.getDetail_img(goods_num);
 		List<Goods_optionDto> oDto = GoodsService.getGoods_option(goods_num);
 		
 		model.addAttribute("gDto", gDto);
-		model.addAttribute("iDto", iDto);
 		model.addAttribute("oDto", oDto);
 		return "goodsCateDetail";
 	}
@@ -351,12 +339,10 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		
 		List<Goods_optionDto> oList = GoodsService.kind_num();
 		GoodsDto gDto = GoodsService.getGoods(goods_num);
-		Detail_imgDto iDto = GoodsService.getDetail_img(goods_num);
 		List<Goods_optionDto> oDto = GoodsService.getGoods_option(goods_num);
 		
 		model.addAttribute("oList",oList);
 		model.addAttribute("gDto", gDto);
-		model.addAttribute("iDto", iDto);
 		model.addAttribute("oDto", oDto);
 		return "updateGoods";
 	}
@@ -365,7 +351,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	public String upAllGoods( Model model
 							, HttpServletRequest request
 							, GoodsDto gDto
-							, Detail_imgDto iDto
 							, int[] option_num
 							, String[] option_name
 							, int[] option_count
@@ -387,10 +372,8 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}
 
 		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
-		gDto.setGoods_img_thumb("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
 		
 		boolean isUpGoods = GoodsService.upGoods(gDto);
-		boolean isUpDetail_img = GoodsService.upDetail_img(iDto);
 		boolean isUpOption = false;
 		boolean isInsertOption = false;
 		int i = 0;
@@ -422,7 +405,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			isInsertOption = true;
 		}
 		
-		if(isUpGoods && isUpDetail_img && isUpOption && isInsertOption) {
+		if(isUpGoods && isUpOption && isInsertOption) {
 			return "redirect:goodsDetail.do?goods_num="+gDto.getGoods_num();
 		}else {
 			model.addAttribute("msg", "추가 실패");

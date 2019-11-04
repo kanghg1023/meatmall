@@ -5,23 +5,20 @@
 
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.hk.meatmall.dtos.AnswerDto" alias="AnswerDto" />
 		<typeAlias type="com.hk.meatmall.dtos.BannerDto" alias="BannerDto" />
 		<typeAlias type="com.hk.meatmall.dtos.BasketDto" alias="BasketDto" />
 		<typeAlias type="com.hk.meatmall.dtos.Board_likeDto" alias="Board_likeDto" />
 		<typeAlias type="com.hk.meatmall.dtos.BoardDto" alias="BoardDto" />
 		<typeAlias type="com.hk.meatmall.dtos.CommentDto" alias="CommentDto" />
 		<typeAlias type="com.hk.meatmall.dtos.CouponDto" alias="CouponDto" />
-		<typeAlias type="com.hk.meatmall.dtos.Detail_imgDto" alias="Detail_imgDto" />
 		<typeAlias type="com.hk.meatmall.dtos.FAQDto" alias="FAQDto" />
 		<typeAlias type="com.hk.meatmall.dtos.Goods_kindDto" alias="Goods_kindDto" />
 		<typeAlias type="com.hk.meatmall.dtos.Goods_optionDto" alias="Goods_optionDto" />
 		<typeAlias type="com.hk.meatmall.dtos.GoodsDto" alias="GoodsDto" />
 		<typeAlias type="com.hk.meatmall.dtos.LicenseDto" alias="LicenseDto" />
-		<typeAlias type="com.hk.meatmall.dtos.LoginDto" alias="LoginDto" />
 		<typeAlias type="com.hk.meatmall.dtos.MessageDto" alias="MessageDto" />
 		<typeAlias type="com.hk.meatmall.dtos.OrderDto" alias="OrderDto" />
-		<typeAlias type="com.hk.meatmall.dtos.QuestionDto" alias="QuestionDto" />
+		<typeAlias type="com.hk.meatmall.dtos.QnADto" alias="QnADto" />
 		<typeAlias type="com.hk.meatmall.dtos.RecordDto" alias="RecordDto" />
 		<typeAlias type="com.hk.meatmall.dtos.ReviewDto" alias="ReviewDto" />
 		<typeAlias type="com.hk.meatmall.dtos.SearchDto" alias="SearchDto" />

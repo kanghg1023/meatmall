@@ -13,15 +13,23 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnswerDto {
+public class QnADto {
 	
-	//답변 번호
-	private int answer_num;
 	//문의글 번호
 	private int question_num;
-	//답변 내용
-	private String answer_content;
+	//작성자 번호
+	private int user_num;
+	//질문 제목
+	private String question_title;
+	//질문 상세내용
+	private String question_content;
 	//작성일
+	private Date question_regdate;
+	//답변여부
+	private String question_status;
+	//답변내용
+	private String question_answer;
+	//답변 작성일
 	private Date answer_regdate;
 
 }

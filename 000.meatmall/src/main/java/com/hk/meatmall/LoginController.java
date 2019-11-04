@@ -27,7 +27,7 @@ import com.hk.utils.Util;
 @Controller
 public class LoginController {
 
-private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
 	private ILoginService loginService;
@@ -68,7 +68,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		String user_pw = Util.sha256(pw);
 		
 		//로그인 성공실패여부
-		String record_check = "N";
+		int record_check = 0;
 		
 		if(user_num>0) {
 			//아이디가 존재
@@ -89,7 +89,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 					if(ldto.getUser_stop_date() == null) {
 						//로그인 성공
 						session.setAttribute("ldto", ldto);
-						record_check = "Y";
+						record_check = 1;
 					}else {
 						//정지된 계정
 						String stop_date = Util.dateFormatChange(ldto.getUser_stop_date());
@@ -123,7 +123,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			model.addAttribute("loginError", errorMsg1);
 		}
 		
-		if(record_check.equals("Y")) {
+		if(record_check > 0) {
 			return page;
 		}else {
 			return "loginPage";
@@ -343,4 +343,5 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		
 		return "getAddr";
 	}
+	
 }

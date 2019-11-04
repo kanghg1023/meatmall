@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hk.meatmall.dtos.Detail_imgDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
@@ -91,12 +90,6 @@ public class GoodsService implements IGoodsService {
 		return GoodsDao.insertGoods(gDto);
 	}
 
-	//상품 추가 (상세 이미지)
-	@Override
-	public boolean insertDetail_img(Detail_imgDto iDto) {
-		return GoodsDao.insertDetail_img(iDto);
-	}
-
 	//상품 추가 (옵션)
 	@Override
 	public boolean insertGoods_option(Goods_optionDto oDto) {
@@ -113,12 +106,6 @@ public class GoodsService implements IGoodsService {
 	@Override
 	public GoodsDto getGoods(int goods_num) {
 		return GoodsDao.getGoods(goods_num);
-	}
-	
-	//상품 상세 (상세이미지)
-	@Override
-	public Detail_imgDto getDetail_img(int goods_num) {
-		return GoodsDao.getDetail_img(goods_num);
 	}
 
 	//상품 상세 (옵션)
@@ -143,12 +130,6 @@ public class GoodsService implements IGoodsService {
 	@Override
 	public boolean upGoods(GoodsDto gDto) {
 		return GoodsDao.upGoods(gDto);
-	}
-
-	//상품 수정 (상세 이미지)
-	@Override
-	public boolean upDetail_img(Detail_imgDto iDto) {
-		return GoodsDao.upDetail_img(iDto);
 	}
 
 	//상품 수정 (옵션)

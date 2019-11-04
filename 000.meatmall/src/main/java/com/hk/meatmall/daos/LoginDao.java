@@ -73,22 +73,17 @@ public class LoginDao implements ILoginDao {
 
 	//로그인 실패시 잠금관리 -----
 	@Override
-	public int loginFailCountUp(int user_num) {
-		return sqlSession.update(nameSpace+"loginFailCountUp",user_num);
-	}
-
-	@Override
-	public int loginLock(int user_num) {
-		return sqlSession.update(nameSpace+"loginLock",user_num);
+	public int loginFail(int user_num) {
+		return sqlSession.update(nameSpace+"loginFail",user_num);
 	}
 
 	//로그인 성공실패여부 기록
 	@Override
-	public boolean loginRecord(String user_id, String ip, String record_check) {
+	public boolean loginRecord(String user_id, String ip, int record_check) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("user_id", user_id);
 		map.put("ip", ip);
-		map.put("record_check", record_check);
+		map.put("record_check", String.valueOf(record_check));
 		
 		int count = 0;
 		count = sqlSession.insert(nameSpace+"loginRecord",map);

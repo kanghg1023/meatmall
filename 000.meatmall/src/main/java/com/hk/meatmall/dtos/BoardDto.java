@@ -29,5 +29,7 @@ public class BoardDto {
 	private int board_readcount;
 	//공지글 여부
 	private String board_notice;
-	
+	//삭제여부
+	private int board_delflag;
+
 }

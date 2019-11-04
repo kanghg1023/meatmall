@@ -8,7 +8,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.hk.meatmall.dtos.Detail_imgDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
@@ -114,13 +113,6 @@ public class GoodsDao implements IGoodsDao {
 		return count > 0 ? true:false;
 	}
 
-	//상품 추가 (상세이미지)
-	@Override
-	public boolean insertDetail_img(Detail_imgDto iDto) {
-		int count = sqlSession.insert(nameSpace+"insertDetail_img",iDto);
-		return count > 0 ? true:false;
-	}
-
 	//상품 추가 (옵션)
 	@Override
 	public boolean insertGoods_option(Goods_optionDto oDto) {
@@ -139,12 +131,6 @@ public class GoodsDao implements IGoodsDao {
 	@Override
 	public GoodsDto getGoods(int goods_num) {
 		return sqlSession.selectOne(nameSpace+"getGoods", goods_num);
-	}
-	
-	//상품 상세 (상세이미지)
-	@Override
-	public Detail_imgDto getDetail_img(int goods_num) {
-		return sqlSession.selectOne(nameSpace+"getDetail_img", goods_num);
 	}
 
 	//상품 상세 (옵션)
@@ -180,13 +166,6 @@ public class GoodsDao implements IGoodsDao {
 	@Override
 	public boolean upGoods(GoodsDto gDto) {
 		int count = sqlSession.update(nameSpace+"upGoods", gDto);
-		return count > 0 ? true:false;
-	}
-
-	//상품 수정 (상세 이미지)
-	@Override
-	public boolean upDetail_img(Detail_imgDto iDto) {
-		int count = sqlSession.update(nameSpace+"upDetail_img", iDto);
 		return count > 0 ? true:false;
 	}
 	

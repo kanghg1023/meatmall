@@ -185,16 +185,6 @@
 	  		   , #{goods_img_thumb}
 	   		   )
 	</insert>
-	
-<!-- 상품 추가 (상세 이미지) -->
-	<insert id="insertDetail_img" parameterType="Detail_imgDto">
-		INSERT INTO DETAIL_IMG
-		VALUES (
-				 DETAIL_IMG_SEQ.NEXTVAL
-	   		   , (SELECT MAX(GOODS_NUM) FROM GOODS)
-	  		   , #{detail_img_name}
-	  		   )
-	</insert>
 	 
 <!-- 상품 추가 (옵션) -->
 	<insert id="insertGoods_option" parameterType="Goods_optionDto">
@@ -226,16 +216,6 @@
 			 , GOODS_COST
  		  FROM GOODS
  		 WHERE GOODS_NUM = #{goods_num}
-	</select>
-	
-<!-- 상품 상세 (상세 이미지) -->
-	<select id="getDetail_img" resultType="Detail_imgDto" parameterType="Detail_imgDto">
-		SELECT DETAIL_IMG_NUM
-			 , DETAIL_IMG_NAME
-			 , GOODS_NUM
-  		  FROM DETAIL_IMG
- 		 WHERE GOODS_NUM = #{goods_num}
- 		 ORDER BY DETAIL_IMG_NUM
 	</select>
 	
 <!-- 상품 상세 (옵션) -->
@@ -283,13 +263,6 @@
 			 , GOODS_HISTORY = #{goods_history}
 			 , GOODS_COST = #{goods_cost}
 			 , GOODS_IMG_THUMB = #{goods_img_thumb}
- 		 WHERE GOODS_NUM = #{goods_num}
-	</update>
-	
-<!-- 상품 수정 (상세 이미지) -->
-	<update id="upDetail_img" parameterType="Detail_imgDto">
-		UPDATE DETAIL_IMG
-  		   SET DETAIL_IMG_NAME = #{detail_img_name}
  		 WHERE GOODS_NUM = #{goods_num}
 	</update>
 	

@@ -8,9 +8,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.hk.meatmall.dtos.AnswerDto;
 import com.hk.meatmall.dtos.FAQDto;
-import com.hk.meatmall.dtos.QuestionDto;
+import com.hk.meatmall.dtos.QnADto;
 import com.hk.meatmall.idaos.IQnADao;
 
 @Repository
@@ -56,7 +55,7 @@ public class QnADao implements IQnADao {
 	
 	//1:1문의 글 리스트
 	@Override
-	public List<QuestionDto> getQuestionList(String user_num,String pnum) {
+	public List<QnADto> getQuestionList(String user_num,String pnum) {
 		Map<String, String> map = new HashMap<>();
 		map.put("user_num", String.valueOf(user_num));
 		map.put("pnum",pnum);	
@@ -64,18 +63,18 @@ public class QnADao implements IQnADao {
 	}
 	//1:1문의 글 추가
 	@Override
-	public boolean Questioninsert(QuestionDto dto) {
+	public boolean Questioninsert(QnADto dto) {
 		int count = sqlSession.insert(nameSpace+"questioninsert",dto);
 		return count>0?true:false;
 	}
 	//1:1문의 글 상세보기
 	@Override
-	public QuestionDto Questiondetail(int question_num) {
+	public QnADto Questiondetail(int question_num) {
 		return sqlSession.selectOne(nameSpace+"questiondetail",question_num);
 	}
 	//1:1문의 글 수정하기
 	@Override
-	public boolean Questionupdate(QuestionDto dto) {
+	public boolean Questionupdate(QnADto dto) {
 		int count = sqlSession.update(nameSpace+"questionupdate",dto);
 		return count>0?true:false;
 	}
@@ -92,17 +91,6 @@ public class QnADao implements IQnADao {
 		return count>0?true:false;
 	}
 	
-	//1:1답변 글 추가하기
-	@Override
-	public boolean Answerinsert(AnswerDto dto) {
-		int count = sqlSession.insert(nameSpace+"answerinsert",dto);
-		return count>0?true:false;
-	}
-	//1:1답변 글 상세보기
-	@Override
-	public AnswerDto Answerdetail(int question_num) {
-		return sqlSession.selectOne(nameSpace+"answerdetail",question_num);
-	}
 	//1:1답변글 삭제
 	@Override
 	public boolean Answerdelete(int question_num) {
@@ -118,7 +106,7 @@ public class QnADao implements IQnADao {
 	
 	//1:1 문의 글 전체 리스트(페이징 처리)
 	@Override
-	public List<QuestionDto> AllQuestionList(String pnum) {
+	public List<QnADto> AllQuestionList(String pnum) {
 		Map<String, String> map = new HashMap<>();
 		map.put("pnum", pnum);
 		

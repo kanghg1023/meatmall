@@ -6,9 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hk.meatmall.dtos.AnswerDto;
 import com.hk.meatmall.dtos.FAQDto;
-import com.hk.meatmall.dtos.QuestionDto;
+import com.hk.meatmall.dtos.QnADto;
 import com.hk.meatmall.idaos.IQnADao;
 import com.hk.meatmall.iservices.IQnAService;
 
@@ -49,22 +48,22 @@ public class QnAService implements IQnAService {
 	
 	//1:1문의 글 리스트
 	@Override
-	public List<QuestionDto> getQuestionList(String user_num,String pnum) {
+	public List<QnADto> getQuestionList(String user_num,String pnum) {
 		return qnaDao.getQuestionList(user_num,pnum);
 	}
 	//1:1문의 글 추가
 	@Override
-	public boolean Questioninsert(QuestionDto dto) {
+	public boolean Questioninsert(QnADto dto) {
 		return qnaDao.Questioninsert(dto);
 	}
 	//1:1문의 글 상세보기
 	@Override
-	public QuestionDto Questiondetail(int question_num) {
+	public QnADto Questiondetail(int question_num) {
 		return qnaDao.Questiondetail(question_num);
 	}
 	//1:1문의 글 수정
 	@Override
-	public boolean Questionupdate(QuestionDto dto) {
+	public boolean Questionupdate(QnADto dto) {
 		return qnaDao.Questionupdate(dto);
 	}
 	//1:1문의 글 삭제
@@ -80,16 +79,7 @@ public class QnAService implements IQnAService {
 	
 	
 	
-	//1:1답변 글 추가하기
-	@Override
-	public boolean Answerinsert(AnswerDto dto) {
-		return qnaDao.Answerinsert(dto);
-	}
-	//1:1답변 글 상세보기
-	@Override
-	public AnswerDto Answerdetail(int question_num) {
-		return qnaDao.Answerdetail(question_num);
-	}	
+	
 	//1:1답변 글 삭제
 	@Override
 	public boolean Answerdelete(int question_num) {
@@ -102,7 +92,7 @@ public class QnAService implements IQnAService {
 	}
 	//1:1 문의 글 전체 리스트	
 	@Override
-	public List<QuestionDto> AllQuestionList(String pnum) {
+	public List<QnADto> AllQuestionList(String pnum) {
 		return qnaDao.AllQuestionList(pnum);
 	}
 	//1:1 문의 글 전체 페이지 개수 구하기

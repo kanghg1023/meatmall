@@ -25,17 +25,17 @@ public class GoodsDto {
 	private String goods_doso;
 	//대표이미지 이름
 	private String goods_img_title;
+	//대표이미지 이름
+	private String goods_img_detail;
 	//상품등록한 시간
 	private Date goods_date;
 	//삭제여부
-	private String goods_enabled;
+	private int goods_delflag;
 	//상품 종류
 	private int kind_num;
 	//이력번호
 	private String goods_history;
 	//100g당 가격
 	private int goods_cost;
-	//썸네일이미지 이름
-	private String goods_img_thumb;
 
 }

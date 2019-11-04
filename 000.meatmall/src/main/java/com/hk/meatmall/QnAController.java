@@ -2,7 +2,6 @@ package com.hk.meatmall;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.hk.meatmall.dtos.AnswerDto;
 import com.hk.meatmall.dtos.FAQDto;
-import com.hk.meatmall.dtos.QuestionDto;
+import com.hk.meatmall.dtos.QnADto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.IQnAService;
 import com.hk.utils.Paging;
@@ -127,7 +125,7 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 				request.getSession().setAttribute("pnum", pnum);
 			}
 			
-			List<QuestionDto> qlist = new ArrayList<>();
+			List<QnADto> qlist = new ArrayList<>();
 			if(ldto.getUser_role().equals("ADMIN")) {
 				qlist = qnaService.AllQuestionList(pnum);
 			}else {
@@ -152,7 +150,7 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		}
 		
 		@RequestMapping(value="/questioninsert.do",method= {RequestMethod.POST,RequestMethod.GET})
-		public String Questioninsert(Model model,QuestionDto qdto) {
+		public String Questioninsert(Model model,QnADto qdto) {
 			logger.info("1:1문의 글 추가하기");
 			
 			boolean isInsert=qnaService.Questioninsert(qdto);
@@ -180,11 +178,9 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 				session.setAttribute("readcount", "readcount");
 			}
 			
-			QuestionDto qdto=qnaService.Questiondetail(question_num);
-			AnswerDto adto=qnaService.Answerdetail(question_num);
+			QnADto qdto=qnaService.Questiondetail(question_num);
 			
 			model.addAttribute("qdto",qdto);
-			model.addAttribute("adto",adto);
 			return "Questiondetail";
 		}
 		
@@ -192,14 +188,14 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		public String QnAupdateform(Model model,int question_num) {
 			logger.info("1:1문의글 수정하기 폼");
 			
-			QuestionDto qdto = qnaService.Questiondetail(question_num);
+			QnADto qdto = qnaService.Questiondetail(question_num);
 			
 			model.addAttribute("qdto",qdto);
 			return "Questionupdate"; 
 		}
 		
 		@RequestMapping(value="/questionupdate.do",method= {RequestMethod.POST,RequestMethod.GET})
-		public String Questionupdate(Model model,QuestionDto qdto) {
+		public String Questionupdate(Model model,QnADto qdto) {
 			logger.info("1:1문의글 수정하기");
 			
 			boolean isUpdate=qnaService.Questionupdate(qdto);
@@ -238,10 +234,11 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		}
 		
 		@RequestMapping(value="/answerinsert.do",method= {RequestMethod.POST,RequestMethod.GET})
-		public String Answerinsert(Model model, AnswerDto adto) {
+		public String Answerinsert(Model model, QnADto adto) {
 			logger.info("1:1답변 글 추가하기");
 			
-			boolean isInsert=qnaService.Answerinsert(adto);
+//			boolean isInsert=qnaService.Answerinsert(adto);
+			boolean isInsert=true;
 			boolean isStatusChange=qnaService.StatusChange(adto.getQuestion_num());
 			
 			if(isInsert && isStatusChange) {

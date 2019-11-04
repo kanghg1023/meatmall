@@ -18,12 +18,17 @@ public class MessageDto {
 	//쪽지 번호
 	private int message_num;
 	//보낸사람 아이디
-	private String user_id;
+	private int message_from_num;
 	//받는 사람 번호
 	private int user_num;
 	//쪽지 내용
 	private String message_content;
 	//보낸 날짜
 	private Date message_regdate;
+	//받는쪽 삭제여부
+	private int message_to_delflag;
+	//보낸쪽 삭제여부
+	private int message_from_delflag;
+
 
 }

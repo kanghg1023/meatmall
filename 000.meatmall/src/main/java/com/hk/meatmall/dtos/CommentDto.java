@@ -29,5 +29,7 @@ public class CommentDto {
 	private int comment_refer;
 	//대댓글 구분
 	private String comment_re_check;
+	//삭제여부
+	private int comment_delflag;
 
 }
