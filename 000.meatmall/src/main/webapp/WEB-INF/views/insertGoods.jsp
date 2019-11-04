@@ -9,12 +9,28 @@
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
-<script type="text/javascript" src="js/formCheck.js"></script>
 <style type="text/css">
 	.select_img img {margin:20px;}
 </style>
 <script type="text/javascript">
+
 	$(function(){
+		
+		//필수 입력
+		$("form").submit(function(){
+			var bool = true;
+			var input = $(this).find("td").children().filter("[name]");
+			input.each(function(i){
+				if($(this).val()==""){
+					alert($(this).parent().prev().text()+"를 입력하세요");
+					$(this).focus();
+					bool = false;
+					return false;
+				}
+			});
+			return bool;
+		});
+		
 		//옵션 추가
 		$("#asd").click(function(){
 			var aCount = $("#asd");
@@ -35,14 +51,14 @@
 		
 		//이미지 미리보기
 		$("#gdsImg").change(function(){
-			if(this.files && this.files[0]) {
-				var reader = new FileReader;
-				reader.onload = function(data) {
-					$(".select_img img").attr("src", data.target.result).width(500);        
-				}
-				reader.readAsDataURL(this.files[0]);
-			}
-		});
+			   if(this.files && this.files[0]) {
+			    var reader = new FileReader;
+			    reader.onload = function(data) {
+			     $(".select_img img").attr("src", data.target.result).width(500);        
+			    }
+			    reader.readAsDataURL(this.files[0]);
+			   }
+			  });
 	});
 </script>
 </head>
@@ -77,7 +93,7 @@
  				<label for="gdsImg">이미지</label>
  				<input type="file" id="gdsImg" name="file" />
  				<div class="select_img">
- 					<img src="" />
+ 				<img src="" />
  				</div>
 			</div>
 		</td>
@@ -85,11 +101,11 @@
 	<tr>
 		<th>상품종류</th>
 		<td>
-			<c:if test="${!empty oList}" >
+			<c:if test="${!empty kList}" >
   				<select name="kind_num" style="width:80px;">
   					<option>부위 선택</option>
-      				<c:forEach var="oList" items="${oList}" varStatus="i">
-         				<option value="${oList.kind_num}">${oList.kind_name}</option>
+      				<c:forEach var="kList" items="${kList}" varStatus="i">
+         				<option value="${kList.kind_num}">${kList.kind_name}</option>
       				</c:forEach>
    				</select>
    			</c:if>	
@@ -104,8 +120,8 @@
 		<td><input type="text" name="goods_cost" /></td>
 	</tr>
 	<tr>
-		<th>상세이미지 이름</th>
-		<td><input type="text" name="detail_img_name" /></td>
+		<th>상세이미지</th>
+		<td><input type="text" name="goods_img_detail" /></td>
 	</tr>
 	<tr>
 		<td colspan="2">

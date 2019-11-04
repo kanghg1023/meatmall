@@ -5,16 +5,15 @@
 
 <mapper namespace="com.goods">
 
-<!-- 전체 상품 + 페이징 --> 
+<!-- 전체 상품 + 페이징 -->
 	<select id="allGoods" resultType="GoodsDto" parameterType="String">
 		SELECT GOODS_NUM
 	   		 , GOODS_TITLE
 	   		 , USER_NUM
 	   		 , GOODS_DOSO
 	   		 , GOODS_IMG_TITLE
-	   		 , GOODS_ENABLED
+	   		 , GOODS_DELFLAG
 	   		 , GOODS_COST
-	   		 , GOODS_IMG_THUMB
      	  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
@@ -22,9 +21,8 @@
 	   				  , USER_NUM
 	   				  , GOODS_DOSO
 	   				  , GOODS_IMG_TITLE
-	   				  , GOODS_ENABLED
+	   				  , GOODS_DELFLAG
 	   				  , GOODS_COST
-	   				  , GOODS_IMG_THUMB
 		           FROM GOODS
 		       )
 		 WHERE CEIL(RN/6) = #{pnum}
@@ -37,9 +35,8 @@
 	   		 , USER_NUM
 	   		 , GOODS_DOSO
 	   		 , GOODS_IMG_TITLE
-	   		 , GOODS_ENABLED
+	   		 , GOODS_DELFLAG
 	   		 , GOODS_COST
-	   		 , GOODS_IMG_THUMB
      	  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
@@ -47,11 +44,10 @@
 	   				  , USER_NUM
 	   				  , GOODS_DOSO
 	   				  , GOODS_IMG_TITLE
-	   				  , GOODS_ENABLED
+	   				  , GOODS_DELFLAG
 	   				  , GOODS_COST
-	   				  , GOODS_IMG_THUMB
 		           FROM GOODS
-		          WHERE GOODS_ENABLED = 'Y'
+		          WHERE GOODS_DELFLAG = 1
 		       )
 		 WHERE CEIL(RN/6) = #{pnum}
 	</select>	
@@ -66,7 +62,7 @@
 	<select id="enabledPcount" resultType="int">
 		SELECT CEIL(COUNT(*)/6)
 		  FROM GOODS
-		 WHERE GOODS_ENABLED = 'Y'
+		 WHERE GOODS_DELFLAG = 1
 	</select>
 
 <!-- 부위별 카테고리 -->
@@ -102,10 +98,9 @@
 			 , USER_NUM
 			 , GOODS_DOSO
 			 , GOODS_IMG_TITLE
-			 , GOODS_ENABLED
+			 , GOODS_DELFLAG
 			 , KIND_NUM
 			 , GOODS_COST
-			 , GOODS_IMG_THUMB
  		  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
@@ -113,10 +108,9 @@
 	   				  , USER_NUM
 	   				  , GOODS_DOSO
 	   				  , GOODS_IMG_TITLE
-	   				  , GOODS_ENABLED
+	   				  , GOODS_DELFLAG
 	   				  , KIND_NUM
 	   				  , GOODS_COST  
-	   				  , GOODS_IMG_THUMB  
 		           FROM GOODS
 		          WHERE KIND_NUM = #{kind_num} 
 		       )
@@ -130,10 +124,9 @@
 	   		 , USER_NUM
 	   		 , GOODS_DOSO
 	   		 , GOODS_IMG_TITLE
-	   		 , GOODS_ENABLED
+	   		 , GOODS_DELFLAG
 	   		 , KIND_NUM
 	   		 , GOODS_COST
-	   		 , GOODS_IMG_THUMB
      	  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
@@ -141,12 +134,11 @@
 	   				  , USER_NUM
 	   				  , GOODS_DOSO
 	   				  , GOODS_IMG_TITLE
-	   				  , GOODS_ENABLED
+	   				  , GOODS_DELFLAG
 	   				  , KIND_NUM
 	   				  , GOODS_COST 
-	   				  , GOODS_IMG_THUMB   
 		           FROM GOODS
-		          WHERE GOODS_ENABLED = 'Y'
+		          WHERE GOODS_DELFLAG = 1
 		            AND KIND_NUM = #{kind_num}
 		       )
 		   WHERE CEIL(RN/6) = #{pnum}
@@ -165,7 +157,7 @@
 	<!-- 카테고리 페이지 수 (삭제여부) -->        
 	<select id="enabledCatePcount" resultType="int" parameterType="String">
 		<include refid="pcount" />
-		   AND GOODS_ENABLED = 'Y'
+		   AND GOODS_DELFLAG = 1
 	</select>	
 	
 <!-- 상품 추가 -->
@@ -177,12 +169,12 @@
 	   		   , #{user_num}
 	  		   , #{goods_doso}
 	  		   , #{goods_img_title}
+	  		   , #{goods_img_detail}
 	  		   , SYSDATE
-	  		   , 'Y'
+	  		   , 1
 	  		   , #{kind_num}
 	  		   , #{goods_history}
 	  		   , #{goods_cost}
-	  		   , #{goods_img_thumb}
 	   		   )
 	</insert>
 	 
@@ -211,12 +203,14 @@
 	 		 , GOODS_TITLE
 			 , USER_NUM
 			 , GOODS_IMG_TITLE
+			 , GOODS_IMG_DETAIL
 			 , KIND_NUM
 			 , GOODS_HISTORY
 			 , GOODS_COST
  		  FROM GOODS
  		 WHERE GOODS_NUM = #{goods_num}
 	</select>
+	
 	
 <!-- 상품 상세 (옵션) -->
 	<select id="getGoods_option" resultType="Goods_optionDto" parameterType="Goods_optionDto">
@@ -233,7 +227,7 @@
 <!-- 전체 상품에서 삭제 -->
 	<update id="delGoods" parameterType="Map">
 		UPDATE GOODS
- 		   SET GOODS_ENABLED='N'
+ 		   SET GOODS_DELFLAG = 0
  		 WHERE GOODS_NUM IN
  		 <foreach collection="chk" item="goods_num" open="(" close=")" separator=",">
 			   #{goods_num}
@@ -243,7 +237,7 @@
 <!-- 카테고리 상품에서 삭제 -->
 	<update id="delCateGoods" parameterType="Map">
 		UPDATE GOODS
- 		   SET GOODS_ENABLED='N'
+ 		   SET GOODS_DELFLAG = 0
  		 WHERE GOODS_NUM IN
  		 <foreach collection="chk" item="goods_num" open="(" close=")" separator=",">
 			   #{goods_num}
@@ -257,12 +251,12 @@
   		   SET GOODS_TITLE = #{goods_title}
 			 , GOODS_DOSO = #{goods_doso}
 			 , GOODS_IMG_TITLE = #{goods_img_title}
+			 , GOODS_IMG_DETAIL = #{goods_img_detail}
 			 , GOODS_DATE = SYSDATE
-	  		 , GOODS_ENABLED = 'Y'
+	  		 , GOODS_DELFLAG = 1
 			 , KIND_NUM = #{kind_num}
 			 , GOODS_HISTORY = #{goods_history}
 			 , GOODS_COST = #{goods_cost}
-			 , GOODS_IMG_THUMB = #{goods_img_thumb}
  		 WHERE GOODS_NUM = #{goods_num}
 	</update>
 	

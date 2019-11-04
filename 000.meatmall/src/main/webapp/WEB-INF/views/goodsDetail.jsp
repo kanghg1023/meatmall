@@ -10,7 +10,7 @@
 </head>
 <body>
 <h1>상품 상세</h1>
-<div> 
+<div>
 <table border="1">
 	<col width="150px" />
 	<col width="400px" />
@@ -21,8 +21,8 @@
 		</td>
 	</tr>
 	<tr>
-		<th>대표이미지 이름</th>
-		<td><img src="${gDto.goods_img_title}" ></td>
+		<th>대표이미지</th>
+		<td><img src="${gDto.goods_img_title}"  style="width:400px; height:380px;" ></td>
 	</tr>
 	<tr>
 		<th>판매자</th>
@@ -55,17 +55,15 @@
 	<tr>
 		<td colspan="2" align="right">
 			<button onclick="">바로구매</button>
-			<button onclick="">장바구니</button>
-			<button 
+				<button onclick="">장바구니</button>
+				<button 
 				onclick="window.open
 				('https://www.mtrace.go.kr/mtracesearch/cattleNoSearch.do?btsProgNo=0109008401&btsActionMethod=SELECT&cattleNo=002117250633'
 				,'beef traceability system','width=800px,height=900px,location=no,status=no,scrollbars=no')">축산물이력정보</button>
-			<button onclick="location.href='allGoods.do?pnum=${pnum}'">제품목록</button>
-		</td>
-	</tr>
+				<button onclick="location.href='allGoods.do?pnum=${pnum}'">제품목록</button>
 	<tr>
-		<th>상품 상세보기</th>
-		<td><textarea rows="10" cols="60" readonly="readonly">${iDto.detail_img_name}</textarea></td>
+		<th>상세이미지</th>
+		<td><textarea rows="10" cols="60" readonly="readonly">${gDto.goods_img_detail}</textarea></td>
 	</tr>
 	<tr>
 		<th>후기</th>

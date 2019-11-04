@@ -14,7 +14,7 @@ import com.hk.meatmall.dtos.Goods_optionDto;
 import com.hk.meatmall.idaos.IGoodsDao;
 
 @Repository
-public class GoodsDao implements IGoodsDao { 
+public class GoodsDao implements IGoodsDao {
 
 	private String nameSpace="com.goods.";
 	
@@ -122,7 +122,7 @@ public class GoodsDao implements IGoodsDao {
 	
 	//상품 추가 (부위 선택)
 	@Override
-	public List<Goods_optionDto> kind_num() {
+	public List<Goods_kindDto> kind_num() {
 		return sqlSession.selectList(nameSpace+"kind_num");
 	}
 
@@ -132,7 +132,7 @@ public class GoodsDao implements IGoodsDao {
 	public GoodsDto getGoods(int goods_num) {
 		return sqlSession.selectOne(nameSpace+"getGoods", goods_num);
 	}
-
+	
 	//상품 상세 (옵션)
 	@Override
 	public List<Goods_optionDto> getGoods_option(int goods_num) {
@@ -168,7 +168,7 @@ public class GoodsDao implements IGoodsDao {
 		int count = sqlSession.update(nameSpace+"upGoods", gDto);
 		return count > 0 ? true:false;
 	}
-	
+
 	//상품 수정 (옵션)
 	@Override
 	public boolean upGoods_option(Goods_optionDto oDto) {

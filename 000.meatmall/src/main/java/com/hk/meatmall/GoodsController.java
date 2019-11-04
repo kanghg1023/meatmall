@@ -159,9 +159,9 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	public String insertForm(Model model) {
 		logger.info("추가 폼으로");
 		
-		List<Goods_optionDto> oList = GoodsService.kind_num();
+		List<Goods_kindDto> kList = GoodsService.kind_num();
 		
-		model.addAttribute("oList",oList);
+		model.addAttribute("kList",kList);
 		return "insertGoods";
 	}
 	
@@ -337,11 +337,11 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	public String upAllGoodsForm(Model model, int goods_num) {
 		logger.info("전체상품에서 수정 폼");
 		
-		List<Goods_optionDto> oList = GoodsService.kind_num();
+		List<Goods_kindDto> kList = GoodsService.kind_num();
 		GoodsDto gDto = GoodsService.getGoods(goods_num);
 		List<Goods_optionDto> oDto = GoodsService.getGoods_option(goods_num);
 		
-		model.addAttribute("oList",oList);
+		model.addAttribute("kList",kList);
 		model.addAttribute("gDto", gDto);
 		model.addAttribute("oDto", oDto);
 		return "updateGoods";

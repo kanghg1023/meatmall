@@ -15,7 +15,7 @@ import com.hk.meatmall.iservices.IGoodsService;
 public class GoodsService implements IGoodsService {
 
 	@Autowired
-	private IGoodsDao GoodsDao; 
+	private IGoodsDao GoodsDao;
 	
 	//전체 상품 + 페이징
 	@Override
@@ -98,7 +98,7 @@ public class GoodsService implements IGoodsService {
 	
 	//상품 추가 (부위 선택)
 	@Override
-	public List<Goods_optionDto> kind_num() {
+	public List<Goods_kindDto> kind_num() {
 		return GoodsDao.kind_num();
 	}
 
