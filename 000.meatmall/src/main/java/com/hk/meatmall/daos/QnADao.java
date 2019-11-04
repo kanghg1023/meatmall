@@ -28,29 +28,27 @@ public class QnADao implements IQnADao {
 	//자주묻는질문 글추가
 	@Override
 	public boolean FAQinsertBoard(FAQDto dto) {
-		int count = sqlSession.insert(nameSpace+"faqinsertboard",dto);
+		int count = sqlSession.insert(nameSpace+"FAQinsertBoard",dto);
 		return count>0?true:false;
 	}
 	//자주묻는질문 글 수정
 	@Override
 	public boolean FAQupdateBoard(FAQDto dto) {
-		int count = sqlSession.update(nameSpace+"faqupdateboard",dto);
+		int count = sqlSession.update(nameSpace+"FAQupdateBoard",dto);
 		return count>0?true:false;
 	}
 	//자주묻는질문 상세보기
 	@Override
 	public FAQDto FAQdetail(int faq_num) {
-		return sqlSession.selectOne(nameSpace+"faqdetail",faq_num);
+		return sqlSession.selectOne(nameSpace+"FAQdetail",faq_num);
 	}
 	
 	//자주묻는질문 글 삭제
 	@Override
 	public boolean FAQdelBoard(int faq_num) {
-		int count=sqlSession.delete(nameSpace+"faqdelboard",faq_num);
+		int count=sqlSession.delete(nameSpace+"FAQdelBoard",faq_num);
 		return count>0?true:false;
 	}
-	
-	
 	
 	
 	//1:1문의 글 리스트
@@ -59,49 +57,44 @@ public class QnADao implements IQnADao {
 		Map<String, String> map = new HashMap<>();
 		map.put("user_num", String.valueOf(user_num));
 		map.put("pnum",pnum);	
- 		return sqlSession.selectList(nameSpace+"questionlist",map);		
+ 		return sqlSession.selectList(nameSpace+"getQuestionList",map);		
 	}
 	//1:1문의 글 추가
 	@Override
 	public boolean Questioninsert(QnADto dto) {
-		int count = sqlSession.insert(nameSpace+"questioninsert",dto);
+		int count = sqlSession.insert(nameSpace+"Questioninsert",dto);
 		return count>0?true:false;
 	}
 	//1:1문의 글 상세보기
 	@Override
 	public QnADto Questiondetail(int question_num) {
-		return sqlSession.selectOne(nameSpace+"questiondetail",question_num);
+		return sqlSession.selectOne(nameSpace+"Questiondetail",question_num);
 	}
 	//1:1문의 글 수정하기
 	@Override
 	public boolean Questionupdate(QnADto dto) {
-		int count = sqlSession.update(nameSpace+"questionupdate",dto);
+		int count = sqlSession.update(nameSpace+"Questionupdate",dto);
 		return count>0?true:false;
 	}
 	//1:1문의 글 삭제하기
 	@Override
 	public boolean Questiondelete(int question_num) {
-		int count=sqlSession.delete(nameSpace+"questiondelete",question_num);
-		return count>0?true:false;
-	}
-	//1:1문의 글 조회 수
-	@Override
-	public boolean QuestionreadCount(int question_num) {
-		int count=sqlSession.update(nameSpace+"questionreadcount",question_num);
+		int count=sqlSession.delete(nameSpace+"Questiondelete",question_num);
 		return count>0?true:false;
 	}
 	
-	//1:1답변글 삭제
+	//답변달기
 	@Override
-	public boolean Answerdelete(int question_num) {
-		int count=sqlSession.delete(nameSpace+"answerdelete",question_num);
-		return count>0?true:false;
+	public boolean Answerinsert(QnADto dto) {
+		int count = sqlSession.update(nameSpace+"Answerinsert",dto);
+		return count>0 ? true : false;
 	}
+	
 	//답변완료시 답변상태 변경
 	@Override
 	public boolean StatusChange(int question_num) {
-		int count = sqlSession.update(nameSpace+"statuschange",question_num);
-		return count>0?true:false;
+		int count = sqlSession.update(nameSpace+"StatusChange",question_num);
+		return count>0 ? true : false;
 	}
 	
 	//1:1 문의 글 전체 리스트(페이징 처리)
@@ -110,19 +103,20 @@ public class QnADao implements IQnADao {
 		Map<String, String> map = new HashMap<>();
 		map.put("pnum", pnum);
 		
-		return sqlSession.selectList(nameSpace+"questionlist",map);		
+		return sqlSession.selectList(nameSpace+"getQuestionList",map);		
 	}
 	
 	@Override
 	//1:1 전체 문의 글 리스트  페이지 개수 구하기
 	public int QnAPcount() {
-		return sqlSession.selectOne(nameSpace+"qnapcount");
+		return sqlSession.selectOne(nameSpace+"QnAPcount");
 	}
 	@Override
 	//1:1 자신의 문의 글 리스트 페이지 개수 구하기
-	public int QnAPPcount(int user_num) {
-		return sqlSession.selectOne(nameSpace+"qnappcount",user_num);
+	public int QnAUserPcount(int user_num) {
+		return sqlSession.selectOne(nameSpace+"QnAUserPcount",user_num);
 	}
+	
 	
 	
 

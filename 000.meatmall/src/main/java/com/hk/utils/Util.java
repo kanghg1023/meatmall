@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 import org.apache.commons.mail.HtmlEmail;
 
@@ -86,5 +87,10 @@ public class Util {
 			e.printStackTrace();
 		}
 	}
+	
+	//랜덤한 값 32자리 만드는 메서드
+	public static String createUUId() {
+		return UUID.randomUUID().toString().replaceAll("-", "") ;
+    }
 	
 }

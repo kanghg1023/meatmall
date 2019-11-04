@@ -71,19 +71,11 @@ public class QnAService implements IQnAService {
 	public boolean Questiondelete(int question_num) {
 		return qnaDao.Questiondelete(question_num);
 	}
-	////1:1문의 글 조회수
+	
+	//답변달기
 	@Override
-	public boolean QuestionreadCount(int question_num) {
-		return qnaDao.QuestionreadCount(question_num);
-	}
-	
-	
-	
-	
-	//1:1답변 글 삭제
-	@Override
-	public boolean Answerdelete(int question_num) {
-		return qnaDao.Answerdelete(question_num);
+	public boolean Answerinsert(QnADto dto) {
+		return qnaDao.Answerinsert(dto);
 	}
 	//답변완료시 답변상태 변경
 	@Override
@@ -102,9 +94,10 @@ public class QnAService implements IQnAService {
 	}
 	//자신의 문의 글 리스트 페이지 개수 구하기
 	@Override
-	public int QnAPPcount(int user_num) {
-		return qnaDao.QnAPPcount(user_num);
+	public int QnAUserPcount(int user_num) {
+		return qnaDao.QnAUserPcount(user_num);
 	}
+	
 	
 	
 }

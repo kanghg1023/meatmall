@@ -7,6 +7,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style type="text/css">
+a.underline:link    { text-decoration:none }
+a.underline:visited { text-decoration:none }
+a.underline:hover   { text-decoration:underline }
+a.underline:active  { text-decoration:none }
+</style>
 <title></title>
 </head>
 <body>
@@ -18,8 +24,9 @@
 	<col width="100px" />
 	<col width="100px" />
 	<col width="300px" />
-	<col width="100px" />
-	<col width="70px" />
+	<col width="130px" />
+	<col width="90px" />
+	
 	<tr>
 		<th>문의글 번호</th>
 		<th>작성자</th>
@@ -38,35 +45,39 @@
 				<tr>
 					<td>${dto.question_num}</td>
 					<td>${dto.user_num}</td>
-					<td><a href="questiondetail.do?question_num=${dto.question_num}">${dto.question_title}</a></td>
+					<td><a href="questiondetail.do?question_num=${dto.question_num}" class="underline">${dto.question_title}</a></td>
 					<td><fmt:formatDate value="${dto.question_regdate}" pattern="yyyy년MM월dd일"/></td>
 					<c:choose>
-						<c:when test="${dto.question_status eq 'Y'}">
+						<c:when test="${dto.question_status == 2}">
 							<td>답변완료</td>
 						</c:when>
-						<c:when test="${dto.question_status eq 'N' && dto.question_readcount>0}">
+						<c:when test="${dto.question_status == 1}">
 							<td>처리중</td>
 						</c:when>
-						<c:when test="${dto.question_status eq 'N' && dto.question_readcount==0}">
-							<td>답변대기중</td>
+						<c:when test="${dto.question_status == 0}">
+							<td>접수중</td>
 						</c:when>
 					</c:choose>	
 				</tr>			
 			</c:forEach>
 			<tr>
 				<td colspan="5" style="text-align: center;">
-					<a href="questionlist.do?pnum=${qmap.prePageNum}">◀</a>
+					<c:if test="${pnum != 1}">
+						<a href="questionlist.do?pnum=${qmap.prePageNum}" class="underline">◀</a>
+					</c:if>
 					<c:forEach var="i" begin="${qmap.startPage}" end="${qmap.endPage}" step="1" >
 					<c:choose>
 						<c:when test="${pnum eq i}">
 							${i}
 						</c:when>
 						<c:otherwise>
-							<a href="questionlist.do?pnum=${i}" style="text-decoration: none">${i}</a>
+							<a href="questionlist.do?pnum=${i}" style="text-decoration: none" class="underline">${i}</a>
 						</c:otherwise>
 					</c:choose>
 					</c:forEach>
-					<a href="questionlist.do?pnum=${qmap.nextPageNum}">▶</a>
+					<c:if test="${pnum < qmap.pcount}">
+						<a href="questionlist.do?pnum=${qmap.nextPageNum}" class="underline">▶</a>
+					</c:if>
 				</td>
 			</tr>
 		</c:otherwise>

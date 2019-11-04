@@ -5,7 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title></title>
+<!-- ckeditor 사용을 위해 js 파일 연결 -->
+<script type="text/javascript" src="/meatmall/ckeditor/ckeditor.js"></script>
 </head>
 <body>
 <form action="questionupdate.do" method="post">
@@ -17,7 +19,7 @@
 		</tr>
 		<tr>
 			<th>문의내용</th>
-			<td><textarea rows="10" cols="60" name="question_content">${qdto.question_content}</textarea> </td>
+			<td><textarea name="question_content" id="ckeditor">${qdto.question_content}</textarea></td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -26,5 +28,12 @@
 		</tr>
 	</table>
 </form>
+<script>
+//id가 ckeditor인 태그에 ckeditor를 적용시킴
+CKEDITOR.replace("ckeditor",{
+    filebrowserUploadUrl : "/meatmall"+"/imageUpload.do",			//,width : '800px'
+    width : '800px' , height : '500px'
+}); //이미지 업로드 기능을 추가하기위한 코드
+</script>
 </body>
 </html>

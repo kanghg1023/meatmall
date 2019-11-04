@@ -30,6 +30,7 @@ public class Paging {
 		int startPage=pageEndNum-(pageRange-1);
 		int endPage=pageEndNum>pcount?pcount:pageEndNum;
 		
+		map.put("pcount", pcount);
 		map.put("prePageNum", prePageNum);
 		map.put("nextPageNum", nextPageNum);
 		map.put("startPage", startPage);

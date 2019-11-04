@@ -1,10 +1,16 @@
 package com.hk.meatmall;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -14,12 +20,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hk.meatmall.dtos.FAQDto;
 import com.hk.meatmall.dtos.QnADto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.IQnAService;
 import com.hk.utils.Paging;
+import com.hk.utils.Util;
 
 @Controller
 public class QnAController {
@@ -81,7 +91,7 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		
 		@RequestMapping(value="/faqupdateboard.do",method= {RequestMethod.POST,RequestMethod.GET})
 		public String updateboard(Model model, FAQDto fdto) {
-			logger.info("글 수정하기");
+			logger.info("자주묻는글 수정하기");
 			
 			boolean isUpdate = qnaService.FAQupdateBoard(fdto);
 			
@@ -118,23 +128,34 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 			
 			UserDto ldto = (UserDto)session.getAttribute("ldto");
 			
-			request.getSession().removeAttribute("readcount");
 			if(pnum==null) {
-				pnum=(String)request.getSession().getAttribute("pnum");
+				pnum=(String)session.getAttribute("pnum");
 			}else {
-				request.getSession().setAttribute("pnum", pnum);
+				session.setAttribute("pnum", pnum);
 			}
 			
 			List<QnADto> qlist = new ArrayList<>();
 			
-			if(ldto.getUser_role().equals("ADMIN")) {
-				qlist = qnaService.AllQuestionList(pnum);
-			}else {
-				String user_num = String.valueOf(ldto.getUser_num());
-				qlist = qnaService.getQuestionList(user_num,pnum);
+			boolean isList = true;
+			int p = Integer.parseInt(pnum);
+			
+			while(isList) {
+				if(ldto.getUser_role().equals("ADMIN")) {
+					qlist = qnaService.AllQuestionList(String.valueOf(p));
+				}else {
+					String user_num = String.valueOf(ldto.getUser_num());
+					qlist = qnaService.getQuestionList(user_num,String.valueOf(p));
+				}
+				
+				if((qlist.size()>0) || (p==1 && qlist.size()==0)) {
+					isList = false;
+				}else {
+					pnum = String.valueOf(--p);
+					session.setAttribute("pnum", pnum);
+				}
 			}
 			
-			int pcount=qnaService.QnAPPcount(ldto.getUser_num());
+			int pcount=qnaService.QnAPcount();
 			Map<String, Integer> qmap=Paging.pagingValue(pcount, pnum, 5);
 			
 			model.addAttribute("qmap",qmap);
@@ -144,9 +165,9 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		}
 		
 		@RequestMapping(value="/questioninsertform.do",method= {RequestMethod.POST,RequestMethod.GET})
-		public String Questioninsertform() {
+		public String Questioninsertform(Model model) {
 			logger.info("1:1문의 글쓰기 폼");
-			
+
 			return "Questioninsert";
 		}
 		
@@ -155,7 +176,6 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 			logger.info("1:1문의 글 추가하기");
 			
 			boolean isInsert=qnaService.Questioninsert(qdto);
-			
 			if(isInsert) {
 				return "redirect:questionlist.do?user_num="+qdto.getUser_num();
 			}else {
@@ -166,20 +186,19 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		}
 	
 		@RequestMapping(value="/questiondetail.do",method= {RequestMethod.POST,RequestMethod.GET})
-		public String Questiondetail(HttpServletRequest request,Model model,int question_num) {
+		public String Questiondetail( HttpServletRequest request
+									, Model model
+									, int question_num) {
 			logger.info("1:1문의글상세보기");
 			
-			HttpSession session=request.getSession();
-			
-			String readcount = (String)session.getAttribute("readcount");
+			HttpSession session = request.getSession();
 			UserDto ldto = (UserDto)session.getAttribute("ldto");
 			
-			if(readcount==null && ldto.getUser_role().equals("ADMIN")) {
-				qnaService.QuestionreadCount(question_num);
-				session.setAttribute("readcount", "readcount");
-			}
-			
 			QnADto qdto=qnaService.Questiondetail(question_num);
+			
+			if(qdto.getQuestion_status()==0 && ldto.getUser_role().equals("ADMIN")) {
+				qnaService.StatusChange(question_num);
+			}
 			
 			model.addAttribute("qdto",qdto);
 			return "Questiondetail";
@@ -218,20 +237,10 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 			HttpSession session=request.getSession();
 			
 			UserDto ldto=(UserDto)session.getAttribute("ldto");
-			
-			QnADto dto = qnaService.Questiondetail(question_num);
-			
-			boolean isAnswerdelete = false;
-			
-			if(dto.getQuestion_status().equals("Y")) {
-				isAnswerdelete = qnaService.Answerdelete(question_num);
-			}else {
-				isAnswerdelete = true;
-			}
+				
 			boolean isQuestiondelete=qnaService.Questiondelete(question_num);
-			
-			
-			if(isQuestiondelete && isAnswerdelete) {
+				
+			if(isQuestiondelete) {
 				if(ldto.getUser_role().equals("ADMIN")) {
 					return "redirect:questionlist.do";
 				}else {
@@ -245,20 +254,61 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		}
 		
 		@RequestMapping(value="/answerinsert.do",method= {RequestMethod.POST,RequestMethod.GET})
-		public String Answerinsert(Model model, QnADto adto) {
+		public String Answerinsert(Model model, QnADto qdto) {
 			logger.info("1:1답변 글 추가하기");
 			
-//			boolean isInsert=qnaService.Answerinsert(adto);
-			boolean isInsert=true;
-			boolean isStatusChange=qnaService.StatusChange(adto.getQuestion_num());
+			boolean isInsert=qnaService.Answerinsert(qdto);
 			
-			if(isInsert && isStatusChange) {
-				return "redirect:questiondetail.do?question_num="+adto.getQuestion_num();
+			if(isInsert) {
+				return "redirect:questiondetail.do?question_num="+qdto.getQuestion_num();
 			}else {
 				model.addAttribute("msg","1:1답변 추가 실패");
-				model.addAttribute("url","questiondetail.do?question_num="+adto.getQuestion_num());
+				model.addAttribute("url","questiondetail.do?question_num="+qdto.getQuestion_num());
 				return "error";
 			}
-		}	
+		}
+		
+		@ResponseBody
+		@RequestMapping(value = "/imageUpload.do",method= {RequestMethod.POST})
+		public String communityImageUpload(HttpServletRequest request, HttpServletResponse response, @RequestParam MultipartFile upload) throws Exception {
+			System.out.println("들어는옴");
+			//한글깨짐을 방지하기위해 문자셋 설정
+			response.setCharacterEncoding("utf-8");
+		 
+		        // 마찬가지로 파라미터로 전달되는 response 객체의 한글 설정
+		        response.setContentType("text/html; charset=utf-8");
+		 
+		        // 업로드한 파일 이름
+		        String fileName = upload.getOriginalFilename();
+		       
+		        String stored_fname = Util.createUUId()
+				         +(fileName.substring(fileName.lastIndexOf(".")));
+		        // 파일을 바이트 배열로 변환
+		        byte[] bytes = upload.getBytes();
+		 
+		        // 이미지를 업로드할 디렉토리(배포 디렉토리로 설정)
+//		        String uploadPath ="D:\\java_lec_2class\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\000.meatmall4ck\\images\\";
+//		        String uploadPath ="D:\\eclips\\딱따구리\\000.meatmalltest\\src\\main\\webapp\\resources\\ckimages\\";
+		        String uploadPath ="C:\\Users\\HKEDU\\git\\meatmall\\000.meatmall\\src\\main\\webapp\\resources\\ckimages\\";
+		        OutputStream out = new FileOutputStream(new File(uploadPath + stored_fname));
+		        
+		        // 서버로 업로드
+		        // write메소드의 매개값으로 파일의 총 바이트를 매개값으로 준다.
+		        // 지정된 바이트를 출력 스트립에 쓴다 (출력하기 위해서)
+		        out.write(bytes);
+		        	        
+		        // 서버=>클라이언트로 텍스트 전송(자바스크립트 실행)
+		        PrintWriter printWriter = response.getWriter();
+		        
+		        String fileUrl = "/meatmall/ckimages/" + stored_fname;	     
+		        System.out.println(fileUrl);
+		        printWriter.println("{\"fileName\" : \""+stored_fname+"\", \"uploaded\" : 1, \"url\":\""+fileUrl+"\"}");     
+		        printWriter.flush();
+		        out.close();
+		        printWriter.close(); 
+		        return null;
+		    }	
+		 
+			
 		
 }

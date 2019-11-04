@@ -29,11 +29,9 @@ public interface IQnADao {
 	public boolean Questionupdate(QnADto dto);
 	//1:1문의 글 삭제하기
 	public boolean Questiondelete(int question_num);
-	//1:1문의 글 조회수
-	public boolean QuestionreadCount(int question_num);
 	
-	//1:1답변 글 삭제
-	public boolean Answerdelete(int question_num);
+	//답변달기
+	public boolean Answerinsert(QnADto dto);
 	//답변완료시 답변상태 변경
 	public boolean StatusChange(int question_num);
 	//1:1 문의 글 전체 리스트(페이징 처리)
@@ -41,6 +39,6 @@ public interface IQnADao {
 	//1:1 문의 글 전체 리스트 페이지 개수 구하기
 	public int QnAPcount();
 	//1:1 자신의 문의 글 리스트 페이지 개수 구하기
-	public int QnAPPcount(int user_num);
+	public int QnAUserPcount(int user_num);
 	
 }

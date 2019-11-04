@@ -17,12 +17,12 @@
 	     ORDER BY FAQ_NUM DESC
 	</select>
 	
-	<select id="faqdetail" resultType="FAQDto">
+	<select id="FAQdetail" resultType="FAQDto">
 		<include refid="selectFAQ"></include>
 	     WHERE FAQ_NUM = #{faq_num}
 	</select>
 	
-	<insert id="faqinsertboard" parameterType="FAQDto">
+	<insert id="FAQinsertBoard" parameterType="FAQDto">
 		INSERT INTO FAQ
 		VALUES (
 			   FAQ_SEQ.NEXTVAL
@@ -31,36 +31,38 @@
 	   		   )
 	</insert>
 	
-	<update id="faqupdateboard" parameterType="FAQDto">
+	<update id="FAQupdateBoard" parameterType="FAQDto">
 		UPDATE FAQ
 		   SET FAQ_TITLE = #{faq_title}
 			 , FAQ_CONTENT = #{faq_content}
 		 WHERE FAQ_NUM = #{faq_num}
 	</update>
 	
-	<delete id="faqdelboard" parameterType="int">
+	<delete id="FAQdelBoard" parameterType="int">
 		DELETE
 		  FROM FAQ
  		 WHERE FAQ_NUM=#{faq_num}
 	</delete>
 	
-	<select id="questionlist" parameterType="Map" resultType="QnADto">
+	<select id="getQuestionList" parameterType="Map" resultType="QnADto">
 		SELECT QUESTION_NUM
 			 , USER_NUM
 			 , QUESTION_TITLE
 			 , QUESTION_CONTENT
-			 , QUESTION_READCOUNT
 			 , QUESTION_REGDATE
 			 , QUESTION_STATUS
+			 , QUESTION_ANSWER
+			 , ANSWER_REGDATE
 		  FROM (
-				 SELECT ROW_NUMBER() OVER (ORDER BY QUESTION_REGDATE DESC) AS RN
+				 SELECT ROW_NUMBER() OVER (ORDER BY QUESTION_NUM DESC) AS RN
 					  , QUESTION_NUM
 					  , USER_NUM
 					  , QUESTION_TITLE
 					  , QUESTION_CONTENT
-					  , QUESTION_READCOUNT
 					  , QUESTION_REGDATE
 					  , QUESTION_STATUS
+					  , QUESTION_ANSWER
+					  , ANSWER_REGDATE
 				   FROM QUESTION
 			   )
 		 WHERE CEIL(RN/5) = #{pnum}
@@ -69,20 +71,21 @@
 	 </if>
 	</select>
 	
-	<insert id="questioninsert" parameterType="QnADto">
+	<insert id="Questioninsert" parameterType="QnADto">
 		INSERT INTO QUESTION
 		VALUES (
 		 	   QUESTION_SEQ.NEXTVAL
 	   		 , #{user_num}
 	   		 , #{question_title}
 	   		 , #{question_content}
-	  		 , 0
 	 	     , SYSDATE
-	   		 , 'N'
+	   		 , 0
+	   		 , NULL
+	   		 , NULL
 	   		   )
 	</insert>
 	
-	<update id="questionupdate" parameterType="QnADto">
+	<update id="Questionupdate" parameterType="QnADto">
 		UPDATE QUESTION
   		   SET QUESTION_TITLE = #{question_title}
 	         , QUESTION_CONTENT = #{question_content}
@@ -90,33 +93,28 @@
 		 WHERE QUESTION_NUM = #{question_num}
 	</update>
 	
-	<delete id="questiondelete" parameterType="int">
+	<delete id="Questiondelete" parameterType="int">
 		DELETE
 		  FROM QUESTION
  		 WHERE QUESTION_NUM = #{question_num}
 	</delete>
 	
-	<select id="questiondetail" parameterType="int" resultType="QnADto">
+	<select id="Questiondetail" parameterType="int" resultType="QnADto">
 		SELECT QUESTION_NUM
 			 , USER_NUM
 			 , QUESTION_TITLE
 			 , QUESTION_CONTENT
-			 , QUESTION_READCOUNT
 			 , QUESTION_REGDATE
-			 , QUESTION_STATUS 
+			 , QUESTION_STATUS
+			 , QUESTION_ANSWER
+			 , ANSWER_REGDATE
 		  FROM QUESTION
 		 WHERE QUESTION_NUM = #{question_num}
 	</select>
 	
-	<update id="questionreadcount" parameterType="int">		
-		UPDATE QUESTION 
-		   SET QUESTION_READCOUNT = QUESTION_READCOUNT+1
-		 WHERE QUESTION_NUM = #{question_num}
-	</update>
-	
-	<update id="statuschange" parameterType="int">
+	<update id="StatusChange" parameterType="int">
 		UPDATE QUESTION
-  		   SET QUESTION_STATUS = 'Y'
+  		   SET QUESTION_STATUS = 1
  		 WHERE QUESTION_NUM = #{question_num}
 	</update>
 	
@@ -126,20 +124,25 @@
 	</sql>
 	
 	<!-- 전체 문의글 페이징 처리 -->
-	<select id="qnapcount" resultType="int">
+	<select id="QnAPcount" resultType="int">
 		<include refid="questionCeil" />
 	</select>
 	
 	<!-- 자신의 문의글만 볼수있는페이지 (페이징처리) -->
-	<select id="qnappcount" resultType="int" parameterType="int">
+	<select id="QnAUserPcount" resultType="int" parameterType="int">
 		<include refid="questionCeil" />
 		 WHERE USER_NUM = #{user_num}
 	</select>
 	
-	<!-- 답변 삭제 -->
-	<delete id="answerdelete" parameterType="int">
-		DELETE
-		  FROM ANSWER
- 		 WHERE QUESTION_NUM = #{question_num}
-	</delete>
+	<update id="Answerinsert">
+		UPDATE QUESTION
+  		   SET QUESTION_STATUS = 2
+  			 , QUESTION_ANSWER = #{question_answer}
+  			 , ANSWER_REGDATE = SYSDATE
+  		 WHERE QUESTION_NUM = #{question_num}
+	</update>
+	
+	
+	
+	
 </mapper>

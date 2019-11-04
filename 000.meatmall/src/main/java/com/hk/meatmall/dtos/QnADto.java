@@ -26,7 +26,7 @@ public class QnADto {
 	//작성일
 	private Date question_regdate;
 	//답변여부
-	private String question_status;
+	private int question_status;
 	//답변내용
 	private String question_answer;
 	//답변 작성일
