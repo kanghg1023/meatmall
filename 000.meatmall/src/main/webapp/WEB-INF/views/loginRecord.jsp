@@ -29,6 +29,9 @@
 	<dd>
 		<a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a>
 	</dd>
+	<dd>
+		<a href="withdrawForm.do" class="withdrawForm"><span>회원 탈퇴</span></a>
+	</dd>
 </dl>
 <h2>최근 1주일(10건)간 로그인 시도 이력입니다.</h2>
 <table border="1">
@@ -42,7 +45,7 @@
 			<td><fmt:formatDate value="${dto.record_date}" pattern="MM.dd (hh:mm)"/></td>
 			<td>${dto.record_ip}</td>
 			<c:choose>
-				<c:when test="${dto.record_check eq 'Y'}">
+				<c:when test="${dto.record_check == 1}">
 					<td>성공</td>
 				</c:when>
 				<c:otherwise>

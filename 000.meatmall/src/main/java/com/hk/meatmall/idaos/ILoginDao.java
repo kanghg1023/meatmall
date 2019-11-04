@@ -15,7 +15,6 @@ public interface ILoginDao {
 	public int loginFail(int user_num);
 	public boolean loginRecord(String user_id, String ip, int record_check);
 	public boolean signUp(UserDto dto);
-	public boolean signUpLog(String user_id);
 	public int nickChk(String user_nick);
 	public boolean pwChk(String user_id, String user_pw);
 	public boolean userUpdate(UserDto dto);

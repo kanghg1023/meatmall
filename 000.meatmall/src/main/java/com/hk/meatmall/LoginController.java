@@ -68,9 +68,10 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		String user_pw = Util.sha256(pw);
 		
 		//로그인 성공실패여부
+		//1:성공 , 0:실패
 		int record_check = 0;
 		
-		if(user_num>0) {
+		if(user_num > 0) {
 			//아이디가 존재
 			
 			//true=로그인 진행 , false=로그인 실패(잠김/비밀번호틀림)
@@ -172,18 +173,14 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		boolean isSignUp = loginService.signUp(dto);
 		
 		if(isSignUp) {
-			boolean isSignUpLog = loginService.signUpLog(dto.getUser_id());
-			
-			if(isSignUpLog) {
-				model.addAttribute("user_id",dto.getUser_id());
-				model.addAttribute("pw",pw);
-				return "redirect:login.do";
-			}
+			model.addAttribute("user_id",dto.getUser_id());
+			model.addAttribute("pw",pw);
+			return "redirect:login.do";
+		}else {
+			model.addAttribute("msg", "회원가입 실패");
+			model.addAttribute("url", "signUpPage.do");
+			return "error";
 		}
-		
-		model.addAttribute("msg", "회원가입 실패");
-		model.addAttribute("url", "signUpPage.do");
-		return "error";
 	}
 	
 	@RequestMapping(value = "/myPage.do", method = {RequestMethod.GET,RequestMethod.POST})
@@ -342,6 +339,13 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		logger.info("주소api");
 		
 		return "getAddr";
+	}
+	
+	@RequestMapping(value = "/withdrawForm.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String withdrawForm(Model model, UserDto dto) {
+		logger.info("주소api");
+		
+		return "withdrawForm";
 	}
 	
 }

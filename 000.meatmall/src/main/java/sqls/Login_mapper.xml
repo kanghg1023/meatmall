@@ -97,6 +97,8 @@
 			 , LICENSE_LEVEL
 			 , USER_ROLE
 			 , USER_STOP_DATE
+			 , LOGIN_FAIL_COUNT
+			 , LOGIN_LAST_TRY_DATE
 			 )
 		VALUES (
 				 USER_INFO_SEQ.NEXTVAL
@@ -108,7 +110,7 @@
 			   , #{user_addr}
 			   , #{user_addr_detail}
 			   , #{user_email}
-			   , 'Y'
+			   , 1
 		<choose>
 			<when test="user_businessnum != null">
 			   , #{user_businessnum}
@@ -122,19 +124,7 @@
 			</otherwise>
 		</choose>
 			   , NULL
-			   )
-	</insert>
-	
-	<insert id="signUpLog" parameterType="String">
-		INSERT INTO LOGIN
-		VALUES (
-				 (
-				   SELECT USER_NUM 
-					 FROM USER_INFO 
-					WHERE USER_ID = #{user_id}
-				 )
 			   , 0
-			   , 'N'
 			   , NULL
 			   )
 	</insert>
@@ -189,14 +179,14 @@
 			 , RECORD_CHECK
 			 , RECORD_DATE
 		  FROM (
-				SELECT ROW_NUMBER() OVER (ORDER BY RECORD_DATE DESC) AS RN
-					 , USER_NUM
-					 , RECORD_IP
-					 , RECORD_CHECK
-					 , RECORD_DATE
-				  FROM LOGIN_RECORD
-				 WHERE USER_NUM = #{user_num}
-				   AND RECORD_DATE+7 >= SYSDATE
+				 SELECT ROW_NUMBER() OVER (ORDER BY RECORD_DATE DESC) AS RN
+					  , USER_NUM
+					  , RECORD_IP
+					  , RECORD_CHECK
+					  , RECORD_DATE
+				   FROM LOGIN_RECORD
+				  WHERE USER_NUM = #{user_num}
+				    AND RECORD_DATE+7 >= SYSDATE
 			   )
 		 WHERE RN < 10
 		]]>

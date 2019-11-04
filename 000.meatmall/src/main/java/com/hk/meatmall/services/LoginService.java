@@ -60,11 +60,6 @@ public class LoginService implements ILoginService {
 	public boolean signUp(UserDto dto) {
 		return loginDao.signUp(dto);
 	}
-
-	@Override
-	public boolean signUpLog(String user_id) {
-		return loginDao.signUpLog(user_id);
-	}
 	
 	@Override
 	public int nickChk(String user_nick) {

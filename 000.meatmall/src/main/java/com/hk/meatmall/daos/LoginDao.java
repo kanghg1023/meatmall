@@ -97,14 +97,6 @@ public class LoginDao implements ILoginDao {
 		count = sqlSession.insert(nameSpace+"signUp",dto);
 		return count>0 ? true : false;
 	}
-
-	//로그인실패기록 생성
-	@Override
-	public boolean signUpLog(String user_id) {
-		int count = 0;
-		count = sqlSession.insert(nameSpace+"signUpLog",user_id);
-		return count>0 ? true : false;
-	}
 	
 	//닉네임 중복검사
 	@Override
