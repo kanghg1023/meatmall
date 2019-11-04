@@ -361,17 +361,22 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 		Goods_optionDto oDto = new Goods_optionDto();
 		
-		String imgUploadPath = uploadPath + File.separator + "imgUpload";
-		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
-		String fileName = null;
-
-		if(file != null) {
-			fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
-		} else {
-			fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+		// 새로운 파일이 등록되었는지 확인
+		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
+			// 기존 파일을 삭제
+			new File(uploadPath + request.getParameter("goods_img_title")).delete();
+		  
+			// 새로 첨부한 파일을 등록
+			String imgUploadPath = uploadPath + File.separator + "imgUpload";
+			String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
+			String fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath);
+		  
+			gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
+		  
+		}else {  // 새로운 파일이 등록되지 않았다면
+			// 기존 이미지를 그대로 사용
+			gDto.setGoods_img_title(null);
 		}
-
-		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
 		
 		boolean isUpGoods = GoodsService.upGoods(gDto);
 		boolean isUpOption = false;

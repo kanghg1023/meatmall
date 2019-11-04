@@ -250,7 +250,9 @@
 		UPDATE GOODS
   		   SET GOODS_TITLE = #{goods_title}
 			 , GOODS_DOSO = #{goods_doso}
+		<if test="goods_img_title != null">
 			 , GOODS_IMG_TITLE = #{goods_img_title}
+		</if>
 			 , GOODS_IMG_DETAIL = #{goods_img_detail}
 			 , GOODS_DATE = SYSDATE
 	  		 , GOODS_DELFLAG = 1
