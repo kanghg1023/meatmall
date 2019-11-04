@@ -1,5 +1,7 @@
 package com.hk.meatmall;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +39,7 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		logger.info("글목록보기");
 		
 		HttpSession session = request.getSession();
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
 		session.removeAttribute("readcount");
 		
 		if(pnum == null) {
@@ -44,12 +47,27 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		}else {
 			session.setAttribute("pnum", pnum);
 		}
+						
+//		Map<String, Integer> pmap = Paging.pagingValue(pcount, pnum, 5);
+//		List<BoardDto> boardList = boardService.getAllList(pnum);
+//		List<BoardDto> noticeList=boardService.noticeList();
+				
+		List<BoardDto> boardList = new ArrayList<>();
+		List<BoardDto> noticeList = new ArrayList<>();
+		Map<String, Integer> pmap = new HashMap<>();
 		
-		int pcount = boardService.getPcount();
+		if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
+			boardList = boardService.boardListPage(pnum);
+			noticeList = boardService.noticeList();
+			int pcount2 = boardService.getPcount2();
+			pmap=Paging.pagingValue(pcount2, pnum, 5);
+		}else {
+			boardList = boardService.getAllList(pnum);
+			noticeList = boardService.noticeList();
+			int pcount = boardService.getPcount();
+			pmap=Paging.pagingValue(pcount, pnum, 5);
+		}
 		
-		Map<String, Integer> pmap = Paging.pagingValue(pcount, pnum, 5);
-		List<BoardDto> boardList = boardService.getAllList(pnum);
-		List<BoardDto> noticeList=boardService.noticeList();
 		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pmap", pmap);
@@ -69,7 +87,7 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		logger.info("글추가하기");
 						
 		if(dto.getBoard_notice() == null) {
-			dto.setBoard_notice("N");
+			dto.setBoard_notice("0");
 		}
 		
 		boolean isInsert = boardService.insertBoard(dto);

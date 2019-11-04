@@ -25,6 +25,11 @@ public class BoardDao implements IBoardDao {
 	}
 
 	@Override
+	public List<BoardDto> boardListPage(String pnum) {		
+		return sqlSession.selectList(nameSpace+"boardlistpage",pnum);
+	}	
+	
+	@Override
 	public boolean insertBoard(BoardDto dto) {
 		int count=sqlSession.insert(nameSpace+"insertboard", dto);
 		return count > 0 ? true:false;
@@ -43,7 +48,7 @@ public class BoardDao implements IBoardDao {
 
 	@Override
 	public boolean delBoard(int board_num) {
-		int count = sqlSession.delete(nameSpace+"delboard", board_num);
+		int count = sqlSession.update(nameSpace+"delboard", board_num);
 		return count > 0 ? true:false;
 	}
 	
@@ -59,9 +64,15 @@ public class BoardDao implements IBoardDao {
 	}
 
 	@Override
-	public int getPcount() {
+	public int getPcount() {		
 		int pcount = sqlSession.selectOne(nameSpace+"pcount");
 		return pcount;
+	}
+	
+	@Override
+	public int getPcount2() {		
+		int pcount2 = sqlSession.selectOne(nameSpace+"pcount2");
+		return pcount2;
 	}
 
 	@Override
@@ -115,7 +126,7 @@ public class BoardDao implements IBoardDao {
 
 	@Override
 	public boolean delcomment(int comment_num) {
-		int count=sqlSession.delete(nameSpace+"delcomment",comment_num);
+		int count=sqlSession.update(nameSpace+"delcomment",comment_num);
 		return count > 0 ? true:false;
 	}
 
@@ -124,5 +135,7 @@ public class BoardDao implements IBoardDao {
 		int count=sqlSession.update(nameSpace+"updatecomment",dto);
 		return count > 0 ? true:false;
 	}
+
+
 	
 }

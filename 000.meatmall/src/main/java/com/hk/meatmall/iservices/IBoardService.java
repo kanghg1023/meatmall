@@ -10,6 +10,8 @@ public interface IBoardService {
 	
 	//글전체목록보기
 	public List<BoardDto> getAllList(String pnum);
+	//글전체목록보기 나머지사용자
+	public List<BoardDto> boardListPage(String pnum);
 	//글추가하기
 	public boolean insertBoard(BoardDto dto);
 	//글상세보기
@@ -24,6 +26,8 @@ public interface IBoardService {
 	public List<BoardDto> noticeList();
 	//글목록의 페이지수 구하기
 	public int getPcount();
+	//글목록의 페이지수 구하기 나머지사용자
+	public int getPcount2();
 	//유저넘버 받아서 닉네임으로 변경
 	public String numNick(int user_num);
 	//좋아요 출력

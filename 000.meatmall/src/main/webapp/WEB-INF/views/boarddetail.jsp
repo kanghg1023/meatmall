@@ -163,7 +163,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<c:if test="${boarddto.user_num eq ldto.user_num}">
+			<c:if test="${boarddto.user_num eq ldto.user_num or ldto.user_role eq 'ADMIN'}">
 				<button onclick="updateForm(${boarddto.board_num})">수정</button>
 				<button onclick="delBoard(${boarddto.board_num})">삭제</button>
 			</c:if>					
@@ -196,7 +196,7 @@
 				<c:if test="${clist != null}">
 					<c:forEach items="${clist}" var="cdto">
 					<tr>
-						<c:if test="${cdto.comment_refer > 0}">
+						<c:if test="${cdto.comment_refer >= 0}">
 							<td rowspan="2" class="arrowSel"><img src="img/arrow.png" alt="답글" /></td>
 						</c:if>
 						<td>${cdto.user_num}</td>
@@ -205,15 +205,23 @@
 							<c:if test="${boarddto != null}">
 								<button type="button" class="recommentForm" value="${cdto.comment_num}">답글</button>
 							</c:if>
-							<c:if test="${cdto.user_num eq ldto.user_num}">
+							<c:if test="${cdto.user_num eq ldto.user_num or ldto.user_role eq 'ADMIN'}">
 								<button type="button" onclick="delcomment(${cdto.comment_num})">삭제</button>
 								<button type="button" class="updatecommentForm" value="${cdto.comment_num}">수정</button>
 							</c:if>
 						</td>
 					</tr>
-					<tr style="white-space:pre;">
-						<td colspan="3" class="conSel">${cdto.comment_content}</td>
-					</tr>
+					<c:choose>
+						<c:when test="${cdto.comment_delflag=='0'}">
+							<td>------삭제된 댓글입니다.------</td>
+						</c:when>
+						<c:otherwise>
+							<tr style="white-space:pre;">
+								<td colspan="3" class="conSel">${cdto.comment_content}</td>
+							</tr>
+						</c:otherwise>
+					</c:choose>	
+					
 					</c:forEach>
 				</c:if>
 			</table>

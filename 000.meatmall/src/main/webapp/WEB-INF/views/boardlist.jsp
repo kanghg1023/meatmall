@@ -41,7 +41,7 @@
 		</c:when>
 		<c:otherwise>
 			<c:forEach items="${noticeList}" var="dto">
-				<c:if test="${dto.board_notice eq 'Y'}">
+				<c:if test="${dto.board_notice == 1}">
 				<tr class="notice">									
 					<td>공지</td>
 					<td>${dto.user_num}</td>
@@ -55,7 +55,14 @@
 				<tr>					
 					<td>${dto.board_num}</td>
 					<td>${dto.user_num}</td>
-					<td><a href="boarddetail.do?board_num=${dto.board_num}">${dto.board_title}</a></td>					
+					<c:choose>
+						<c:when test="${dto.board_delflag=='0'}">
+							<td>------삭제된 글입니다.------</td>
+						</c:when>
+						<c:otherwise>
+							<td><a href="boarddetail.do?board_num=${dto.board_num}">${dto.board_title}</a></td>
+						</c:otherwise>
+					</c:choose>										
 					<td><fmt:formatDate value="${dto.board_regdate}" pattern="yyyy년MM월dd일"/> </td>					
 					<td>${dto.board_readcount}</td>
 				</tr>

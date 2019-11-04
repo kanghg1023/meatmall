@@ -23,6 +23,12 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
+	public List<BoardDto> boardListPage(String pnum) {
+		
+		return boardDao.boardListPage(pnum);
+	}
+	
+	@Override
 	public boolean insertBoard(BoardDto dto) {		
 		return boardDao.insertBoard(dto);
 	}
@@ -55,6 +61,11 @@ public class BoardService implements IBoardService {
 	@Override
 	public int getPcount() {		
 		return boardDao.getPcount();
+	}
+	
+	@Override
+	public int getPcount2() {		
+		return boardDao.getPcount2();
 	}
 
 	@Override
@@ -106,6 +117,6 @@ public class BoardService implements IBoardService {
 	public boolean updatecomment(CommentDto dto) {		
 		return boardDao.updatecomment(dto);
 	}
-//
+
 
 }

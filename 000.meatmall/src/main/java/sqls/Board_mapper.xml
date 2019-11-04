@@ -5,7 +5,7 @@
 
 <mapper namespace="com.board">
 
-<!--글목록전체보기+페이징-->
+<!--글목록전체보기+페이징 관리자용-->
 	<select id="boardlist" resultType="boardDto" parameterType="String">
 		SELECT BOARD_NUM
 			 , USER_NUM
@@ -14,6 +14,7 @@
 			 , BOARD_REGDATE
 			 , BOARD_READCOUNT
 			 , BOARD_NOTICE
+			 , BOARD_DELFLAG
 		  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NUM DESC) AS RN
 		              , BOARD_NUM
@@ -22,12 +23,39 @@
 			 		  , BOARD_CONTENT
 			 		  , BOARD_REGDATE
 					  , BOARD_READCOUNT
-			 		  , BOARD_NOTICE    
+			 		  , BOARD_NOTICE 
+			 		  , BOARD_DELFLAG   
 		           FROM BOARD
 		       )
 		 WHERE CEIL(RN/5) = #{pnum}
 	</select>
 
+<!--글목록전체보기+페이징 전체이용자-->
+	<select id="boardlistpage" resultType="boardDto" parameterType="String">
+		SELECT BOARD_NUM
+			 , USER_NUM
+			 , BOARD_TITLE
+			 , BOARD_CONTENT
+			 , BOARD_REGDATE
+			 , BOARD_READCOUNT
+			 , BOARD_NOTICE
+			 , BOARD_DELFLAG
+		  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NUM DESC) AS RN
+		              , BOARD_NUM
+					  , USER_NUM
+			 		  , BOARD_TITLE
+			 		  , BOARD_CONTENT
+			 		  , BOARD_REGDATE
+					  , BOARD_READCOUNT
+			 		  , BOARD_NOTICE 
+			 		  , BOARD_DELFLAG   
+		           FROM BOARD
+		          WHERE BOARD_DELFLAG = 1
+		       )
+		 WHERE CEIL(RN/5) = #{pnum}
+	</select>
+	
 <!-- 글추가하기-->	
 	<insert id="insertboard" parameterType="boardDto">
 		INSERT INTO BOARD 
@@ -39,6 +67,7 @@
 			   , SYSDATE
 			   , 0
 			   , #{board_notice}
+			   , 1
 	    	   )
 	</insert>
 
@@ -51,6 +80,7 @@
     		 , BOARD_REGDATE
      		 , BOARD_READCOUNT
     		 , BOARD_NOTICE
+    		 , BOARD_DELFLAG
  		  FROM BOARD
 		 WHERE BOARD_NUM = #{board_num}
 	</select>
@@ -65,12 +95,17 @@
 	</update>
 
 <!-- 글삭제하기-->	
-	<delete id="delboard" parameterType="int">
-		DELETE 
- 		  FROM BOARD 
- 		 WHERE BOARD_NUM = #{board_num}
-	</delete>
-
+<!-- 	<delete id="delboard" parameterType="int"> -->
+<!-- 		DELETE  -->
+<!--  		  FROM BOARD  -->
+<!--  		 WHERE BOARD_NUM = #{board_num} -->
+<!-- 	</delete> -->
+	<update id="delboard" parameterType="int">
+		UPDATE BOARD 
+		   SET BOARD_DELFLAG='0' 
+		 WHERE BOARD_NUM = #{board_num} 		
+	</update>	
+	
 <!-- 조회수-->	
 	<update id="readcount" parameterType="int">
 		UPDATE BOARD
@@ -89,6 +124,7 @@
              , BOARD_REGDATE
              , BOARD_READCOUNT
              , BOARD_NOTICE
+             , BOARD_DELFLAG
           FROM (
   		         SELECT ROW_NUMBER() OVER (ORDER BY BOARD_REGDATE DESC) AS RN
 		  	          , BOARD_NUM
@@ -98,18 +134,26 @@
 			          , BOARD_REGDATE
 			          , BOARD_READCOUNT
 			          , BOARD_NOTICE
+			          , BOARD_DELFLAG
 		           FROM BOARD
-		          WHERE BOARD_NOTICE = 'Y'
+		          WHERE BOARD_NOTICE = '1'
 	           )
          WHERE RN < 4
          ]]>
     </select>
     
-<!--  페이지 개수 구하기-->         
+<!--  페이지 개수 구하기 관리자-->         
 	<select id="pcount" resultType="int">
 		SELECT CEIL(COUNT(*)/5) 
-		  FROM BOARD
+		  FROM BOARD			  		 
 	</select>
+	
+<!--  페이지 개수 구하기 일반사용자-->         
+	<select id="pcount2" resultType="int">
+		SELECT CEIL(COUNT(*)/5) 
+		  FROM BOARD		  
+		 WHERE BOARD_DELFLAG = 1	  		 
+	</select>	
 		
 <!--  유저넘버 받아서 닉네임으로 변경-->	
 	<select id="numNick" parameterType="int" resultType="String">
@@ -159,6 +203,7 @@
  			 , COMMENT_REGDATE
  	 		 , COMMENT_REFER
 	 		 , COMMENT_RE_CHECK
+	 		 , COMMENT_DELFLAG
   		  FROM BOARD_COMMENT
  		 WHERE BOARD_NUM = #{board_num}
  		 ORDER BY COMMENT_REFER
@@ -178,7 +223,8 @@
 				   SELECT NVL(MAX(COMMENT_REFER)+1,0)
 				     FROM BOARD_COMMENT
 				 )
-			   , 'N'	 		
+			   , 0
+			   , 1	 		
 			   )
 	</insert>	
 
@@ -196,16 +242,24 @@
 				     FROM BOARD_COMMENT
 				    WHERE COMMENT_NUM = #{comment_num}
 				 )
-			   , 'Y'
+			   , 1
+			   , 1
 			   )
 	</insert>
 	
 <!-- 댓글 삭제 -->
-	<delete id="delcomment" parameterType="int">
-		DELETE 
-		  FROM BOARD_COMMENT
-		 WHERE COMMENT_NUM = #{comment_num}  	
-	</delete>
+<!-- 	<delete id="delcomment" parameterType="int"> -->
+<!-- 		DELETE  -->
+<!-- 		  FROM BOARD_COMMENT -->
+<!-- 		 WHERE COMMENT_NUM = #{comment_num}  	 -->
+<!-- 	</delete> -->
+	<update id="delcomment" parameterType="int">
+		UPDATE BOARD_COMMENT 
+		   SET COMMENT_DELFLAG='0' 
+		 WHERE COMMENT_NUM = #{comment_num} 		
+	</update>
+
+
 	
 <!-- 댓글수정하기-->	
 	<update id="updatecomment" parameterType="CommentDto">

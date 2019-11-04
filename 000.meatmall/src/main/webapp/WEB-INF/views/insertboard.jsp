@@ -34,7 +34,7 @@
 			<input type="button" value="목록" 
 			          onclick="location.href='boardlist.do?pnum=1'"/>
 			<c:if test="${ldto.user_num == 1}">
-				<label><input type="checkbox" name="board_notice" value="Y" />공지</label>
+				<label><input type="checkbox" name="board_notice" value="1" />공지</label>
 			</c:if>
 		</td>
 	</tr>
