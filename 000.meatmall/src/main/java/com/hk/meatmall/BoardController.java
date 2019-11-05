@@ -55,18 +55,33 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		List<BoardDto> boardList = new ArrayList<>();
 		List<BoardDto> noticeList = new ArrayList<>();
 		Map<String, Integer> pmap = new HashMap<>();
+		boolean isList = true;
+		int p = Integer.parseInt(pnum);
 		
-		if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
-			boardList = boardService.boardListPage(pnum);
-			noticeList = boardService.noticeList();
-			int pcount2 = boardService.getPcount2();
-			pmap=Paging.pagingValue(pcount2, pnum, 5);
-		}else {
-			boardList = boardService.getAllList(pnum);
-			noticeList = boardService.noticeList();
-			int pcount = boardService.getPcount();
-			pmap=Paging.pagingValue(pcount, pnum, 5);
+		while(isList) {
+			if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
+				boardList = boardService.boardListPage(String.valueOf(p));
+				noticeList = boardService.noticeList();
+				int pcount2 = boardService.getPcount2();
+				pmap=Paging.pagingValue(pcount2, pnum, 5);
+			}else {
+				boardList = boardService.getAllList(String.valueOf(p));
+				noticeList = boardService.noticeList();
+				int pcount = boardService.getPcount();
+				pmap=Paging.pagingValue(pcount, pnum, 5);
+			}
+		
+			if((boardList.size()>0) || (p==1 && boardList.size()==0)) {
+				isList = false;
+			}else {
+				pnum = String.valueOf(--p);
+				session.setAttribute("pnum", pnum);
+			}
+			
 		}
+		
+		
+			
 		
 		
 		model.addAttribute("boardList", boardList);

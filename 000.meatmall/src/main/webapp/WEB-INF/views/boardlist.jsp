@@ -71,7 +71,9 @@
 		</c:choose>		
 		<tr>
 			<td colspan="6" style="text-align: center;">
-				<a href="boardlist.do?pnum=${pmap.prePageNum}${statusPage==null?'':statusPage}">◀</a>				
+				<c:if test="${pnum != 1}">
+					<a href="boardlist.do?pnum=${pmap.prePageNum}${statusPage==null?'':statusPage}">◀</a>				
+				</c:if>
 				<c:forEach var="i" begin="${pmap.startPage}" end="${pmap.endPage}" step="1" >																			
 					<c:choose>
 						<c:when test="${pnum eq i}">
@@ -81,8 +83,10 @@
 							<a href="boardlist.do?pnum=${i}${statusPage==null?'':statusPage}" style="text-decoration: none">${i}</a>
 						</c:otherwise>
 					</c:choose>
-				</c:forEach>																		
+				</c:forEach>
+				<c:if test="${pnum < pmap.pcount}">																		
 				<a href="boardlist.do?pnum=${pmap.nextPageNum}${statusPage==null?'':statusPage}">▶</a>
+				</c:if>
 			</td>
 		</tr>														
 	<tr>
