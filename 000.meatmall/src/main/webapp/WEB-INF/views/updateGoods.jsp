@@ -14,8 +14,9 @@
 </style>
 <script type="text/javascript">
 
+	var detail_img_count = 1;
+	
 	$(function(){
-		
 		//필수 입력
 		$("form").submit(function(){
 			var bool = true;
@@ -64,25 +65,31 @@
 		//상세이미지 미리보기
 		$("#goods_img_detail").change(function(){
 			var preview = document.querySelector('#deImg');
-			  var files   = document.querySelector('#goods_img_detail').files;
-
-			  function readAndPreview(file) {
-
-			      var reader = new FileReader();
-
-			      reader.addEventListener("load", function () {
-			        var image = new Image();
-			        image.width = 800;
-			        image.height = 580;
-			        image.title = file.name;
-			        image.src = this.result;
-			        preview.appendChild( image );
-			      }, false);
-			      reader.readAsDataURL(file);
-			  }
-			  if (files) {
-			    [].forEach.call(files, readAndPreview);
-			  }
+			var files = document.querySelector('#goods_img_detail').files;
+			var br = "<br />";
+			preview.innerHTML = "";
+			
+			function readAndPreview(file) {
+				var reader = new FileReader();
+				
+				reader.addEventListener("load", function () {
+					var image = new Image();
+					image.width = 800;
+					image.height = 580;
+					image.title = file.name;
+					image.src = this.result;
+					preview.appendChild( image );
+					
+					if(detail_img_count > 1){
+						preview.innerHTML += br;
+					}
+				}, false);
+				reader.readAsDataURL(file);
+			}
+			if (files) {
+				[].forEach.call(files, readAndPreview);
+			}
+			
 			detail_img_count++;
 		});
 	});
@@ -121,7 +128,7 @@
 			<div class="inputArea">
  				<label for="goods_img_title">대표이미지</label>
  				<input type="file" id="goods_img_title" name="title_file" />
- 				<div class="select_img" id="deImg"><img src="${gDto.goods_img_title}" /></div>
+ 				<div class="select_img"><img src="${gDto.goods_img_title}" /></div>
 			</div>
 		</td>
 	</tr>

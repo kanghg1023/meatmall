@@ -68,6 +68,7 @@
 			var preview = document.querySelector('#deImg');
 			var files = document.querySelector('#goods_img_detail').files;
 			var br = "<br />";
+			preview.innerHTML = "";
 			
 			function readAndPreview(file) {
 				var reader = new FileReader();
