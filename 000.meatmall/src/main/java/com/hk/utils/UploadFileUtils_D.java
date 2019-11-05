@@ -1,7 +1,8 @@
 package com.hk.utils;
 
-//폴더 생성과 파일 저장, 썸내일 생성
-//날짜(연/월/일)로 구성된 폴더를 생성하고, 같은 파일명이라도 중복되지 않도록 랜덤문자와 파일명을 조합한 뒤 생성된 폴더에 저장하며, 썸네일을 생성하여 별도의 폴더에 저장
+//////////////////////////////////////대표이미지//////////////////////////
+//폴더 생성과 파일 저장
+//날짜(연/월/일)로 구성된 폴더를 생성하고, 같은 파일명이라도 중복되지 않도록 랜덤문자와 파일명을 조합한 뒤 생성된 폴더에 저장
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -10,9 +11,9 @@ import java.util.UUID;
 
 import org.springframework.util.FileCopyUtils;
 
-public class UploadFileUtils {
+public class UploadFileUtils_D {
  
- public static String fileUpload(String uploadPath,
+ public static String fileUpload_D(String uploadPath,
          String fileName,
          byte[] fileData, String ymdPath) throws Exception {
 
@@ -23,7 +24,7 @@ public class UploadFileUtils {
 
   File target = new File(imgPath, newFileName);
   FileCopyUtils.copy(fileData, target);
-  
+
   return newFileName;
  }
 

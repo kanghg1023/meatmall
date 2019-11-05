@@ -86,9 +86,9 @@
 	<delete id="delCategory" parameterType="Map">
 		DELETE FROM GOODS_KIND
  		 WHERE KIND_NUM IN
- 		 <foreach collection="chk" item="kind_num" open="(" close=")" separator=",">
+ 			<foreach collection="chk" item="kind_num" open="(" close=")" separator=",">
 			   #{kind_num}
-		</foreach>
+			</foreach>
 	</delete>
 	
 <!-- 카테고리별 상품 -->
@@ -229,9 +229,9 @@
 		UPDATE GOODS
  		   SET GOODS_DELFLAG = 0
  		 WHERE GOODS_NUM IN
- 		 <foreach collection="chk" item="goods_num" open="(" close=")" separator=",">
+ 			<foreach collection="chk" item="goods_num" open="(" close=")" separator=",">
 			   #{goods_num}
-		</foreach>
+			</foreach>
 	</update>
 	
 <!-- 카테고리 상품에서 삭제 -->
@@ -239,9 +239,9 @@
 		UPDATE GOODS
  		   SET GOODS_DELFLAG = 0
  		 WHERE GOODS_NUM IN
- 		 <foreach collection="chk" item="goods_num" open="(" close=")" separator=",">
+ 			<foreach collection="chk" item="goods_num" open="(" close=")" separator=",">
 			   #{goods_num}
-		</foreach>
+			</foreach>
 		   AND KIND_NUM = #{kind_num}
 	</update>
 	
@@ -253,7 +253,9 @@
 		<if test="goods_img_title != null">
 			 , GOODS_IMG_TITLE = #{goods_img_title}
 		</if>
+		<if test="goods_img_detail != null">
 			 , GOODS_IMG_DETAIL = #{goods_img_detail}
+		</if>	 
 			 , GOODS_DATE = SYSDATE
 	  		 , GOODS_DELFLAG = 1
 			 , KIND_NUM = #{kind_num}

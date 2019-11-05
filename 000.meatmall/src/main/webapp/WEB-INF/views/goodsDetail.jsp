@@ -63,7 +63,7 @@
 				<button onclick="location.href='allGoods.do?pnum=${pnum}'">제품목록</button>
 	<tr>
 		<th>상세이미지</th>
-		<td><textarea rows="10" cols="60" readonly="readonly">${gDto.goods_img_detail}</textarea></td>
+		<td>${gDto.goods_img_detail}</td>
 	</tr>
 	<tr>
 		<th>후기</th>

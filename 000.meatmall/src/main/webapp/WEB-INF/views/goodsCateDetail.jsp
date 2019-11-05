@@ -22,14 +22,12 @@
 	</tr>
 	<tr>
 		<th>대표이미지</th>
-		<td><img src="${gDto.goods_img_title}" ></td>
+		<td><img src="${gDto.goods_img_title}" style="width:400px; height:380px;" ></td>
 	</tr>
 	<tr>
 		<th>판매자</th>
 		<td>${gDto.user_num}</td>
 	</tr>
-<%-- 	나중에 별명으로<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
-<%-- 			<jsp:getProperty property="emailNick" name="util" /> --%>
 	<tr>
 		<th>상품이름</th>
 		<td>${gDto.goods_title}</td>
@@ -65,7 +63,7 @@
 				<button onclick="location.href='categoryGoods.do?pnum=${pnum}&kind_num=${gDto.kind_num}'">제품목록</button>
 	<tr>
 		<th>상세이미지</th>
-		<td><textarea rows="10" cols="60" readonly="readonly">${gDto.goods_img_detail}</textarea></td>
+		<td>${gDto.goods_img_detail}</td>
 	</tr>
 	<tr>
 		<th>후기</th>

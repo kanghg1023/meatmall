@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
@@ -26,7 +27,8 @@ import com.hk.meatmall.dtos.Goods_optionDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.IGoodsService;
 import com.hk.utils.Paging;
-import com.hk.utils.UploadFileUtils;
+import com.hk.utils.UploadFileUtils_D;
+import com.hk.utils.UploadFileUtils_T;
 
 @Controller
 public class GoodsController {
@@ -55,18 +57,29 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		List<GoodsDto> gList = new ArrayList<>();
 		Map<String, Integer> map = new HashMap<>();
 		
-		if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
-			gList = GoodsService.getEnabled(pnum);
+		boolean isList = true;
+        int p = Integer.parseInt(pnum);
 		
-			int pcount = GoodsService.getEnabledPcount();
-			map=Paging.pagingValue(pcount, pnum, 5);
-		}else {
-			gList = GoodsService.allGoods(pnum);
+		while(isList) {
+			if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
+				gList = GoodsService.getEnabled(String.valueOf(p));
 			
-			int pcount = GoodsService.getAllPcount();
-			map=Paging.pagingValue(pcount, pnum, 5);
+				int pcount = GoodsService.getEnabledPcount();
+				map=Paging.pagingValue(pcount, pnum, 5);
+			}else {
+				gList = GoodsService.allGoods(String.valueOf(p));
+				
+				int pcount = GoodsService.getAllPcount();
+				map=Paging.pagingValue(pcount, pnum, 5);
+			}
+			if((gList.size()>0) || (p==1 && gList.size()==0)) {
+	              isList = false;
+	        }else {
+	        	pnum = String.valueOf(--p);
+	        	session.setAttribute("pnum", pnum);
+	        }
 		}
-		
+
 		model.addAttribute("gList", gList);
 		model.addAttribute("map",map);
 		return "allGoods";
@@ -113,7 +126,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		if(isDelete) {
 			return "redirect:category.do";
 		}else {
-			model.addAttribute("msg", "추가 실패");
+			model.addAttribute("msg", "삭제 실패");
 			model.addAttribute("url", "category.do");
 			return "error";
 		}
@@ -139,12 +152,23 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		Map<String, Integer> map = new HashMap<>();
 		int pcount = 0;
 		
-		if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
-			cList = GoodsService.getCateEnabled(kind_num, pnum);
-			pcount = GoodsService.getEnabledCatePcount(kind_num);
-		}else {
-			cList = GoodsService.categoryGoods(kind_num, pnum);
-			pcount = GoodsService.getAllCatePcount(kind_num);
+		boolean isList = true;
+        int p = Integer.parseInt(pnum);
+		
+		while(isList) {
+			if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
+				cList = GoodsService.getCateEnabled(kind_num, String.valueOf(p));
+				pcount = GoodsService.getEnabledCatePcount(kind_num);
+			}else {
+				cList = GoodsService.categoryGoods(kind_num, String.valueOf(p));
+				pcount = GoodsService.getAllCatePcount(kind_num);
+			}
+			if((cList.size()>0) || (p==1 && cList.size()==0)) {
+	              isList = false;
+	        }else {
+	        	pnum = String.valueOf(--p);
+	        	session.setAttribute("pnum", pnum);
+	        }
 		}
 		
 		map=Paging.pagingValue(pcount, pnum, 5);
@@ -171,22 +195,50 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 								, String[] option_name
 								, int[] option_count
 								, int[] option_weight
-								, MultipartFile file) throws IOException, Exception {
+								, MultipartFile title_file
+								, MultipartHttpServletRequest mtfRequest
+								) throws IOException, Exception {
 		logger.info("전체상품에서 추가");
 		
 		Goods_optionDto oDto = new Goods_optionDto();
 		
-		String imgUploadPath = uploadPath + File.separator + "imgUpload";
-		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
-		String fileName = null;
+		//대표이미지
+		String imgUploadPath_T = uploadPath + File.separator + "imgUpload";
+		String ymdPath_T = UploadFileUtils_T.calcPath(imgUploadPath_T);
+		String fileName_T = null;
 
-		if(file != null) {
-			fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
+		if(title_file != null) {
+			fileName_T = UploadFileUtils_T.fileUpload_T(imgUploadPath_T, title_file.getOriginalFilename(), title_file.getBytes(), ymdPath_T);
 		}else {
-			fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+			fileName_T = uploadPath + File.separator + "images" + File.separator + "none.png";
 		}
 
-		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
+		gDto.setGoods_img_title("imgUpload" + ymdPath_T + File.separator + fileName_T);
+		
+		//상세이미지
+		List<MultipartFile> detail_file = mtfRequest.getFiles("detail_file");
+		
+		String imgUploadPath_D = uploadPath + File.separator + "imgUpload";
+		String ymdPath_D = UploadFileUtils_D.calcPath(imgUploadPath_D);
+		List<String> fileName_D = new ArrayList<>();
+		String fileName_D_html = "";
+
+		if(detail_file != null) {
+			for(int i=0;i<detail_file.size();i++) {
+				fileName_D.add(UploadFileUtils_T.fileUpload_T(imgUploadPath_T, detail_file.get(i).getOriginalFilename(), detail_file.get(i).getBytes(), ymdPath_T));
+				
+				if(i>0) {
+					fileName_D_html += "<br />";
+				}
+				fileName_D_html += "<img src='imgUpload" + ymdPath_D + File.separator + fileName_D.get(i) + "' style='width: 800px; height: 580px;'>";
+			}
+		}else {
+			fileName_D.add(uploadPath + File.separator + "images" + File.separator + "none.png");
+		}
+
+		System.out.println(fileName_D_html);
+		
+		gDto.setGoods_img_detail(fileName_D_html);
 		boolean isInsertGoods = GoodsService.insertGoods(gDto);
 		
 		boolean isInsertOption = false;
@@ -226,23 +278,50 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 								 , int[] option_count
 								 , int[] option_weight
 								 , String kind_num
-								 , MultipartFile file) throws IOException, Exception {
+								 , MultipartFile title_file
+								 , MultipartHttpServletRequest mtfRequest) throws IOException, Exception {
 		logger.info("카테고리상품에서 추가");
 		
 		Goods_optionDto oDto = new Goods_optionDto();
 		
-		String imgUploadPath = uploadPath + File.separator + "imgUpload";
-		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
-		String fileName = null;
+		//대표이미지
+		String imgUploadPath_T = uploadPath + File.separator + "imgUpload";
+		String ymdPath_T = UploadFileUtils_T.calcPath(imgUploadPath_T);
+		String fileName_T = null;
 
-		if(file != null) {
-		 fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
-		} else {
-		 fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+		if(title_file != null) {
+			fileName_T = UploadFileUtils_T.fileUpload_T(imgUploadPath_T, title_file.getOriginalFilename(), title_file.getBytes(), ymdPath_T);
+		}else {
+			fileName_T = uploadPath + File.separator + "images" + File.separator + "none.png";
 		}
 
-		gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
+		gDto.setGoods_img_title("imgUpload" + ymdPath_T + File.separator + fileName_T);
 		
+		//상세이미지
+				List<MultipartFile> detail_file = mtfRequest.getFiles("detail_file");
+				
+				String imgUploadPath_D = uploadPath + File.separator + "imgUpload";
+				String ymdPath_D = UploadFileUtils_D.calcPath(imgUploadPath_D);
+				List<String> fileName_D = new ArrayList<>();
+				String fileName_D_html = "";
+
+				if(detail_file != null) {
+					for(int i=0;i<detail_file.size();i++) {
+						fileName_D.add(UploadFileUtils_T.fileUpload_T(imgUploadPath_T, detail_file.get(i).getOriginalFilename(), detail_file.get(i).getBytes(), ymdPath_T));
+						
+						if(i>0) {
+							fileName_D_html += "<br />";
+						}
+						fileName_D_html += "<img src='imgUpload" + ymdPath_D + File.separator + fileName_D.get(i) + "' style='width: 800px; height: 580px;'>";
+					}
+				}else {
+					fileName_D.add(uploadPath + File.separator + "images" + File.separator + "none.png");
+				}
+
+				System.out.println(fileName_D_html);
+				
+				gDto.setGoods_img_detail(fileName_D_html);
+
 		boolean isS = GoodsService.insertGoods(gDto);
 				
 		for(int i=0;i<option_name.length;i++) {
@@ -304,7 +383,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			model.addAttribute("pnum",pnum);
 			return "redirect:allGoods.do";
 		}else {
-			model.addAttribute("msg", "추가 실패");
+			model.addAttribute("msg", "삭제 실패");
 			model.addAttribute("url", "allGoods.do");
 			return "error";
 		}
@@ -327,7 +406,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			model.addAttribute("pnum",pnum);
 			return "redirect:categoryGoods.do";
 		}else {
-			model.addAttribute("msg", "추가 실패");
+			model.addAttribute("msg", "삭제 실패");
 			model.addAttribute("url", "categoryGoods.do");
 			return "error";
 		}
@@ -335,7 +414,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/upGoodsForm.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String upAllGoodsForm(Model model, int goods_num) {
-		logger.info("전체상품에서 수정 폼");
+		logger.info("상품 수정 폼");
 		
 		List<Goods_kindDto> kList = GoodsService.kind_num();
 		GoodsDto gDto = GoodsService.getGoods(goods_num);
@@ -355,27 +434,59 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 							, String[] option_name
 							, int[] option_count
 							, int[] option_weight
-							, MultipartFile file
-							) throws IOException, Exception {
-		logger.info("전체상품에서 수정");
-	
+							, MultipartFile title_file
+							, List<MultipartFile> detail_file) throws IOException, Exception {
+		logger.info("상품 수정");
 		Goods_optionDto oDto = new Goods_optionDto();
 		
+		//대표이미지
 		// 새로운 파일이 등록되었는지 확인
-		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
+		if(title_file.getOriginalFilename() != null && title_file.getOriginalFilename() != "") {
 			// 기존 파일을 삭제
 			new File(uploadPath + request.getParameter("goods_img_title")).delete();
 		  
 			// 새로 첨부한 파일을 등록
 			String imgUploadPath = uploadPath + File.separator + "imgUpload";
-			String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
-			String fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath);
+			String ymdPath = UploadFileUtils_T.calcPath(imgUploadPath);
+			String fileName = UploadFileUtils_T.fileUpload_T(imgUploadPath, title_file.getOriginalFilename(), title_file.getBytes(), ymdPath);
 		  
 			gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
 		  
 		}else {  // 새로운 파일이 등록되지 않았다면
 			// 기존 이미지를 그대로 사용
 			gDto.setGoods_img_title(null);
+		}
+		
+		//상세이미지
+		// 새로운 파일이 등록되었는지 확인
+		if(detail_file.get(0).getOriginalFilename( ) != "") {
+			
+			// 기존 파일을 삭제
+			new File(uploadPath + request.getParameter("goods_img_detail")).delete();
+
+			// 새로 첨부한 파일을 등록
+			String imgUploadPath_D = uploadPath + File.separator + "imgUpload";
+			String ymdPath_D = UploadFileUtils_D.calcPath(imgUploadPath_D);
+			List<String> fileName_D = new ArrayList<>();
+			String fileName_D_html = "";
+			
+			if(detail_file != null) {
+				for(int i=0;i<detail_file.size();i++) {
+					fileName_D.add(UploadFileUtils_D.fileUpload_D(imgUploadPath_D, detail_file.get(i).getOriginalFilename(), detail_file.get(i).getBytes(), ymdPath_D));
+					
+					if(i>0) {
+						fileName_D_html += "<br />";
+					}
+					fileName_D_html += "<img src='imgUpload" + ymdPath_D + File.separator + fileName_D.get(i) + "' style='width: 800px; height: 580px;'>";
+				}
+			}
+			System.out.println(fileName_D_html);
+			
+			gDto.setGoods_img_detail(fileName_D_html);
+		  
+		}else {  // 새로운 파일이 등록되지 않았다면
+			// 기존 이미지를 그대로 사용
+			gDto.setGoods_img_detail(null);
 		}
 		
 		boolean isUpGoods = GoodsService.upGoods(gDto);
@@ -413,7 +524,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		if(isUpGoods && isUpOption && isInsertOption) {
 			return "redirect:goodsDetail.do?goods_num="+gDto.getGoods_num();
 		}else {
-			model.addAttribute("msg", "추가 실패");
+			model.addAttribute("msg", "수정 실패");
 			model.addAttribute("url", "upGoodsForm.do");
 			return "error";
 		}		

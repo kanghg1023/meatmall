@@ -98,7 +98,9 @@ $(function() {
 			</c:choose>	
 					<tr>
 						<td colspan="7" align="center">
+						<c:if test="${pnum != 1}">
 							<a href="allGoods.do?pnum=${map.prePageNum}">◀</a>
+						</c:if>	
 							<c:forEach var="i" begin="${map.startPage}" end="${map.endPage}" step="1">
 								<c:choose>
 									<c:when test="${pnum eq i}">
@@ -109,7 +111,9 @@ $(function() {
 									</c:otherwise>
 								</c:choose>	
 							</c:forEach>
+						<c:if test="${pnum < map.pcount}">
 							<a href="allGoods.do?pnum=${map.nextPageNum}">▶</a>
+						</c:if>
 						</td>
 					</tr>
 					

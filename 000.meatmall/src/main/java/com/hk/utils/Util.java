@@ -90,7 +90,7 @@ public class Util {
 	
 	//랜덤한 값 32자리 만드는 메서드
 	public static String createUUId() {
-		return UUID.randomUUID().toString().replaceAll("-", "") ;
+		return UUID.randomUUID().toString().replaceAll("-", "");
     }
 	
 }

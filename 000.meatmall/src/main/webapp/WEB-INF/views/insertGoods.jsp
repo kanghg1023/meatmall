@@ -13,7 +13,9 @@
 	.select_img img {margin:20px;}
 </style>
 <script type="text/javascript">
-
+	
+	var detail_img_count = 1;
+	
 	$(function(){
 		
 		//필수 입력
@@ -49,16 +51,47 @@
 			
 		});
 		
-		//이미지 미리보기
-		$("#gdsImg").change(function(){
-			   if(this.files && this.files[0]) {
-			    var reader = new FileReader;
-			    reader.onload = function(data) {
-			     $(".select_img img").attr("src", data.target.result).width(500);        
-			    }
-			    reader.readAsDataURL(this.files[0]);
-			   }
-			  });
+		//대표이미지 미리보기
+		$("#goods_img_title").change(function(){
+			if(this.files && this.files[0]) {
+				var reader = new FileReader;
+				reader.onload = function(data) {
+					$(".select_title_img img").attr("src", data.target.result).width(400);
+					$(".select_title_img img").attr("src", data.target.result).height(380);  
+				}
+				reader.readAsDataURL(this.files[0]);
+			}
+		});
+		
+		//상세이미지 미리보기
+		$("#goods_img_detail").change(function(){
+			var preview = document.querySelector('#deImg');
+			var files = document.querySelector('#goods_img_detail').files;
+			var br = "<br />";
+			
+			function readAndPreview(file) {
+				var reader = new FileReader();
+				
+				reader.addEventListener("load", function () {
+					var image = new Image();
+					image.width = 800;
+					image.height = 580;
+					image.title = file.name;
+					image.src = this.result;
+					preview.appendChild( image );
+					
+					if(detail_img_count > 1){
+						preview.innerHTML += br;
+					}
+				}, false);
+				reader.readAsDataURL(file);
+			}
+			if (files) {
+				[].forEach.call(files, readAndPreview);
+			}
+			
+			detail_img_count++;
+		});
 	});
 </script>
 </head>
@@ -90,10 +123,10 @@
 		<th>대표이미지</th>
 		<td>
 			<div class="inputArea">
- 				<label for="gdsImg">이미지</label>
- 				<input type="file" id="gdsImg" name="file" />
- 				<div class="select_img">
- 				<img src="" />
+ 				<label for="goods_img_title">대표이미지</label>
+ 				<input type="file" id="goods_img_title" name="title_file" />
+ 				<div class="select_title_img">
+					<img src="" />
  				</div>
 			</div>
 		</td>
@@ -121,7 +154,13 @@
 	</tr>
 	<tr>
 		<th>상세이미지</th>
-		<td><input type="text" name="goods_img_detail" /></td>
+		<td>
+			<div class="inputArea">
+ 				<label for="goods_img_detail">상세이미지</label>
+ 				<input multiple="multiple" type="file" id="goods_img_detail" name="detail_file" />
+ 				<div class="select_detail_img" id="deImg"></div>
+			</div>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
