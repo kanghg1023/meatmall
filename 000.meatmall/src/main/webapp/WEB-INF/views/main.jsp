@@ -17,5 +17,25 @@
 	session.setAttribute("page", "main");
 %>
 <input type="hidden" name="page" value="main">
+
+<div>
+	<h3>도매</h3>
+	<c:forEach items="${doList}" var="dto">
+		<div>
+			<img src="${dto.goods_img_title}"  style="width:250px; height:180px;" >
+			<strong>${dto.goods_cost}원</strong>(100g 당)
+		</div>
+	</c:forEach>
+</div>
+
+<div>
+	<h3>소매</h3>
+	<c:forEach items="${soList}" var="dto">
+		<div>
+			<img src="${dto.goods_img_title}"  style="width:250px; height:180px;" >
+			<strong>${dto.goods_cost}원</strong>(100g 당)
+		</div>
+	</c:forEach>
+</div>
 </body>
 </html>

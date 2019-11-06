@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.idaos.ILoginDao;
@@ -102,6 +103,12 @@ public class LoginService implements ILoginService {
 	public List<RecordDto> loginRecordList(int user_num) {
 		loginDao.loginRecordDel();
 		return loginDao.loginRecordList(user_num);
+	}
+
+	//
+	@Override
+	public List<GoodsDto> getMainList(String goods_doso) {
+		return loginDao.getMainList(goods_doso);
 	}
 	
 

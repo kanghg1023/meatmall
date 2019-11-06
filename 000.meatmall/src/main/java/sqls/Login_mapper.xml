@@ -198,4 +198,21 @@
 		 WHERE RECORD_DATE+7 < SYSDATE
 		]]>
 	</delete>
+	
+	<select id="getMainList" parameterType="String" resultType="GoodsDto">
+		<![CDATA[
+		SELECT GOODS_NUM
+	   		 , GOODS_TITLE
+	   		 , USER_NUM
+	   		 , GOODS_DOSO
+	   		 , GOODS_IMG_TITLE
+	   		 , GOODS_DELFLAG
+	   		 , KIND_NUM
+	   		 , GOODS_COST
+     	  FROM GOODS
+		 WHERE GOODS_DOSO = #{goods_doso}
+		   AND ROWNUM <= 8
+		 ORDER BY GOODS_COST
+		]]>
+	</select>
 </mapper>

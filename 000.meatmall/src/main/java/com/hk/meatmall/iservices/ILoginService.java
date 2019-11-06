@@ -2,6 +2,7 @@ package com.hk.meatmall.iservices;
 
 import java.util.List;
 
+import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 
@@ -22,5 +23,8 @@ public interface ILoginService {
 	public boolean inquiryChk(UserDto dto);
 	public boolean pwChange(String user_id, String user_pw);
 	public List<RecordDto> loginRecordList(int user_num);
+	
+	//
+	public List<GoodsDto> getMainList(String goods_doso);
 	
 }

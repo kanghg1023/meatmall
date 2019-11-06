@@ -248,18 +248,11 @@
 	</insert>
 	
 <!-- 댓글 삭제 -->
-<!-- 	<delete id="delcomment" parameterType="int"> -->
-<!-- 		DELETE  -->
-<!-- 		  FROM BOARD_COMMENT -->
-<!-- 		 WHERE COMMENT_NUM = #{comment_num}  	 -->
-<!-- 	</delete> -->
 	<update id="delcomment" parameterType="int">
 		UPDATE BOARD_COMMENT 
 		   SET COMMENT_DELFLAG='0' 
 		 WHERE COMMENT_NUM = #{comment_num} 		
 	</update>
-
-
 	
 <!-- 댓글수정하기-->	
 	<update id="updatecomment" parameterType="CommentDto">
@@ -269,7 +262,38 @@
  		 WHERE COMMENT_NUM = #{comment_num}
 	</update>	
 	
+	<sql id="message">
+		SELECT MESSAGE_NUM
+			 , USER_NUM
+			 , MESSAGE_FROM_NUM
+			 , MESSAGE_CONTENT
+			 , MESSAGE_REGDATE
+		  FROM MESSAGE
+	</sql>
 	
+	<select id="messageList" parameterType="int" resultType="MessageDto">
+		<include refid="message" />
+		 WHERE USER_NUM = #{user_num}
+		   AND MESSAGE_TO_DELFLAG = 1
+	</select>
 	
+	<select id="sendMessageList" parameterType="int" resultType="MessageDto">
+		<include refid="message" />
+		 WHERE MESSAGE_FROM_NUM = #{message_from_num}
+		   AND MESSAGE_FROM_DELFLAG = 1
+	</select>
+	
+	<insert id="insertMessage" parameterType="MessageDto">
+		INSERT INTO MESSAGE
+		VALUES (
+				 MESSAGE_SEQ.NEXTVAL
+			   , #{message_from_num}
+			   , #{user_num}
+			   , #{message_content}
+			   , SYSDATE
+			   , 1
+			   , 1
+			   )
+	</insert>
 	
 </mapper>
