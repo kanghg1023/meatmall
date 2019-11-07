@@ -17,7 +17,7 @@ public class MessageDto {
 
 	//쪽지 번호
 	private int message_num;
-	//보낸사람 아이디
+	//보낸사람 번호
 	private int message_from_num;
 	//받는 사람 번호
 	private int user_num;

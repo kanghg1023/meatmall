@@ -4,10 +4,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import org.apache.commons.mail.HtmlEmail;
+
+import com.hk.meatmall.dtos.MessageDto;
 
 public class Util {
 	
@@ -92,5 +95,17 @@ public class Util {
 	public static String createUUId() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
     }
+	
+	
+	public static List<MessageDto> sampleContent(List<MessageDto> list) {
+		
+		for (MessageDto mdto:list) {
+			if(mdto.getMessage_content().length() > 10) {
+				mdto.setMessage_content(mdto.getMessage_content().substring(0, 10)+"...");
+			}
+		}
+		
+		return list;
+	}
 	
 }

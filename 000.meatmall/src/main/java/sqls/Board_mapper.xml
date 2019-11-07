@@ -262,14 +262,30 @@
  		 WHERE COMMENT_NUM = #{comment_num}
 	</update>	
 	
+<!-- 쪽지 페이징 -->
+	<sql id="msgPaging">
+		SELECT CEIL(COUNT(*)/20)
+		  FROM MESSAGE
+	</sql>
+	
 	<sql id="message">
 		SELECT MESSAGE_NUM
-			 , USER_NUM
 			 , MESSAGE_FROM_NUM
+			 , USER_NUM
 			 , MESSAGE_CONTENT
 			 , MESSAGE_REGDATE
 		  FROM MESSAGE
 	</sql>
+	
+	<select id="msgPcount" parameterType="int" resultType="int">
+		<include refid="msgPaging" />
+		 WHERE USER_NUM = #{user_num}
+	</select>
+	
+	<select id="sendMsgPcount" parameterType="int" resultType="int">
+		<include refid="msgPaging" />
+		 WHERE MESSAGE_FROM_NUM = #{message_from_num}
+	</select>
 	
 	<select id="messageList" parameterType="int" resultType="MessageDto">
 		<include refid="message" />

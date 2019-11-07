@@ -138,6 +138,16 @@ public class BoardDao implements IBoardDao {
 	}
 
 	@Override
+	public int msgPcount(int user_num) {
+		return sqlSession.selectOne(nameSpace+"msgPcount",user_num);
+	}
+	
+	@Override
+	public int sendMsgPcount(int message_from_num) {
+		return sqlSession.selectOne(nameSpace+"sendMsgPcount",message_from_num);
+	}
+	
+	@Override
 	public List<MessageDto> messageList(int user_num) {
 		return sqlSession.selectList(nameSpace+"messageList",user_num);
 	}
@@ -152,6 +162,8 @@ public class BoardDao implements IBoardDao {
 		int count = sqlSession.insert(nameSpace+"insertMessage",dto);
 		return count>0 ? true : false;
 	}
+
+	
 
 
 	

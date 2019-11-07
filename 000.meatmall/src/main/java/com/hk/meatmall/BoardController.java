@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -23,6 +26,7 @@ import com.hk.meatmall.dtos.MessageDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.IBoardService;
 import com.hk.utils.Paging;
+import com.hk.utils.Util;
 
 @Controller
 public class BoardController {
@@ -131,12 +135,11 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		}
 		
 		int likecount = boardService.likeCount(board_num);
-		model.addAttribute("likecount", likecount);
-					
 		BoardDto boarddto =boardService.getBoard(board_num);
-		model.addAttribute("boarddto", boarddto);
-		
 		List<CommentDto> clist = boardService.commentList(board_num);
+		
+		model.addAttribute("likecount", likecount);
+		model.addAttribute("boarddto", boarddto);
 		model.addAttribute("clist", clist);					
 		return "boarddetail";
 	}
@@ -292,24 +295,76 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	}
 	
 	@RequestMapping(value = "/messageList.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String messageList(Model model, int user_num) {
+	public String messageList( HttpSession session
+							 , Model model
+							 , int user_num
+							 , String pnum) {
 		logger.info("받은 쪽지함");
 		
-		List<MessageDto> mlist = boardService.messageList(user_num);
+		if(pnum==null) {
+			pnum=(String)session.getAttribute("pnum");
+		}else {
+			session.setAttribute("pnum", pnum);
+		}
+		
+		List<MessageDto> mlist = new ArrayList<>();
+		boolean isList = true;
+		int p = Integer.parseInt(pnum);
+		
+		while(isList) {
+			mlist = boardService.messageList(user_num);
+			
+			if(p==1 || mlist.size()>0) {
+				isList = false;
+			}else {
+				pnum = String.valueOf(--p);
+				session.setAttribute("pnum", pnum);
+			}
+		}
+		
+		mlist = Util.sampleContent(mlist);
+		int pcount = boardService.msgPcount(user_num);
+		Map<String, Integer> qmap=Paging.pagingValue(pcount, pnum, 5);
 		
 		model.addAttribute("mlist", mlist);
-		
+		model.addAttribute("qmap", qmap);
 		return "messageList";
 	}
 	
 	@RequestMapping(value = "/sendMessageList.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String sendMessageList(Model model, int message_from_num) {
+	public String sendMessageList( HttpSession session
+								 , Model model
+								 , int message_from_num
+								 , String pnum) {
 		logger.info("보낸 쪽지함");
 		
-		List<MessageDto> sendmlist = boardService.sendMessageList(message_from_num);
+		if(pnum==null) {
+			pnum=(String)session.getAttribute("pnum");
+		}else {
+			session.setAttribute("pnum", pnum);
+		}
+		
+		List<MessageDto> sendmlist = new ArrayList<>();
+		boolean isList = true;
+		int p = Integer.parseInt(pnum);
+		
+		while(isList) {
+			sendmlist = boardService.sendMessageList(message_from_num);
+			
+			if(p==1 || sendmlist.size()>0) {
+				isList = false;
+			}else {
+				pnum = String.valueOf(--p);
+				session.setAttribute("pnum", pnum);
+			}
+		}
+		
+		sendmlist = Util.sampleContent(sendmlist);
+		int pcount = boardService.sendMsgPcount(message_from_num);
+		Map<String, Integer> qmap=Paging.pagingValue(pcount, pnum, 5);
 		
 		model.addAttribute("sendmlist", sendmlist);
-		
+		model.addAttribute("qmap", qmap);
 		return "sendMessageList";
 	}
 	
@@ -334,4 +389,61 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 			return "error";
 		}
 	}
+	
+	@RequestMapping(value = "/reviewDetail.do")
+	public String reviewDetail( HttpServletRequest request
+							  , HttpServletResponse response
+							  , HttpSession session
+							  , int board_num) {
+	        
+		// 해당 게시판 번호를 받아 리뷰 상세페이지로 넘겨줌
+		BoardDto boarddto =boardService.getBoard(board_num);
+		Cookie[] cookies = request.getCookies();
+		
+		// 비교하기 위해 새로운 쿠키
+		Cookie viewCookie = null;
+		
+		// 쿠키가 있을 경우 
+		if (cookies != null && cookies.length > 0) {
+			for(int i = 0; i < cookies.length; i++) {
+				if (cookies[i].getName().equals("cookie"+board_num)) {
+					System.out.println("처음 쿠키가 생성한 뒤 들어옴.");
+					viewCookie = cookies[i];
+				}
+			}
+		}
+	        
+		if(boarddto != null) {
+			// 만일 viewCookie가 null일 경우 쿠키를 생성해서 조회수 증가 로직을 처리함.
+			if(viewCookie == null) {   
+				System.out.println("cookie 없음");
+	                
+				// 쿠키 생성(이름, 값)
+				Cookie newCookie = new Cookie("cookie"+board_num, "|" + board_num + "|");
+				
+				response.addCookie(newCookie);
+				
+				// 쿠키를 추가 시키고 조회수 증가시킴
+				boolean result = boardService.readCount(board_num);
+				
+				if(result) {
+					System.out.println("조회수 증가");
+				}else {
+					System.out.println("조회수 증가 에러");
+				}
+			}else {
+				// viewCookie가 null이 아닐경우 쿠키가 있으므로 조회수 증가 로직을 처리하지 않음.
+				System.out.println("cookie 있음");
+				
+				// 쿠키 값 받아옴.
+				String value = viewCookie.getValue();
+				System.out.println("cookie 값 : " + value);
+			}
+			return "error";
+		}else {
+			// 에러 페이지 설정
+			return "error";
+		}
+	}
+
 }

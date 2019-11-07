@@ -120,6 +120,15 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
+	public int msgPcount(int user_num) {
+		return boardDao.msgPcount(user_num);
+	}
+	
+	public int sendMsgPcount(int message_from_num) {
+		return boardDao.sendMsgPcount(message_from_num);
+	}
+	
+	@Override
 	public List<MessageDto> messageList(int user_num) {
 		return boardDao.messageList(user_num);
 	}
@@ -133,6 +142,8 @@ public class BoardService implements IBoardService {
 	public boolean insertMessage(MessageDto dto) {
 		return boardDao.insertMessage(dto);
 	}
+
+	
 
 
 }
