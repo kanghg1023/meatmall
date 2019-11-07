@@ -17,5 +17,8 @@ public class BasketDto {
 	private int user_num;
 	//상품 번호
 	private int goods_num;
-
+	//옵션 번호
+	private int option_num;
+	//담긴 수량
+	private int basket_count;
 }

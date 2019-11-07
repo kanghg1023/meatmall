@@ -8,9 +8,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hk.meatmall.dtos.BasketDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
+import com.hk.meatmall.dtos.ReviewDto;
 import com.hk.meatmall.idaos.IGoodsDao;
 
 @Repository
@@ -175,24 +177,41 @@ public class GoodsDao implements IGoodsDao {
 		int count = sqlSession.update(nameSpace+"upGoods_option", oDto);
 		return count > 0 ? true:false;
 	}
-
 	
+	//상품 수정에서 옵션 추가
+	@Override
+	public boolean upInsertGoods_option(Goods_optionDto oDto) {
+		int count = sqlSession.insert(nameSpace+"upInsertGoods_option",oDto);
+		return count > 0 ? true:false;
+	}
 
+	//장바구니 목록
+	@Override
+	public List<BasketDto> basketList(int user_num) {
+		return sqlSession.selectList(nameSpace+"basketList", user_num);
+	}
 	
+	//장바구니 상품 추가
+	@Override
+	public boolean insertBasket(BasketDto bDto) {
+		int count = sqlSession.insert(nameSpace+"insertBasket", bDto);
+		return count > 0 ? true:false;
+	}
 
-	
+	//장바구니 상품 삭제
+	@Override
+	public boolean delBasket(String[] chk) {
+		Map<String, String[]> map = new HashMap<>();
+		map.put("chk", chk);
+		
+		int count = sqlSession.delete(nameSpace+"delBasket", map);
+		return count > 0 ? true:false;
+	}
 
-	
+	//후기 목록
+	@Override
+	public List<ReviewDto> reviewList(int goods_num) {
+		return sqlSession.selectList(nameSpace+"reviewList", goods_num);
+	}
 
-	
-
-	
-
-	
-
-	
-
-
-
-	
 }

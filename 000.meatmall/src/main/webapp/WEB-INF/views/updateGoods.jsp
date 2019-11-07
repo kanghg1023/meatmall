@@ -6,8 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
 <style type="text/css">
 	.select_img img {width:500px; margin:20px;}
@@ -15,8 +14,9 @@
 <script type="text/javascript">
 
 	var detail_img_count = 1;
-	
+
 	$(function(){
+		
 		//필수 입력
 		$("form").submit(function(){
 			var bool = true;
@@ -47,7 +47,6 @@
 												+"<th>무게(g)</th>"
 												+"<td><input type='text' name='option_weight' /></td>"
 											+"</tr>");
-			
 		});
 		
 		//대표이미지 미리보기

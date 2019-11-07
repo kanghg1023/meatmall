@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hk.meatmall.dtos.BasketDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
+import com.hk.meatmall.dtos.ReviewDto;
 import com.hk.meatmall.idaos.IGoodsDao;
 import com.hk.meatmall.iservices.IGoodsService;
 
@@ -137,36 +139,36 @@ public class GoodsService implements IGoodsService {
 	public boolean upGoods_option(Goods_optionDto oDto) {
 		return GoodsDao.upGoods_option(oDto);
 	}
-
 	
+	//상품 수정에서 옵션 추가
+	@Override
+	public boolean upInsertGoods_option(Goods_optionDto oDto) {
+		return GoodsDao.upInsertGoods_option(oDto);
+	}
 
-	
+	//장바구니 목록
+	@Override
+	public List<BasketDto> basketList(int user_num) {
+		return GoodsDao.basketList(user_num);
+	}
 
-	
+	//장바구니 상품 추가
+	@Override
+	public boolean insertBasket(BasketDto bDto) {
+		return GoodsDao.insertBasket(bDto);
+	}
 
-	
+	//장바구니 상품 삭제
+	@Override
+	public boolean delBasket(String[] chk) {
+		return GoodsDao.delBasket(chk);
+	}
 
-	
-
-	
-
-	
-
-
-
-	
-	
-	
-
-	
-
-	
-
-	
-
-	
-
-	
+	//후기 목록
+	@Override
+	public List<ReviewDto> reviewList(int goods_num) {
+		return GoodsDao.reviewList(goods_num);
+	}
 
 	
 	

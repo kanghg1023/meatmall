@@ -53,15 +53,15 @@
 		
 		//대표이미지 미리보기
 		$("#goods_img_title").change(function(){
-			if(this.files && this.files[0]) {
-				var reader = new FileReader;
-				reader.onload = function(data) {
+			   if(this.files && this.files[0]) {
+			    var reader = new FileReader;
+			    reader.onload = function(data) {
 					$(".select_title_img img").attr("src", data.target.result).width(400);
 					$(".select_title_img img").attr("src", data.target.result).height(380);  
-				}
-				reader.readAsDataURL(this.files[0]);
-			}
-		});
+			    }
+			    reader.readAsDataURL(this.files[0]);
+			   }
+			  });
 		
 		//상세이미지 미리보기
 		$("#goods_img_detail").change(function(){
@@ -137,7 +137,7 @@
 		<td>
 			<c:if test="${!empty kList}" >
   				<select name="kind_num" style="width:80px;">
-  					<option>부위 선택</option>
+  					<option value="">부위 선택</option>
       				<c:forEach var="kList" items="${kList}" varStatus="i">
          				<option value="${kList.kind_num}">${kList.kind_name}</option>
       				</c:forEach>
