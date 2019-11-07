@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -36,22 +38,16 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 	@Autowired
 	private IQnAService qnaService;
 	
-	@RequestMapping(value = "/faqlist.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String FAQlist(HttpSession session, Model model) {
-		logger.info("자주묻는질문보기");
-		
-		UserDto ldto = (UserDto)session.getAttribute("ldto");
-		
-		if(ldto == null) {
-			return "redirect:loginPage.do";
-		}
-		
-		List<FAQDto> faqlist = qnaService.getFAQList();
-		
-		model.addAttribute("faqlist",faqlist);
+	   @RequestMapping(value = "/faqlist.do", method = {RequestMethod.GET,RequestMethod.POST})
+	   public String FAQlist(Model model) {
+	      logger.info("자주묻는질문보기");
+	      
+	      List<FAQDto> faqlist = qnaService.getFAQList();
+	      
+	      model.addAttribute("faqlist",faqlist);
 
-		return "FAQList";
-	}
+	      return "FAQList";
+	   }
 	
 	@RequestMapping(value="/faqinsertform.do",method= {RequestMethod.POST,RequestMethod.GET})
 	public String faqinsertform() {
@@ -115,49 +111,53 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 			}
 		}
 			
-		@RequestMapping(value = "/questionlist.do", method = {RequestMethod.GET,RequestMethod.POST})
-		public String questionlist( HttpSession session
-								  , Model model
-								  , String pnum) {
-			logger.info("1:1문의 리스트");
-			
-			UserDto ldto = (UserDto)session.getAttribute("ldto");
-			
-			if(pnum==null) {
-				pnum=(String)session.getAttribute("pnum");
-			}else {
-				session.setAttribute("pnum", pnum);
-			}
-			
-			List<QnADto> qlist = new ArrayList<>();
-			
-			boolean isList = true;
-			int p = Integer.parseInt(pnum);
-			
-			while(isList) {
-				if(ldto.getUser_role().equals("ADMIN")) {
-					qlist = qnaService.AllQuestionList(String.valueOf(p));
-				}else {
-					String user_num = String.valueOf(ldto.getUser_num());
-					qlist = qnaService.getQuestionList(user_num,String.valueOf(p));
-				}
-				
-				if((qlist.size()>0) || (p==1 && qlist.size()==0)) {
-					isList = false;
-				}else {
-					pnum = String.valueOf(--p);
-					session.setAttribute("pnum", pnum);
-				}
-			}
-			
-			int pcount=qnaService.QnAPcount();
-			Map<String, Integer> qmap=Paging.pagingValue(pcount, pnum, 5);
-			
-			model.addAttribute("qmap",qmap);
-			model.addAttribute("qlist",qlist);
+	      @RequestMapping(value = "/questionlist.do", method = {RequestMethod.GET,RequestMethod.POST})
+	      public String questionlist( HttpSession session
+	                          , Model model
+	                          , String pnum) {
+	         logger.info("1:1문의 리스트");
+	         
+	         UserDto ldto = (UserDto)session.getAttribute("ldto");
+	         
+	         if(ldto == null) {
+	            return "redirect:loginPage.do";
+	         }
+	         
+	         if(pnum==null) {
+	            pnum=(String)session.getAttribute("pnum");
+	         }else {
+	            session.setAttribute("pnum", pnum);
+	         }
+	         
+	         List<QnADto> qlist = new ArrayList<>();
+	         
+	         boolean isList = true;
+	         int p = Integer.parseInt(pnum);
+	         
+	         while(isList) {
+	            if(ldto.getUser_role().equals("ADMIN")) {
+	               qlist = qnaService.AllQuestionList(String.valueOf(p));
+	            }else {
+	               String user_num = String.valueOf(ldto.getUser_num());
+	               qlist = qnaService.getQuestionList(user_num,String.valueOf(p));
+	            }
+	            
+	            if((qlist.size()>0) || (p==1 && qlist.size()==0)) {
+	               isList = false;
+	            }else {
+	               pnum = String.valueOf(--p);
+	               session.setAttribute("pnum", pnum);
+	            }
+	         }
+	         
+	         int pcount=qnaService.QnAPcount();
+	         Map<String, Integer> qmap=Paging.pagingValue(pcount, pnum, 5);
+	         
+	         model.addAttribute("qmap",qmap);
+	         model.addAttribute("qlist",qlist);
 
-			return "QuestionList";
-		}
+	         return "QuestionList";
+	      }
 		
 		@RequestMapping(value="/questioninsertform.do",method= {RequestMethod.POST,RequestMethod.GET})
 		public String Questioninsertform(Model model) {
@@ -181,11 +181,12 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		}
 	
 		@RequestMapping(value="/questiondetail.do",method= {RequestMethod.POST,RequestMethod.GET})
-		public String Questiondetail( HttpSession session
+		public String Questiondetail( HttpServletRequest request
 									, Model model
 									, int question_num) {
 			logger.info("1:1문의글상세보기");
 			
+			HttpSession session = request.getSession();
 			UserDto ldto = (UserDto)session.getAttribute("ldto");
 			
 			QnADto qdto=qnaService.Questiondetail(question_num);
@@ -225,10 +226,10 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		}
 		
 		@RequestMapping(value="/questiondelete.do",method= {RequestMethod.POST,RequestMethod.GET})
-		public String Questiondelete( HttpSession session
-									, Model model
-									, int question_num) {
+		public String Questiondelete(HttpServletRequest request,Model model,int question_num) {
 			logger.info("1:1문의글 삭제하기");
+			
+			HttpSession session=request.getSession();
 			
 			UserDto ldto=(UserDto)session.getAttribute("ldto");
 				
@@ -264,43 +265,45 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		
 		@ResponseBody
 		@RequestMapping(value = "/imageUpload.do",method= {RequestMethod.POST})
-		public String communityImageUpload(HttpServletResponse response, @RequestParam MultipartFile upload) throws Exception {
+		public String communityImageUpload(HttpServletRequest request, HttpServletResponse response, @RequestParam MultipartFile upload) throws Exception {
 			System.out.println("들어는옴");
 			//한글깨짐을 방지하기위해 문자셋 설정
 			response.setCharacterEncoding("utf-8");
 		 
-	        // 마찬가지로 파라미터로 전달되는 response 객체의 한글 설정
-	        response.setContentType("text/html; charset=utf-8");
-	 
-	        // 업로드한 파일 이름
-	        String fileName = upload.getOriginalFilename();
-	       
-	        String stored_fname = Util.createUUId()
-			         +(fileName.substring(fileName.lastIndexOf(".")));
-	        // 파일을 바이트 배열로 변환
-	        byte[] bytes = upload.getBytes();
-	 
-	        // 이미지를 업로드할 디렉토리(배포 디렉토리로 설정)
-//		    String uploadPath ="D:\\java_lec_2class\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\000.meatmall4ck\\images\\";
-//		    String uploadPath ="D:\\eclips\\딱따구리\\000.meatmalltest\\src\\main\\webapp\\resources\\ckimages\\";
-	        String uploadPath ="C:\\Users\\HKEDU\\git\\meatmall\\000.meatmall\\src\\main\\webapp\\resources\\ckimages\\";
-	        OutputStream out = new FileOutputStream(new File(uploadPath + stored_fname));
-	        
-	        // 서버로 업로드
-	        // write메소드의 매개값으로 파일의 총 바이트를 매개값으로 준다.
-	        // 지정된 바이트를 출력 스트립에 쓴다 (출력하기 위해서)
-	        out.write(bytes);
-	        	        
-	        // 서버=>클라이언트로 텍스트 전송(자바스크립트 실행)
-	        PrintWriter printWriter = response.getWriter();
-	        
-	        String fileUrl = "/meatmall/ckimages/" + stored_fname;	     
-	        System.out.println(fileUrl);
-	        printWriter.println("{\"fileName\" : \""+stored_fname+"\", \"uploaded\" : 1, \"url\":\""+fileUrl+"\"}");     
-	        printWriter.flush();
-	        out.close();
-	        printWriter.close(); 
-	        return null;
-		}
+		        // 마찬가지로 파라미터로 전달되는 response 객체의 한글 설정
+		        response.setContentType("text/html; charset=utf-8");
+		 
+		        // 업로드한 파일 이름
+		        String fileName = upload.getOriginalFilename();
+		       
+		        String stored_fname = Util.createUUId()
+				         +(fileName.substring(fileName.lastIndexOf(".")));
+		        // 파일을 바이트 배열로 변환
+		        byte[] bytes = upload.getBytes();
+		 
+		        // 이미지를 업로드할 디렉토리(배포 디렉토리로 설정)
+//		        String uploadPath ="D:\\java_lec_2class\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\000.meatmall4ck\\images\\";
+		        String uploadPath ="D:\\java_lec_2class\\000.meatmallzz\\src\\main\\webapp\\resources\\ckimages\\";
+//		        String uploadPath ="C:\\Users\\HKEDU\\git\\meatmall\\000.meatmall\\src\\main\\webapp\\resources\\ckimages\\";
+		        OutputStream out = new FileOutputStream(new File(uploadPath + stored_fname));
+		        
+		        // 서버로 업로드
+		        // write메소드의 매개값으로 파일의 총 바이트를 매개값으로 준다.
+		        // 지정된 바이트를 출력 스트립에 쓴다 (출력하기 위해서)
+		        out.write(bytes);
+		        	        
+		        // 서버=>클라이언트로 텍스트 전송(자바스크립트 실행)
+		        PrintWriter printWriter = response.getWriter();
+		        
+		        String fileUrl = "/meatmall/ckimages/" + stored_fname;	     
+		        System.out.println(fileUrl);
+		        printWriter.println("{\"fileName\" : \""+stored_fname+"\", \"uploaded\" : 1, \"url\":\""+fileUrl+"\"}");     
+		        printWriter.flush();
+		        out.close();
+		        printWriter.close(); 
+		        return null;
+		    }	
+		 
+			
 		
 }

@@ -13,7 +13,7 @@
 	.layer1 {
 	
 	position:absolute; left:50%; top:20%; transform:translateX(-50%);
-	width: 500px;
+	width: 600px;
 	}
 	
 	.heading {
