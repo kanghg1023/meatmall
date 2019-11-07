@@ -183,7 +183,14 @@
 		INSERT INTO GOODS_OPTION
 		VALUES (
 				 GOODS_OPTION_SEQ.NEXTVAL
-	  		   , (SELECT MAX(GOODS_NUM) FROM GOODS)
+		<choose>
+			<when test="goods_num == 0">
+			   , (SELECT MAX(GOODS_NUM) FROM GOODS)
+			</when>
+			<otherwise>
+			   , #{goods_num}
+			</otherwise>
+		</choose>
 	  		   , #{option_name}
 	  		   , #{option_count}
 	  		   , #{option_weight}
@@ -272,7 +279,56 @@
 			 , OPTION_WEIGHT = #{option_weight}
  		 WHERE OPTION_NUM = #{option_num}
 	</update>
-
 	
+<!-- 장바구니 목록 -->
+	<select id="basketList" resultType="BasketDto" parameterType="int">
+		SELECT b.USER_NUM
+			 , g.GOODS_IMG_TITLE
+			 , o.OPTION_NUM
+			 , o.OPTION_NAME
+			 , b.BASKET_COUNT
+			 , b.GOODS_NUM
+		  FROM BASKET b
+			 , GOODS g
+			 , GOODS_OPTION o
+		 WHERE b.GOODS_NUM = g.GOODS_NUM
+		   AND b.OPTION_NUM = o.OPTION_NUM
+		   AND b.USER_NUM = #{user_num}
+	</select>
+	
+<!-- 장바구니 추가 -->
+	<insert id="insertBasket" parameterType="BasketDto">
+		INSERT INTO BASKET
+		VALUES (
+			     #{user_num}
+			   , #{goods_num}
+			   , #{option_num}
+			   , #{basket_count}
+			   )
+	</insert>
+
+<!-- 장바구니 삭제 -->
+	<delete id="delBasket" parameterType="Map">
+		DELETE FROM BASKET
+ 		 WHERE OPTION_NUM IN
+ 			<foreach collection="chk" item="option_num" open="(" close=")" separator=",">
+			   #{option_num}
+			</foreach>
+	</delete>
+	
+<!-- 후기 목록 -->
+	<select id="reviewList" parameterType="int" resultType="ReviewDto">
+		SELECT REVIEW_NUM
+		     , ORDER_NUM
+		     , GOODS_NUM
+		     , USER_NUM
+		     , USER_ID
+		     , REVIEW_CONTENT
+		     , REVIEW_SCORE
+		     ,REVIEW_DATE
+		  FROM REVIEW
+		 WHERE GOODS_NUM = #{goods_num}
+		 ORDER BY REVIEW_NUM DESC
+	</select>
 	
 </mapper>

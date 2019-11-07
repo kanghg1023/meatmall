@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.Board_likeDto;
 import com.hk.meatmall.dtos.CommentDto;
+import com.hk.meatmall.dtos.MessageDto;
 import com.hk.meatmall.idaos.IBoardDao;
 
 @Repository
@@ -135,6 +136,34 @@ public class BoardDao implements IBoardDao {
 		int count=sqlSession.update(nameSpace+"updatecomment",dto);
 		return count > 0 ? true:false;
 	}
+
+	@Override
+	public int msgPcount(int user_num) {
+		return sqlSession.selectOne(nameSpace+"msgPcount",user_num);
+	}
+	
+	@Override
+	public int sendMsgPcount(int message_from_num) {
+		return sqlSession.selectOne(nameSpace+"sendMsgPcount",message_from_num);
+	}
+	
+	@Override
+	public List<MessageDto> messageList(int user_num) {
+		return sqlSession.selectList(nameSpace+"messageList",user_num);
+	}
+
+	@Override
+	public List<MessageDto> sendMessageList(int message_from_num) {
+		return sqlSession.selectList(nameSpace+"sendMessageList",message_from_num);
+	}
+
+	@Override
+	public boolean insertMessage(MessageDto dto) {
+		int count = sqlSession.insert(nameSpace+"insertMessage",dto);
+		return count>0 ? true : false;
+	}
+
+	
 
 
 	

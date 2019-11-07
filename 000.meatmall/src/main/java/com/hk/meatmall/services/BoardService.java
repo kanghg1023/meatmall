@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.Board_likeDto;
 import com.hk.meatmall.dtos.CommentDto;
+import com.hk.meatmall.dtos.MessageDto;
 import com.hk.meatmall.idaos.IBoardDao;
 import com.hk.meatmall.iservices.IBoardService;
 
@@ -117,6 +118,32 @@ public class BoardService implements IBoardService {
 	public boolean updatecomment(CommentDto dto) {		
 		return boardDao.updatecomment(dto);
 	}
+
+	@Override
+	public int msgPcount(int user_num) {
+		return boardDao.msgPcount(user_num);
+	}
+	
+	public int sendMsgPcount(int message_from_num) {
+		return boardDao.sendMsgPcount(message_from_num);
+	}
+	
+	@Override
+	public List<MessageDto> messageList(int user_num) {
+		return boardDao.messageList(user_num);
+	}
+
+	@Override
+	public List<MessageDto> sendMessageList(int message_from_num) {
+		return boardDao.sendMessageList(message_from_num);
+	}
+
+	@Override
+	public boolean insertMessage(MessageDto dto) {
+		return boardDao.insertMessage(dto);
+	}
+
+	
 
 
 }

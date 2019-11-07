@@ -2,6 +2,7 @@ package com.hk.meatmall.idaos;
 
 import java.util.List;
 
+import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 
@@ -23,4 +24,6 @@ public interface ILoginDao {
 	public List<RecordDto> loginRecordList(int user_num);
 	public int loginRecordDel();
 	
+	//
+	public List<GoodsDto> getMainList(String goods_doso);
 }

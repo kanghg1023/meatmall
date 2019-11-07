@@ -2,9 +2,11 @@ package com.hk.meatmall.idaos;
 
 import java.util.List;
 
+import com.hk.meatmall.dtos.BasketDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
+import com.hk.meatmall.dtos.ReviewDto;
 
 public interface IGoodsDao {
 
@@ -46,13 +48,13 @@ public interface IGoodsDao {
 	
 	//상품 추가 (옵션)
 	public boolean insertGoods_option(Goods_optionDto oDto);
-	
+
 	//상품 추가 (부위 선택)
 	public List<Goods_kindDto> kind_num();
-	
+
 	//상품 상세
 	public GoodsDto getGoods(int goods_num);
-		
+
 	//상품 상세 (옵션)
 	public List<Goods_optionDto> getGoods_option(int goods_num);
 	
@@ -67,4 +69,19 @@ public interface IGoodsDao {
 	
 	//상품 수정 (옵션)
 	public boolean upGoods_option(Goods_optionDto oDto);
+	
+	//상품 수정에서 옵션 추가
+	public boolean upInsertGoods_option(Goods_optionDto oDto);
+	
+	//장바구니 목록
+	public List<BasketDto> basketList(int user_num);
+	
+	//장바구니 상품 추가
+	public boolean insertBasket(BasketDto bDto);
+	
+	//장바구니 상품 삭제
+	public boolean delBasket(String[] chk);
+	
+	//후기 목록
+	public List<ReviewDto> reviewList(int goods_num);
 }

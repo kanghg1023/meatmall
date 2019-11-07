@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.ILoginService;
@@ -33,10 +34,15 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	private ILoginService loginService;
 	
 	@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String main() {
+	public String main(Model model) {
 		logger.info("메인");
 		//메인페이지 출력에 필요한 것들 추가요망
 		
+		List<GoodsDto> doList = loginService.getMainList("DO");
+		List<GoodsDto> soList = loginService.getMainList("SO");
+		
+		model.addAttribute("doList",doList);
+		model.addAttribute("soList",soList);
 		return "main";
 	}
 	
@@ -48,13 +54,11 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	}
 	
 	@RequestMapping(value = "/login.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String login( HttpServletRequest request
+	public String login( HttpSession session
 					   , Model model
 					   , String user_id
 					   , String pw) throws NoSuchAlgorithmException {
 		logger.info("로그인");
-		
-		HttpSession session = request.getSession();
 		
 		String page = (String)session.getAttribute("page");
 		
@@ -132,10 +136,9 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	}
 	
 	@RequestMapping(value = "/logout.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String logout(HttpServletRequest request, Model model) {
+	public String logout(HttpSession session, Model model) {
 		logger.info("로그아웃");
 		
-		HttpSession session = request.getSession();
 		session.removeAttribute("ldto");
 		
 		return "redirect:main.do";
@@ -230,12 +233,11 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	}
 	
 	@RequestMapping(value = "/userUpdate.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String userUpdate( HttpServletRequest request
+	public String userUpdate( HttpSession session
 							, Model model
 							, UserDto dto) throws NoSuchAlgorithmException {
 		logger.info("정보 수정하기");
 		
-		HttpSession session = request.getSession();
 		UserDto ldto = (UserDto)session.getAttribute("ldto");
 		String pw = dto.getUser_pw();
 		
@@ -322,10 +324,9 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	}
 	
 	@RequestMapping(value = "/loginRecord.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String loginRecord(HttpServletRequest request, Model model) {
+	public String loginRecord(HttpSession session, Model model) {
 		logger.info("로그인 기록보기");
 		
-		HttpSession session = request.getSession();
 		UserDto ldto = (UserDto)session.getAttribute("ldto");
 		
 		List<RecordDto> recordList = loginService.loginRecordList(ldto.getUser_num());

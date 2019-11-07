@@ -9,8 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 function allSel(ele) {
 	$("input[name=chk]").prop("checked", $(ele).prop("checked"));

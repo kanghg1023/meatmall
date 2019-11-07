@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.idaos.ILoginDao;
@@ -172,7 +173,10 @@ public class LoginDao implements ILoginDao {
 		return count;
 	}
 
-	
-
+	@Override
+	public List<GoodsDto> getMainList(String goods_doso) {
+		List<GoodsDto> list = sqlSession.selectList(nameSpace+"getMainList",goods_doso);
+		return list;
+	}
 	
 }

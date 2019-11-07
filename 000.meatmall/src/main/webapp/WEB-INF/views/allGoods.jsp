@@ -9,8 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 function allSel(ele) {
 	$("input[name=chk]").prop("checked", $(ele).prop("checked"));
@@ -31,6 +30,7 @@ $(function() {
 		}
 		return bool;
 	});
+	
 });	
 </script>
 </head>
@@ -40,7 +40,17 @@ $(function() {
 </div>
 <h1>전체 상품</h1>
 	<form action="delAllGoods.do" method="post">
-		<input type="hidden" name="pnum" value="${pnum}">
+	<c:choose>
+		<c:when test="${kind_num eq null}">
+			<h1>전체에서</h1>
+			<input type="hidden" name="pnum" value="${pnum}">
+		</c:when>
+		<c:otherwise>
+			<h1>카테고리에서</h1>
+			<input type="hidden" name="kind_num" value="${kind_num}">
+			<input type="hidden" name="pnum" value="${pnum}">
+		</c:otherwise>
+	</c:choose>
 		<table border="1" class="table">
 			<col width="30px" />
 			<col width="70px" />

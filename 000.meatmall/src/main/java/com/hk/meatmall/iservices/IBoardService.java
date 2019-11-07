@@ -5,6 +5,7 @@ import java.util.List;
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.Board_likeDto;
 import com.hk.meatmall.dtos.CommentDto;
+import com.hk.meatmall.dtos.MessageDto;
 
 public interface IBoardService {
 	
@@ -48,5 +49,14 @@ public interface IBoardService {
 	public boolean delcomment(int comment_num);
 	// 댓글 수정
 	public boolean updatecomment(CommentDto dto);
-	
+	//받은 쪽지 페이지수
+	public int msgPcount(int user_num);
+	//보낸 쪽지 페이지수
+	public int sendMsgPcount(int message_from_num);
+	//받은 쪽지함
+	public List<MessageDto> messageList(int user_num);
+	//보낸 쪽지함
+	public List<MessageDto> sendMessageList(int message_from_num);
+	//쪽지 보내기
+	public boolean insertMessage(MessageDto dto);
 }

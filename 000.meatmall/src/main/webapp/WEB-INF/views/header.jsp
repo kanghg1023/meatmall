@@ -27,7 +27,8 @@
 			<a href="logout.do" class="logout">관리자 페이지</a> |
 		</c:if>
 		<a href="myPage.do" class="myPage">마이페이지</a> | 
-		<a href="logout.do" class="logout">장바구니</a>
+		<a href="messageList.do?user_num=${ldto.user_num}" class="messageList">쪽지</a> | 
+		<a href="basketList.do?user_num=${ldto.user_num}" class="basketList">장바구니</a>
 	</c:otherwise>
 </c:choose>
 <div>

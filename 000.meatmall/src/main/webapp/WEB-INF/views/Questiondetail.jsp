@@ -29,7 +29,7 @@
 </head>
 <body>
 <h1>1:1문의하기</h1>
-<div style="width:900px;">
+<div style="width:800px;">
 <table border="1">
 	<col width="100px">
 	<col width="100px">
@@ -40,7 +40,7 @@
 		<th>작성자</th>
 		<td>${qdto.user_num}</td>
 		<th>작성일</th>
-		<td>${qdto.question_regdate}</td>
+		<td><fmt:formatDate value="${qdto.question_regdate}" pattern="yyyy년MM월dd일"/></td>
 	</tr>
 	<tr>
 		<th>문의 제목</th>
@@ -81,7 +81,7 @@
 <h1>1:1문의답글</h1>
 	<form action="answerinsert.do" method="post" >
 		<input type="hidden" name="question_num" value="${qdto.question_num}"/>
-		<div style="width:900px;">
+		<div style="width:800px;">
 		<table border="1">
 			<col width="100px">
 			<col width="700px">
@@ -90,7 +90,7 @@
 					<tr>
 						<th>작성날짜</th>
 						<td colspan="3">
-							<fmt:formatDate value="${qdto.answer_regdate}" pattern="yyyy-MM-dd HH:mm"/>
+							<fmt:formatDate value="${qdto.answer_regdate}" pattern="yyyy년MM월dd일"/>
 						</td>
 					</tr>
 					<tr>
