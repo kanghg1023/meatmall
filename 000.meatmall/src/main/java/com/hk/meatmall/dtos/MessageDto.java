@@ -29,6 +29,9 @@ public class MessageDto {
 	private int message_to_delflag;
 	//보낸쪽 삭제여부
 	private int message_from_delflag;
-
-
+	
+	//조인
+	//닉네임
+	private String user_nick;
+	
 }

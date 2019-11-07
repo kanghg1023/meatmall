@@ -32,4 +32,8 @@ public class CommentDto {
 	//삭제여부
 	private int comment_delflag;
 
+	//조인
+	//닉네임
+	private String user_nick;
+	
 }

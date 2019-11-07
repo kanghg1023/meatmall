@@ -36,4 +36,14 @@ public class OrderDto {
 	//배송 상태
 	private String order_state;
 
+	//조인
+	//판매자 닉네임
+	private String user_nick;
+	//상품명
+	private String goods_title;
+	//상품대표이미지
+	private String goods_img_title;
+	//선택한 옵션명
+	private String option_name;
+	
 }

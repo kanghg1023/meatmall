@@ -32,4 +32,8 @@ public class QnADto {
 	//답변 작성일
 	private Date answer_regdate;
 
+	//조인
+	//닉네임
+	private String user_nick;
+	
 }

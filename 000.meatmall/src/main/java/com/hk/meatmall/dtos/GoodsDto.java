@@ -38,4 +38,10 @@ public class GoodsDto {
 	//100g당 가격
 	private int goods_cost;
 
+	//조인
+	//상품종류
+	private String kind_name;
+	//판매자 닉네임
+	private String user_nick;
+	
 }

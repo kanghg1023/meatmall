@@ -32,4 +32,10 @@ public class ReviewDto {
 	//후기 작성시간
 	private Date review_date;
 
+	//조인
+	//상품명
+	private String goods_title;
+	//옵션명
+	private String option_name;
+	
 }
