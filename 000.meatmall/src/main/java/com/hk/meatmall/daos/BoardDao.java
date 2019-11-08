@@ -77,12 +77,6 @@ public class BoardDao implements IBoardDao {
 	}
 
 	@Override
-	public String numNick(int user_num) {
-		String nick = sqlSession.selectOne(nameSpace+"numNick",user_num);
-		return nick;
-	}
-
-	@Override
 	public boolean getLike(Board_likeDto dto) {
 		Board_likeDto likedto = new Board_likeDto();
 		likedto = sqlSession.selectOne(nameSpace+"getLike",dto);
