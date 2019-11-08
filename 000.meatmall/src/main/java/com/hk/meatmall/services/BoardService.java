@@ -70,11 +70,6 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
-	public String numNick(int user_num) {
-		return boardDao.numNick(user_num);
-	}
-
-	@Override
 	public boolean getLike(Board_likeDto dto) {		
 		return boardDao.getLike(dto);
 	}
