@@ -38,7 +38,7 @@ public class GoodsController {
 
 private static final Logger logger = LoggerFactory.getLogger(GoodsController.class);
 	
-	@Resource(name="uploadPath")
+	@Resource(name="uploadPath") 
 	private String uploadPath;
 
 	@Autowired
