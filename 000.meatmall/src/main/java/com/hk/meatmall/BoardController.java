@@ -32,7 +32,7 @@ import com.hk.utils.Util;
 public class BoardController {
 
 private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
-	
+
 	@Autowired
 	private IBoardService boardService;
 	
