@@ -136,7 +136,7 @@
                   <p>Number of items:<span>36</span></p>
                   <p>Item Total:<span>£528.00</span></p>
                 </div>
-                <div class="ps-cart__footer"><a class="ps-btn" href="cart.html">Check out<i class="ps-icon-arrow-left"></i></a></div>
+                <div class="ps-cart__footer"><a class="ps-btn" href="basketList.do?user_num=${ldto.user_num}">Check out<i class="ps-icon-arrow-left"></i></a></div>
               </div>
             </div>
             <div class="menu-toggle"><span></span></div>

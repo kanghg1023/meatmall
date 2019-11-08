@@ -91,10 +91,22 @@ $(function() {
 			}
 		}
 		optionChoice.innerHTML += "<em>"+atext.text+"</em>"
+		optionChoice.innerHTML += "<img src='img/minus.png' alt='수량감소' width='10' height='10' class='bt_down' />"
 		optionChoice.innerHTML += "<input type='hidden' name='option_num' class='option_num' value='"+aCount.value+"' />"
-		optionChoice.innerHTML += "<input type='text' name='basket_count' class='basket_count' value='1' />"
-		
+		optionChoice.innerHTML += "<input type='text' name='basket_count' value='1' class='basket_count' />"
+		optionChoice.innerHTML += "<img src='img/plus.png' alt='수량증가' width='10' height='10' class='bt_up'/>"
 	});
+	
+	$("body").on("click",".bt_up",function(){
+		var n = $(".bt_up").index(this);
+	    var num = $(".basket_count:eq("+n+")").val();
+	    num = $(".basket_count:eq("+n+")").val(num*1+1); 
+	})
+	$("body").on("click",".bt_down",function(){
+		var n = $(".bt_down").index(this);
+	    var num = $(".basket_count:eq("+n+")").val();
+	    num = $(".basket_count:eq("+n+")").val(num*1-1); 
+	})
 	
 });	
 </script>
@@ -116,11 +128,11 @@ $(function() {
 	</tr>
 	<tr>
 		<th>대표이미지</th>
-		<td><img src="${gDto.goods_img_title}"  style="width:400px; height:380px;" ></td>
+		<td><img src="${gDto.goods_img_title}" style="width:400px; height:380px;" ></td>
 	</tr>
 	<tr>
 		<th>판매자</th>
-		<td>${gDto.user_num}</td>
+		<td>${gDto.user_nick}</td>
 	</tr>
 	<tr>
 		<th>상품이름</th>

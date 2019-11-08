@@ -74,7 +74,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 				map=Paging.pagingValue(pcount, pnum, 5);
 			}else {
 				gList = GoodsService.allGoods(String.valueOf(p));
-				
+				System.out.println(gList.get(0));
 				pcount = GoodsService.getAllPcount();
 				map=Paging.pagingValue(pcount, pnum, 5);
 			}
