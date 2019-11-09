@@ -28,10 +28,13 @@ public class BasketDto {
 	//대표이미지
 	private String goods_img_title;
 	//100g당 가격
-	private String goods_cost;
+	private int goods_cost;
 	//선택한 옵션명
 	private String option_name;
 	//옵션 - 무게
-	private String option_weight;
+	private int option_weight;
+	
+	//최종가격
+	private int basket_cost;
 	
 }

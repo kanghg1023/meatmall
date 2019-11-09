@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.apache.commons.mail.HtmlEmail;
 
+import com.hk.meatmall.dtos.BasketDto;
 import com.hk.meatmall.dtos.MessageDto;
 
 public class Util {
@@ -103,6 +104,16 @@ public class Util {
 			if(mdto.getMessage_content().length() > 10) {
 				mdto.setMessage_content(mdto.getMessage_content().substring(0, 10)+"...");
 			}
+		}
+		
+		return list;
+	}
+
+	public static List<BasketDto> cost(List<BasketDto> list){
+		
+		for (BasketDto dto:list) {
+			int cost = (dto.getOption_weight()/100)*dto.getGoods_cost();
+			dto.setBasket_cost(cost);
 		}
 		
 		return list;

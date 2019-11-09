@@ -29,8 +29,6 @@ public interface IBoardService {
 	public int getPcount();
 	//글목록의 페이지수 구하기 나머지사용자
 	public int getPcount2();
-	//유저넘버 받아서 닉네임으로 변경
-	public String numNick(int user_num);
 	//좋아요 출력
 	public boolean getLike(Board_likeDto dto);
 	//좋아요 개수

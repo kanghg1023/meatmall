@@ -7,13 +7,14 @@
 
 <!-- 전체 상품 + 페이징 -->
 	<select id="allGoods" resultType="GoodsDto" parameterType="String">
-		SELECT GOODS_NUM
-	   		 , GOODS_TITLE
-	   		 , USER_NUM
-	   		 , GOODS_DOSO
-	   		 , GOODS_IMG_TITLE
-	   		 , GOODS_DELFLAG
-	   		 , GOODS_COST
+		SELECT G.GOODS_NUM
+	   		 , G.GOODS_TITLE
+	   		 , G.USER_NUM
+	   		 , G.GOODS_DOSO
+	   		 , G.GOODS_IMG_TITLE
+	   		 , G.GOODS_DELFLAG
+	   		 , G.GOODS_COST
+	   		 , U.USER_NICK
      	  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
@@ -24,32 +25,37 @@
 	   				  , GOODS_DELFLAG
 	   				  , GOODS_COST
 		           FROM GOODS
-		       )
-		 WHERE CEIL(RN/6) = #{pnum}
+		       ) G
+		     , USER_INFO U
+		 WHERE G.USER_NUM = U.USER_NUM
+		   AND CEIL(G.RN/6) = #{pnum}
 	</select>
 
 <!-- 전체상품 (삭제여부) + 페이징 -->
 	<select id="getEnabled" resultType="GoodsDto" parameterType="String">
-		SELECT GOODS_NUM
-	   		 , GOODS_TITLE
-	   		 , USER_NUM
-	   		 , GOODS_DOSO
-	   		 , GOODS_IMG_TITLE
-	   		 , GOODS_DELFLAG
-	   		 , GOODS_COST
-     	  FROM (
+		SELECT G.GOODS_NUM
+			 , G.GOODS_TITLE
+			 , G.USER_NUM
+			 , G.GOODS_DOSO
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_DELFLAG
+			 , G.GOODS_COST
+			 , U.USER_NICK
+		  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
-	   		 		  , GOODS_TITLE
-	   				  , USER_NUM
-	   				  , GOODS_DOSO
-	   				  , GOODS_IMG_TITLE
-	   				  , GOODS_DELFLAG
-	   				  , GOODS_COST
+			 		  , GOODS_TITLE
+					  , USER_NUM
+					  , GOODS_DOSO
+					  , GOODS_IMG_TITLE
+					  , GOODS_DELFLAG
+					  , GOODS_COST
 		           FROM GOODS
-		          WHERE GOODS_DELFLAG = 1
-		       )
-		 WHERE CEIL(RN/6) = #{pnum}
+		          WHERE GOODS_DELFLAG = 1 
+		       ) G
+		     , USER_INFO U
+		 WHERE G.USER_NUM = U.USER_NUM
+		   AND CEIL(G.RN/6) = #{pnum}
 	</select>	
 	
 <!-- 전체 페이지 수 -->         
@@ -93,55 +99,61 @@
 	
 <!-- 카테고리별 상품 -->
 	<select id="categoryGoods" resultType="GoodsDto" parameterType="Map">
-		SELECT GOODS_NUM
-	 		 , GOODS_TITLE
-			 , USER_NUM
-			 , GOODS_DOSO
-			 , GOODS_IMG_TITLE
-			 , GOODS_DELFLAG
-			 , KIND_NUM
-			 , GOODS_COST
- 		  FROM (
+		SELECT G.GOODS_NUM
+			 , G.GOODS_TITLE
+			 , G.USER_NUM
+			 , G.GOODS_DOSO
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_DELFLAG
+			 , G.KIND_NUM
+			 , G.GOODS_COST
+			 , U.USER_NICK
+		  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
-	   		 		  , GOODS_TITLE
-	   				  , USER_NUM
-	   				  , GOODS_DOSO
-	   				  , GOODS_IMG_TITLE
-	   				  , GOODS_DELFLAG
-	   				  , KIND_NUM
-	   				  , GOODS_COST  
+			 		  , GOODS_TITLE
+					  , USER_NUM
+					  , GOODS_DOSO
+					  , GOODS_IMG_TITLE
+					  , GOODS_DELFLAG
+					  , KIND_NUM
+					  , GOODS_COST
 		           FROM GOODS
-		          WHERE KIND_NUM = #{kind_num} 
-		       )
-		 WHERE CEIL(RN/6) = #{pnum}
+		          WHERE KIND_NUM = #{kind_num}
+		       ) G
+		     , USER_INFO U
+		 WHERE G.USER_NUM = U.USER_NUM
+		   AND CEIL(G.RN/6) = #{pnum}
 	</select>
 	
 <!-- 카테고리별 상품 (삭제여부) -->
 	<select id="getCateEnabled" resultType="GoodsDto" parameterType="String">
-		SELECT GOODS_NUM
-	   		 , GOODS_TITLE
-	   		 , USER_NUM
-	   		 , GOODS_DOSO
-	   		 , GOODS_IMG_TITLE
-	   		 , GOODS_DELFLAG
-	   		 , KIND_NUM
-	   		 , GOODS_COST
-     	  FROM (
+		SELECT G.GOODS_NUM
+			 , G.GOODS_TITLE
+			 , G.USER_NUM
+			 , G.GOODS_DOSO
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_DELFLAG
+			 , G.KIND_NUM
+			 , G.GOODS_COST
+			 , U.USER_NICK
+		  FROM (
 		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
 		              , GOODS_NUM
-	   		 		  , GOODS_TITLE
-	   				  , USER_NUM
-	   				  , GOODS_DOSO
-	   				  , GOODS_IMG_TITLE
-	   				  , GOODS_DELFLAG
-	   				  , KIND_NUM
-	   				  , GOODS_COST 
+			 		  , GOODS_TITLE
+					  , USER_NUM
+					  , GOODS_DOSO
+					  , GOODS_IMG_TITLE
+					  , GOODS_DELFLAG
+					  , KIND_NUM
+					  , GOODS_COST
 		           FROM GOODS
 		          WHERE GOODS_DELFLAG = 1
 		            AND KIND_NUM = #{kind_num}
-		       )
-		   WHERE CEIL(RN/6) = #{pnum}
+		       ) G
+		     , USER_INFO U
+		 WHERE G.USER_NUM = U.USER_NUM
+		   AND CEIL(G.RN/6) = #{pnum}
 	</select>
 	
 	<sql id="pcount">
@@ -206,16 +218,18 @@
 	
 <!-- 상품 상세 -->
 	<select id="getGoods" resultType="GoodsDto" parameterType="GoodsDto">
-		SELECT GOODS_NUM
-	 		 , GOODS_TITLE
-			 , USER_NUM
-			 , GOODS_IMG_TITLE
-			 , GOODS_IMG_DETAIL
-			 , KIND_NUM
-			 , GOODS_HISTORY
-			 , GOODS_COST
- 		  FROM GOODS
- 		 WHERE GOODS_NUM = #{goods_num}
+		SELECT G.GOODS_NUM
+			 , G.GOODS_TITLE
+			 , G.USER_NUM
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_IMG_DETAIL
+			 , G.KIND_NUM
+			 , G.GOODS_HISTORY
+			 , G.GOODS_COST
+			 , U.USER_NICK
+		  FROM GOODS G, USER_INFO U
+		 WHERE G.USER_NUM = U.USER_NUM
+		   AND G.GOODS_NUM = #{goods_num}
 	</select>
 	
 	
@@ -282,18 +296,21 @@
 	
 <!-- 장바구니 목록 -->
 	<select id="basketList" resultType="BasketDto" parameterType="int">
-		SELECT b.USER_NUM
-			 , g.GOODS_IMG_TITLE
-			 , o.OPTION_NUM
-			 , o.OPTION_NAME
-			 , b.BASKET_COUNT
-			 , b.GOODS_NUM
-		  FROM BASKET b
-			 , GOODS g
-			 , GOODS_OPTION o
-		 WHERE b.GOODS_NUM = g.GOODS_NUM
-		   AND b.OPTION_NUM = o.OPTION_NUM
-		   AND b.USER_NUM = #{user_num}
+		SELECT B.USER_NUM
+			 , B.BASKET_COUNT
+			 , B.GOODS_NUM
+			 , G.GOODS_TITLE
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_COST
+			 , O.OPTION_NUM
+			 , O.OPTION_NAME
+			 , O.OPTION_WEIGHT
+		  FROM BASKET B
+			 , GOODS G
+			 , GOODS_OPTION O
+		 WHERE B.GOODS_NUM = G.GOODS_NUM
+		   AND B.OPTION_NUM = O.OPTION_NUM
+		   AND B.USER_NUM = #{user_num}
 	</select>
 	
 <!-- 장바구니 추가 -->
@@ -317,18 +334,28 @@
 	</delete>
 	
 <!-- 후기 목록 -->
+<!-- 굿즈타이틀, 옵션네임 추가 -->
 	<select id="reviewList" parameterType="int" resultType="ReviewDto">
-		SELECT REVIEW_NUM
-		     , ORDER_NUM
-		     , GOODS_NUM
-		     , USER_NUM
-		     , USER_ID
-		     , REVIEW_CONTENT
-		     , REVIEW_SCORE
-		     ,REVIEW_DATE
-		  FROM REVIEW
-		 WHERE GOODS_NUM = #{goods_num}
-		 ORDER BY REVIEW_NUM DESC
+		SELECT R.REVIEW_NUM
+		     , R.ORDER_NUM
+		     , R.GOODS_NUM
+		     , R.USER_NUM
+		     , R.USER_ID
+		     , R.REVIEW_CONTENT
+		     , R.REVIEW_SCORE
+		     , R.REVIEW_DATE
+		     , G.GOODS_TITLE
+		     , O.OPTION_NAME
+		     , U.USER_NICK
+		  FROM REVIEW R
+			 , GOODS G
+			 , GOODS_OPTION O
+			 , USER_INFO U
+		 WHERE R.GOODS_NUM = G.GOODS_NUM
+		   AND R.GOODS_NUM = O.GOODS_NUM
+		   AND R.USER_ID = U.USER_ID
+		   AND R.GOODS_NUM = #{goods_num}
+		 ORDER BY R.REVIEW_NUM DESC
 	</select>
 	
 </mapper>

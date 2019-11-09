@@ -45,14 +45,15 @@
 	</delete>
 	
 	<select id="getQuestionList" parameterType="Map" resultType="QnADto">
-		SELECT QUESTION_NUM
-			 , USER_NUM
-			 , QUESTION_TITLE
-			 , QUESTION_CONTENT
-			 , QUESTION_REGDATE
-			 , QUESTION_STATUS
-			 , QUESTION_ANSWER
-			 , ANSWER_REGDATE
+		SELECT Q.QUESTION_NUM
+			 , Q.USER_NUM
+			 , Q.QUESTION_TITLE
+			 , Q.QUESTION_CONTENT
+			 , Q.QUESTION_REGDATE
+			 , Q.QUESTION_STATUS
+			 , Q.QUESTION_ANSWER
+			 , Q.ANSWER_REGDATE
+			 , U.USER_NICK
 		  FROM (
 				 SELECT ROW_NUMBER() OVER (ORDER BY QUESTION_NUM DESC) AS RN
 					  , QUESTION_NUM
@@ -64,10 +65,12 @@
 					  , QUESTION_ANSWER
 					  , ANSWER_REGDATE
 				   FROM QUESTION
-			   )
-		 WHERE CEIL(RN/5) = #{pnum}
+			   ) Q
+			 , USER_INFO U
+		 WHERE Q.USER_NUM = U.USER_NUM
+		   AND CEIL(Q.RN/5) = #{pnum}
 	 <if test="user_num != null">
-	   AND USER_NUM = #{user_num}
+		   AND Q.USER_NUM = #{user_num}
 	 </if>
 	</select>
 	
@@ -100,16 +103,18 @@
 	</delete>
 	
 	<select id="Questiondetail" parameterType="int" resultType="QnADto">
-		SELECT QUESTION_NUM
-			 , USER_NUM
-			 , QUESTION_TITLE
-			 , QUESTION_CONTENT
-			 , QUESTION_REGDATE
-			 , QUESTION_STATUS
-			 , QUESTION_ANSWER
-			 , ANSWER_REGDATE
-		  FROM QUESTION
-		 WHERE QUESTION_NUM = #{question_num}
+		SELECT Q.QUESTION_NUM
+			 , Q.USER_NUM
+			 , Q.QUESTION_TITLE
+			 , Q.QUESTION_CONTENT
+			 , Q.QUESTION_REGDATE
+			 , Q.QUESTION_STATUS
+			 , Q.QUESTION_ANSWER
+			 , Q.ANSWER_REGDATE
+			 , U.USER_NICK
+		  FROM QUESTION Q
+		 	 , USER_INFO U
+		 WHERE Q.QUESTION_NUM = #{question_num}
 	</select>
 	
 	<update id="StatusChange" parameterType="int">

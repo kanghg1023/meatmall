@@ -92,14 +92,10 @@ $(function() {
 								<td align="left">
 									<a href="goodsDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}">${dto.goods_title}</a>
 								</td>
-<!-- 											나중에 닉네임으로 바꿔 -->
-								<td id="nick">${dto.user_num}</td>
-<%-- 										<jsp:setProperty property="emailNick" name="util" value="${dto.email}" /> --%>
-<%-- 										<jsp:getProperty property="emailNick" name="util" /> --%>
+								<td id="nick">${dto.user_nick}</td>
 								<td id="DOSO">${dto.goods_doso}</td>
 								<td id="img_title"><img src="${dto.goods_img_title}"  style="width:250px; height:230px;" ></td>
 								<td id="cost">${dto.goods_cost}</td>
-								
 							</c:otherwise>
 						</c:choose>
 						</tr>
