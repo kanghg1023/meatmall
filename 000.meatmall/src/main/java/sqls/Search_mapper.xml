@@ -5,6 +5,60 @@
 
 <mapper namespace="com.search">
 
+	<select id="goodsSearch" parameterType="Map" resultType="GoodsDto">
+		SELECT G.GOODS_NUM
+			 , G.GOODS_TITLE
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_COST
+			 , U.USER_NICK
+		  FROM (
+		 		 SELECT ROW_NUMBER() OVER (ORDER BY GOODS_DATE DESC) AS RN
+					  , GOODS_NUM
+					  , GOODS_TITLE
+					  , GOODS_IMG_TITLE
+					  , KIND_NUM
+					  , GOODS_COST
+					  , USER_NUM
+				   FROM GOODS
+				  WHERE GOODS_TITLE 	
+				    AND GOODS_DOSO = #{goods_doso}
+			   ) G
+			 , USER_INFO U
+		 WHERE G.USER_NUM = U.USER_NUM
+		   AND CEIL(RN/5) = 1;
+	</select>
+	
+	<select id="CategorySearch">
+		SELECT KIND_NUM
+		 	 , KIND_NAME
+		  FROM GOODS_KIND
+		 WHERE KIND_NAME LIKE '%'||#{search_word}||'%'
+	</select>
+	
+	<select id="boardSearch">
+		SELECT B.BOARD_NUM
+			 , B.USER_NUM
+			 , B.BOARD_TITLE
+			 , B.BOARD_CONTENT
+			 , B.BOARD_REGDATE
+			 , B.BOARD_READCOUNT
+			 , B.BOARD_NOTICE
+			 , U.USER_NICK
+		  FROM (
+			     SELECT ROW_NUMBER() OVER (ORDER BY BOARD_REGDATE DESC) AS RN
+					  , BOARD_NUM
+					  , USER_NUM
+					  , BOARD_TITLE
+					  , BOARD_CONTENT
+					  , BOARD_REGDATE
+					  , BOARD_READCOUNT
+					  , BOARD_NOTICE
+				   FROM BOARD
+				  WHERE BOARD_TITLE LIKE '%'||#{search_word}||'%'
+				) B
+			 , USER_INFO U
+		 WHERE CEIL(RN/5)=1
+	</select>
 	
 	
 </mapper>
