@@ -79,34 +79,55 @@ $(function() {
 	});
 	
 	$("#optionSelect").change(function(){
-		var aCount = document.getElementById("optionSelect");
-		var atext = document.getElementById(aCount.value);
+		var aCount = document.getElementById("optionSelect"); //onum
+		var option = aCount.value.split(",");
+		var atext = document.getElementById(option[0]);
 		var optionChk = document.getElementsByName("option_num");
 		var optionChoice = document.getElementById("optionChoice");
+		var sum = document.getElementById("sum");
 		
 		for(var i=0;i<optionChk.length;i++){
-			if(aCount.value == optionChk[i].value){
+			if(option[0] == optionChk[i].value){
 				alert("이미 선택된 옵션입니다.");
 				return;
 			}
 		}
+		
+		
 		optionChoice.innerHTML += "<em>"+atext.text+"</em>"
-		optionChoice.innerHTML += "<img src='img/minus.png' alt='수량감소' width='10' height='10' class='bt_down' />"
-		optionChoice.innerHTML += "<input type='hidden' name='option_num' class='option_num' value='"+aCount.value+"' />"
-		optionChoice.innerHTML += "<input type='text' name='basket_count' value='1' class='basket_count' />"
-		optionChoice.innerHTML += "<img src='img/plus.png' alt='수량증가' width='10' height='10' class='bt_up'/>"
+		optionChoice.innerHTML += "<input type='hidden' name='option_num' class='option_num' value='"+option[0]+"' />";
+		optionChoice.innerHTML += "<input type='hidden' name='option_weight' class='option_weight' value='"+option[1]+"' />";
+		optionChoice.innerHTML += "<img src='img/minus.png' alt='수량감소' width='10' height='10' class='bt_down' />";
+		optionChoice.innerHTML += "<input type='text' name='basket_count' value='1' class='basket_count' />";
+		optionChoice.innerHTML += "<img src='img/plus.png' alt='수량증가' width='10' height='10' class='bt_up'/>";
+		
+		if(sum.value == ""){
+			sum.value = 0;
+		}
+		
+		sum.value = eval(sum.value)+(option[1]/100*${gDto.goods_cost});
 	});
 	
-	$("body").on("click",".bt_up",function(){
-		var n = $(".bt_up").index(this);
-	    var num = $(".basket_count:eq("+n+")").val();
-	    num = $(".basket_count:eq("+n+")").val(num*1+1); 
-	})
+	$("body").on("click",".bt_up",function(){ 
+		var num = $(this).prev();
+		var weight = $(this).prev().prev().prev().val();
+		num.val(parseInt(num.val())+1);
+		var sum = $("#sum");
+		
+		sum.val(eval(sum.val())+(weight/100*${gDto.goods_cost}));
+	});
+	
 	$("body").on("click",".bt_down",function(){
-		var n = $(".bt_down").index(this);
-	    var num = $(".basket_count:eq("+n+")").val();
-	    num = $(".basket_count:eq("+n+")").val(num*1-1); 
-	})
+		var num=$(this).next();
+		if(num.val() == 1){
+			return;
+		}
+		var weight = $(this).prev().val();
+		num.val(parseInt(num.val())-1);
+		var sum = $("#sum");
+		
+		sum.val(eval(sum.val())-(weight/100*${gDto.goods_cost}));
+	});
 	
 });	
 </script>
@@ -147,8 +168,8 @@ $(function() {
 		<td>
 			<select id="optionSelect">
 				<option value="">옵션 선택</option>
-				<c:forEach items="${oList}" var="olist">
-					<option id="${olist.option_num}" value="${olist.option_num}">${olist.option_name}</option>
+				<c:forEach items="${oList}" var="dto">
+					<option id="${dto.option_num}" value="${dto.option_num},${dto.option_weight}">${dto.option_name}</option>
 				</c:forEach>
 			</select>
 		</td>	
@@ -156,6 +177,7 @@ $(function() {
 	<tr>
 		<th>합계</th>
 		<td>
+			<input type="text" id="sum" name="sum" size="11" readonly>원
 		</td>
 	</tr>
 	<tr>

@@ -84,4 +84,5 @@ public interface IGoodsService {
 	
 	//후기 목록
 	public List<ReviewDto> reviewList(int goods_num);
+	
 }
