@@ -17,7 +17,7 @@
 	<c:forEach items="${doList}" var="dto">
 		<tr>
 			<td></td>
-		</tr>
+		</tr> 
 	</c:forEach>
 </table>
 
