@@ -2,6 +2,7 @@
 <% request.setCharacterEncoding("utf-8"); %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,10 +91,22 @@ $(function() {
 			}
 		}
 		optionChoice.innerHTML += "<em>"+atext.text+"</em>"
+		optionChoice.innerHTML += "<img src='img/minus.png' alt='수량감소' width='10' height='10' class='bt_down' />"
 		optionChoice.innerHTML += "<input type='hidden' name='option_num' class='option_num' value='"+aCount.value+"' />"
-		optionChoice.innerHTML += "<input type='text' name='basket_count' class='basket_count' value='1' />"
-		
+		optionChoice.innerHTML += "<input type='text' name='basket_count' value='1' class='basket_count' />"
+		optionChoice.innerHTML += "<img src='img/plus.png' alt='수량증가' width='10' height='10' class='bt_up'/>"
 	});
+	
+	$("body").on("click",".bt_up",function(){
+		var n = $(".bt_up").index(this);
+	    var num = $(".basket_count:eq("+n+")").val();
+	    num = $(".basket_count:eq("+n+")").val(num*1+1); 
+	})
+	$("body").on("click",".bt_down",function(){
+		var n = $(".bt_down").index(this);
+	    var num = $(".basket_count:eq("+n+")").val();
+	    num = $(".basket_count:eq("+n+")").val(num*1-1); 
+	})
 	
 });	
 </script>
@@ -119,7 +132,7 @@ $(function() {
 	</tr>
 	<tr>
 		<th>판매자</th>
-		<td>${gDto.user_num}</td>
+		<td>${gDto.user_nick}</td>
 	</tr>
 	<tr>
 		<th>상품이름</th>
@@ -167,6 +180,39 @@ $(function() {
 </div>
 <div id="optionChoice">
 	
+</div>
+<div id="reviewForm">
+	<form action="addReview.do" method="post">
+		<input type="hidden" name="goods_num" value="${gDto.goods_num}" />
+			<table border="1" class="reviewTable">
+				<c:if test="${gDto != null}">
+					<tr>
+						<td colspan="3">
+							<textarea rows="2" cols="75" name="review_content" ></textarea>
+							<input type="submit" value="등록" id="btn"/>
+						</td>
+					</tr>
+				</c:if>
+				<c:if test="${rList != null}">
+					<c:forEach items="${rList}" var="rlist">
+					<tr>
+						<td>${rlist.user_id}</td>
+						<td colspan="2">
+							<fmt:formatDate value="${rlist.review_date}" pattern="yyyy-MM-dd HH:mm"/>
+							<c:if test="${rlist.user_id eq ldto.user_id}">
+								<button type="button" onclick="delReview(${rlist.review_num})">삭제</button>
+								<button type="button" class="upReview" value="${rlist.review_num}">수정</button>
+							</c:if>
+							${rlist.review_score}
+						</td>
+					</tr>
+					<tr style="white-space:pre;">
+						<td colspan="3" class="conSel">${rlist.review_content}</td>
+					</tr>
+					</c:forEach>
+				</c:if>
+			</table>
+	</form>
 </div>
 </body>
 </html>

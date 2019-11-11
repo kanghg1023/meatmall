@@ -81,8 +81,7 @@ $(function() {
 										<td align="left">
 											<a href="goodsCateDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}&kind_num=${dto.kind_num}">${dto.goods_title}</a>
 										</td>
-	<!-- 											나중에 닉네임으로 바꿔 -->
-										<td id="nick">${dto.user_num}</td>
+										<td id="nick">${dto.user_nick}</td>
 										<td id="DOSO">${dto.goods_doso}</td>
 										<td id="img_title"><img src="${dto.goods_img_title}"  style="width:250px; height:230px;" ></td>
 										<td id="cost">${dto.goods_cost}</td>

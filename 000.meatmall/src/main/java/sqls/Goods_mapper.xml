@@ -6,7 +6,6 @@
 <mapper namespace="com.goods">
 
 <!-- 전체 상품 + 페이징 -->
-<!-- 유저닉 추가 -->
 	<select id="allGoods" resultType="GoodsDto" parameterType="String">
 		SELECT G.GOODS_NUM
 	   		 , G.GOODS_TITLE
@@ -28,11 +27,11 @@
 		           FROM GOODS
 		       ) G
 		     , USER_INFO U
-		 WHERE CEIL(G.RN/6) = #{pnum}
+		 WHERE G.USER_NUM = U.USER_NUM
+		   AND CEIL(G.RN/6) = #{pnum}
 	</select>
 
 <!-- 전체상품 (삭제여부) + 페이징 -->
-<!-- 유저닉 추가 -->
 	<select id="getEnabled" resultType="GoodsDto" parameterType="String">
 		SELECT G.GOODS_NUM
 			 , G.GOODS_TITLE
@@ -55,7 +54,8 @@
 		          WHERE GOODS_DELFLAG = 1 
 		       ) G
 		     , USER_INFO U
-		 WHERE CEIL(G.RN/6) = #{pnum}
+		 WHERE G.USER_NUM = U.USER_NUM
+		   AND CEIL(G.RN/6) = #{pnum}
 	</select>	
 	
 <!-- 전체 페이지 수 -->         
@@ -98,7 +98,6 @@
 	</delete>
 	
 <!-- 카테고리별 상품 -->
-<!-- 유저닉 추가 -->
 	<select id="categoryGoods" resultType="GoodsDto" parameterType="Map">
 		SELECT G.GOODS_NUM
 			 , G.GOODS_TITLE
@@ -128,7 +127,6 @@
 	</select>
 	
 <!-- 카테고리별 상품 (삭제여부) -->
-<!-- 유저닉 추가 -->
 	<select id="getCateEnabled" resultType="GoodsDto" parameterType="String">
 		SELECT G.GOODS_NUM
 			 , G.GOODS_TITLE
@@ -219,7 +217,6 @@
 	</select>
 	
 <!-- 상품 상세 -->
-<!-- 유저닉 추가 -->
 	<select id="getGoods" resultType="GoodsDto" parameterType="GoodsDto">
 		SELECT G.GOODS_NUM
 			 , G.GOODS_TITLE
@@ -298,7 +295,6 @@
 	</update>
 	
 <!-- 장바구니 목록 -->
-<!-- 굿즈타이틀, 굿즈코스트, 옵션웨이트 추가 -->
 	<select id="basketList" resultType="BasketDto" parameterType="int">
 		SELECT B.USER_NUM
 			 , B.BASKET_COUNT
