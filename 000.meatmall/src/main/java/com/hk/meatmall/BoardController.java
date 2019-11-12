@@ -322,7 +322,13 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 			}
 		}
 		
-		mlist = Util.sampleContent(mlist);
+		for (MessageDto dto:mlist) {
+			String con = dto.getMessage_content();
+			if(con.length() > 10) {
+				dto.setMessage_content(Util.sampleContent(con));
+			}
+		}
+		
 		int pcount = boardService.msgPcount(user_num);
 		Map<String, Integer> qmap=Paging.pagingValue(pcount, pnum, 5);
 		
@@ -359,7 +365,13 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 			}
 		}
 		
-		sendmlist = Util.sampleContent(sendmlist);
+		for (MessageDto dto:sendmlist) {
+			String con = dto.getMessage_content();
+			if(con.length() > 10) {
+				dto.setMessage_content(Util.sampleContent(con));
+			}
+		}
+		
 		int pcount = boardService.sendMsgPcount(message_from_num);
 		Map<String, Integer> qmap=Paging.pagingValue(pcount, pnum, 5);
 		
@@ -390,6 +402,7 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		}
 	}
 	
+	//
 	@RequestMapping(value = "/reviewDetail.do")
 	public String reviewDetail( HttpServletRequest request
 							  , HttpServletResponse response

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.GoodsDto;
+import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.idaos.ISearchDao;
 
 @Repository
@@ -30,7 +31,7 @@ public class SearchDao implements ISearchDao {
 	}
 
 	@Override
-	public List<GoodsDto> CategorySearch(String search_word) {
+	public List<Goods_kindDto> CategorySearch(String search_word) {
 		return sqlSession.selectList(nameSpace+"CategorySearch",search_word);
 	}
 

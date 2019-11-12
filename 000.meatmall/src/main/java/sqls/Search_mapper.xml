@@ -20,22 +20,22 @@
 					  , GOODS_COST
 					  , USER_NUM
 				   FROM GOODS
-				  WHERE GOODS_TITLE 	
+				  WHERE GOODS_TITLE LIKE '%'||#{search_word}||'%'
 				    AND GOODS_DOSO = #{goods_doso}
 			   ) G
 			 , USER_INFO U
 		 WHERE G.USER_NUM = U.USER_NUM
-		   AND CEIL(RN/5) = 1;
+		   AND CEIL(RN/5) = 1
 	</select>
 	
-	<select id="CategorySearch">
+	<select id="CategorySearch" parameterType="String" resultType="Goods_kindDto">
 		SELECT KIND_NUM
 		 	 , KIND_NAME
 		  FROM GOODS_KIND
 		 WHERE KIND_NAME LIKE '%'||#{search_word}||'%'
 	</select>
 	
-	<select id="boardSearch">
+	<select id="boardSearch" parameterType="String" resultType="BoardDto">
 		SELECT B.BOARD_NUM
 			 , B.USER_NUM
 			 , B.BOARD_TITLE

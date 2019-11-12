@@ -96,19 +96,11 @@ public class Util {
 	public static String createUUId() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
     }
-	
-	
-	public static List<MessageDto> sampleContent(List<MessageDto> list) {
-		
-		for (MessageDto mdto:list) {
-			if(mdto.getMessage_content().length() > 10) {
-				mdto.setMessage_content(mdto.getMessage_content().substring(0, 10)+"...");
-			}
-		}
-		
-		return list;
-	}
 
+	public static String sampleContent(String msg) {
+		return msg.substring(0, 10)+"...";
+	}
+	
 	public static List<BasketDto> cost(List<BasketDto> list){
 		
 		for (BasketDto dto:list) {
