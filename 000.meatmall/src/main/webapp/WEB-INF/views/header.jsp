@@ -100,7 +100,7 @@
                   <li class="menu-item menu-item-has-children dropdown"><a href="#">고객센터</a>
                     <ul class="sub-menu">
                        <li class="menu-item"><a href="faqlist.do">자주묻는 질문</a></li>
-                       <li class="menu-item"><a href="questionlist.do">1 : 1 문의</a></li>
+                       <li class="menu-item"><a href="questionlist.do?pnum=1">1 : 1 문의</a></li>
                     </ul>
                   </li>
                 </ul>

@@ -114,7 +114,8 @@
 			 , U.USER_NICK
 		  FROM QUESTION Q
 		 	 , USER_INFO U
-		 WHERE Q.QUESTION_NUM = #{question_num}
+		 WHERE Q.USER_NUM = U.USER_NUM
+		   AND Q.QUESTION_NUM = #{question_num}
 	</select>
 	
 	<update id="StatusChange" parameterType="int">
