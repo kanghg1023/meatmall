@@ -3,10 +3,14 @@ package com.hk.meatmall.idaos;
 import java.util.List;
 
 import com.hk.meatmall.dtos.BasketDto;
+import com.hk.meatmall.dtos.CouponDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
+import com.hk.meatmall.dtos.OrderDto;
 import com.hk.meatmall.dtos.ReviewDto;
+import com.hk.meatmall.dtos.UserDto;
+import com.hk.meatmall.dtos.User_couponDto;
 
 public interface IGoodsDao {
 
@@ -84,4 +88,31 @@ public interface IGoodsDao {
 	
 	//후기 목록
 	public List<ReviewDto> reviewList(int goods_num);
+	
+	//유저 정보
+	public UserDto userInfo(int user_num);
+	
+	//주문
+	public boolean insertOrder(OrderDto dDto);
+	
+	//주문 정보
+	public List<OrderDto> orderInfo(int user_num);
+	
+	//쿠폰목록(관리자)
+	public List<CouponDto> adminCouponList(String pnum);
+	
+	//쿠폰등록(관리자)
+	public boolean insertCoupon(CouponDto dto);
+	
+	//쿠폰페이징
+	public int CouponPcount();
+	
+	//쿠폰목록(사용자)
+	public List<User_couponDto> userCouponList(String pnum);
+	
+	//쿠폰상세정보
+	public CouponDto couponDetail(int coupon_num);
+	
+	//쿠폰 등록(사용자)
+	public boolean insertUserCoupon(int user_num, CouponDto dto);
 }

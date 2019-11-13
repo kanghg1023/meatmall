@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hk.meatmall.dtos.BasketDto;
+import com.hk.meatmall.dtos.CouponDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
@@ -266,29 +267,29 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		gDto.setGoods_img_title("imgUpload" + ymdPath_T + File.separator + fileName_T);
 		
 		//상세이미지
-				List<MultipartFile> detail_file = mtfRequest.getFiles("detail_file");
-				
-				String imgUploadPath_D = uploadPath + File.separator + "imgUpload";
-				String ymdPath_D = UploadFileUtils_D.calcPath(imgUploadPath_D);
-				List<String> fileName_D = new ArrayList<>();
-				String fileName_D_html = "";
+		List<MultipartFile> detail_file = mtfRequest.getFiles("detail_file");
+		
+		String imgUploadPath_D = uploadPath + File.separator + "imgUpload";
+		String ymdPath_D = UploadFileUtils_D.calcPath(imgUploadPath_D);
+		List<String> fileName_D = new ArrayList<>();
+		String fileName_D_html = "";
 
-				if(detail_file != null) {
-					for(int i=0;i<detail_file.size();i++) {
-						fileName_D.add(UploadFileUtils_T.fileUpload_T(imgUploadPath_T, detail_file.get(i).getOriginalFilename(), detail_file.get(i).getBytes(), ymdPath_T));
-						
-						if(i>0) {
-							fileName_D_html += "<br />";
-						}
-						fileName_D_html += "<img src='imgUpload" + ymdPath_D + File.separator + fileName_D.get(i) + "' style='width: 800px; height: 580px;'>";
-					}
-				}else {
-					fileName_D.add(uploadPath + File.separator + "images" + File.separator + "none.png");
+		if(detail_file != null) {
+			for(int i=0;i<detail_file.size();i++) {
+				fileName_D.add(UploadFileUtils_T.fileUpload_T(imgUploadPath_T, detail_file.get(i).getOriginalFilename(), detail_file.get(i).getBytes(), ymdPath_T));
+				
+				if(i>0) {
+					fileName_D_html += "<br />";
 				}
+				fileName_D_html += "<img src='imgUpload" + ymdPath_D + File.separator + fileName_D.get(i) + "' style='width: 800px; height: 580px;'>";
+			}
+		}else {
+			fileName_D.add(uploadPath + File.separator + "images" + File.separator + "none.png");
+		}
 
-				System.out.println(fileName_D_html);
-				
-				gDto.setGoods_img_detail(fileName_D_html);
+		System.out.println(fileName_D_html);
+		
+		gDto.setGoods_img_detail(fileName_D_html);
 
 		boolean isS = GoodsService.insertGoods(gDto);
 				
@@ -562,6 +563,114 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			model.addAttribute("url", "basketList.do");
 			return "error";
 		}
+	}
+	
+	@RequestMapping(value = "/insertOrderForm.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String insertOrderForm(Model model, int user_num) {
+		logger.info("주문 폼");
+		
+		UserDto uDto = GoodsService.userInfo(user_num);
+		List<BasketDto> basketList = GoodsService.basketList(user_num);
+		
+		model.addAttribute("uDto", uDto);
+		model.addAttribute("basketList", basketList);
+		return "insertOrder";
+	}
+	
+	@RequestMapping(value = "/insertOrder.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String insertOrder( Model model
+								, GoodsDto gDto
+								, String[] option_name
+								) {
+		logger.info("주문");
+		
+		boolean isInsertGoods = GoodsService.insertGoods(gDto);
+		
+		boolean isInsertOption = false;
+		
+		Goods_optionDto oDto = new Goods_optionDto();
+		System.out.println(oDto.getGoods_num());
+				
+		if(isInsertGoods && isInsertOption) {
+			return "redirect:allGoods.do?pnum=1";
+		}else {
+			model.addAttribute("msg", "추가 실패");
+			model.addAttribute("url", "insertGoodsForm.do");
+			return "error";
+		}
+	}
+	
+	@RequestMapping(value = "/adminPage.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String adminPage(Model model) {
+		logger.info("관리자 페이지");
+
+		return "adminPage";
+	}
+	
+	@RequestMapping(value = "/adminCouponList.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String adminCouponList(HttpSession session, Model model, String pnum) {
+		logger.info("관리자 쿠폰 목록");
+		
+		if(pnum==null) {
+			pnum=(String)session.getAttribute("pnum");
+		}else {
+			session.setAttribute("pnum", pnum);
+		}
+		
+		int pcount = GoodsService.CouponPcount();
+		Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
+		List<CouponDto> coulist = GoodsService.adminCouponList(pnum);
+
+		model.addAttribute("pnum",pnum);
+		model.addAttribute("map",map);
+		model.addAttribute("coulist", coulist);
+		return "adminCouponList";
+	}
+	
+	@RequestMapping(value = "/insertCouponForm.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String insertCouponForm(Model model) {
+		logger.info("쿠폰생성폼으로");
+
+		return "insertCouponForm";
+	}
+	
+	@RequestMapping(value = "/insertCoupon.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String insertCoupon( Model model
+							  , CouponDto dto
+							  , MultipartFile title_file) throws IOException, Exception {
+		logger.info("쿠폰생성");
+
+		String imgUploadPath_T = uploadPath + File.separator + "imgUpload";
+		String ymdPath_T = UploadFileUtils_T.calcPath(imgUploadPath_T);
+		String fileName_T = null;
+
+		if(title_file != null) {
+			fileName_T = UploadFileUtils_T.fileUpload_T(imgUploadPath_T, title_file.getOriginalFilename(), title_file.getBytes(), ymdPath_T);
+		}else {
+			fileName_T = uploadPath + File.separator + "images" + File.separator + "none.png";
+		}
+
+		dto.setCoupon_img("imgUpload" + ymdPath_T + File.separator + fileName_T);
+		
+		boolean isInsert = GoodsService.insertCoupon(dto);
+		
+		if(isInsert) {
+			return "redirect:adminCouponList.do";
+		}else {
+			model.addAttribute("msg", "추가 실패");
+			model.addAttribute("url", "insertCouponForm.do");
+			return "error";
+		}
+	}
+	
+	@RequestMapping(value = "/insertUserCoupon.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String insertUserCoupon(Model model, int user_num, int coupon_num) {
+		logger.info("개인쿠폰생성");
+		
+//		랜덤으로 배분
+		CouponDto dto = GoodsService.couponDetail(coupon_num);
+		GoodsService.insertUserCoupon(user_num, dto);
+		return "insertCouponForm";
 	}
 	
 }
