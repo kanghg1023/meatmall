@@ -95,6 +95,9 @@ public interface IGoodsDao {
 	//주문
 	public boolean insertOrder(OrderDto dDto);
 	
+	//재고감소
+	public boolean optionSell(int option_num, int option_count);
+	
 	//주문 정보
 	public List<OrderDto> orderInfo(int user_num);
 	
@@ -108,11 +111,15 @@ public interface IGoodsDao {
 	public int CouponPcount();
 	
 	//쿠폰목록(사용자)
-	public List<User_couponDto> userCouponList(String pnum);
+	public List<User_couponDto> userCouponList(String pnum, int user_num);
 	
 	//쿠폰상세정보
 	public CouponDto couponDetail(int coupon_num);
 	
 	//쿠폰 등록(사용자)
 	public boolean insertUserCoupon(int user_num, CouponDto dto);
+	
+	//쿠폰목록(팝업)
+	public List<User_couponDto> couponList(int user_num);
+	
 }

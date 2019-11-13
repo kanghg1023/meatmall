@@ -27,8 +27,10 @@ import com.hk.meatmall.dtos.CouponDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
+import com.hk.meatmall.dtos.OrderDto;
 import com.hk.meatmall.dtos.ReviewDto;
 import com.hk.meatmall.dtos.UserDto;
+import com.hk.meatmall.dtos.User_couponDto;
 import com.hk.meatmall.iservices.IGoodsService;
 import com.hk.utils.Paging;
 import com.hk.utils.UploadFileUtils_D;
@@ -579,23 +581,38 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/insertOrder.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String insertOrder( Model model
-								, GoodsDto gDto
-								, String[] option_name
-								) {
+								, OrderDto dto
+								, String addr
+								, String addrDetail
+								, int[] seller_num
+								, int[] goods_num
+								, int[] option_num
+								, int[] order_money
+								, int[] option_count) {
 		logger.info("주문");
+		boolean isInsert = false;
+		boolean isCount = false;
 		
-		boolean isInsertGoods = GoodsService.insertGoods(gDto);
+		dto.setOrder_addr(addr+" "+addrDetail);
 		
-		boolean isInsertOption = false;
-		
-		Goods_optionDto oDto = new Goods_optionDto();
-		System.out.println(oDto.getGoods_num());
+		for(int i=0;i<goods_num.length;i++) {
+			dto.setOrder_seller(seller_num[i]);
+			dto.setGoods_num(goods_num[i]);
+			dto.setOption_num(option_num[i]);
+			dto.setOrder_money(order_money[i]);
+			isInsert = GoodsService.insertOrder(dto);
+			isCount = GoodsService.optionSell(option_num[i],option_count[i]);
+			
+			if(!(isInsert) || !(isCount)) {
+				break;
+			}
+		}
 				
-		if(isInsertGoods && isInsertOption) {
+		if(isInsert && isCount) {
 			return "redirect:allGoods.do?pnum=1";
 		}else {
-			model.addAttribute("msg", "추가 실패");
-			model.addAttribute("url", "insertGoodsForm.do");
+			model.addAttribute("msg", "주문 실패");
+			model.addAttribute("url", "main.do");
 			return "error";
 		}
 	}
@@ -663,13 +680,23 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}
 	}
 	
-	@RequestMapping(value = "/insertUserCoupon.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String insertUserCoupon(Model model, int user_num, int coupon_num) {
-		logger.info("개인쿠폰생성");
+	@RequestMapping(value = "/couponList.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String couponList(Model model, int user_num) {
+		logger.info("쿠폰목록보기(팝업)");
+
+		List<User_couponDto> clist = GoodsService.couponList(user_num);
+		model.addAttribute("clist", clist);
+		return "couponList";
+	}
+	
+	@RequestMapping(value = "/addReview.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String addReview(Model model, int user_num, ReviewDto dto) {
+		logger.info("리뷰 작성");
+		
 		
 //		랜덤으로 배분
-		CouponDto dto = GoodsService.couponDetail(coupon_num);
-		GoodsService.insertUserCoupon(user_num, dto);
+//		CouponDto dto = GoodsService.couponDetail(coupon_num);
+//		GoodsService.insertUserCoupon(user_num, dto);
 		return "insertCouponForm";
 	}
 	

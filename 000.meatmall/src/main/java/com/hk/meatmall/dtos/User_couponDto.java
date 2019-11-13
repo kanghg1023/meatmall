@@ -27,5 +27,6 @@ public class User_couponDto {
 	//조인
 	//쿠폰이름
 	private String coupon_name;
-	
+	private String coupon_img;
+	private int coupon_money;
 }

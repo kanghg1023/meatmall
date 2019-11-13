@@ -51,7 +51,7 @@ $(function() {
         
 		$.ajax({
 			url:"insertBasket.do",
-			data:{"user_num":${ldto.user_num}
+			data:{"user_num":${ldto != null ? ldto.user_num : '0'}
 			, "goods_num":${gDto.goods_num}
 			, "option_num":optionArray
 			, "basket_count":countArray},
@@ -200,6 +200,8 @@ $(function() {
 </div>
 <div id="reviewForm">
 	<form action="addReview.do" method="post">
+		<input type="hidden" name="user_id" value="${ldto.user_id}" />
+		<input type="hidden" name="user_num" value="${gdto.user_num}" />
 		<input type="hidden" name="goods_num" value="${gDto.goods_num}" />
 			<table border="1" class="reviewTable">
 				<c:if test="${gDto != null}">

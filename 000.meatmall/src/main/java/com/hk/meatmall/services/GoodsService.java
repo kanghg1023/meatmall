@@ -186,6 +186,12 @@ public class GoodsService implements IGoodsService {
 		return GoodsDao.insertOrder(dDto);
 	}
 
+	//재고감소
+	@Override
+	public boolean optionSell(int option_num, int option_count) {
+		return GoodsDao.optionSell(option_num, option_count);
+	}
+	
 	//주문 정보
 	@Override
 	public List<OrderDto> orderInfo(int user_num) {
@@ -212,8 +218,8 @@ public class GoodsService implements IGoodsService {
 
 	//쿠폰 목록(사용자)
 	@Override
-	public List<User_couponDto> userCouponList(String pnum) {
-		return GoodsDao.userCouponList(pnum);
+	public List<User_couponDto> userCouponList(String pnum, int user_num) {
+		return GoodsDao.userCouponList(pnum,user_num);
 	}
 	
 	//쿠폰 상세정보
@@ -227,6 +233,13 @@ public class GoodsService implements IGoodsService {
 	public boolean insertUserCoupon(int user_num, CouponDto dto) {
 		return GoodsDao.insertUserCoupon(user_num, dto);
 	}
+
+	@Override
+	public List<User_couponDto> couponList(int user_num) {
+		return GoodsDao.couponList(user_num);
+	}
+
+	
 	
 	
 }

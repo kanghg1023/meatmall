@@ -302,6 +302,7 @@
 			 , G.GOODS_TITLE
 			 , G.GOODS_IMG_TITLE
 			 , G.GOODS_COST
+			 , G.USER_NUM AS SELLER_NUM
 			 , O.OPTION_NUM
 			 , O.OPTION_NAME
 			 , O.OPTION_WEIGHT
@@ -360,10 +361,16 @@
 			   , #{order_addr}
 			   , #{order_money}
 			   , SYSDATE
-			   , SYSDATE+1
+			   , NULL
 			   , 1
 			   );
 	</insert>
+	
+	<update id="optionSell" parameterType="Map">
+		UPDATE GOODS_OPTION
+		   SET OPTION_COUNT = OPTION_COUNT - #{option_count}
+		 WHERE OPTION_NUM = #{option_num}
+	</update>
 	
 <!-- 주문 정보	 -->
 	<select id="orderInfo" parameterType="int" resultType="OrderDto">
@@ -491,6 +498,20 @@
 			   ,  SYSDATE + #{coupon_period}
 			   )
 	</insert>
+	
+<!-- 	쿠폰목록(팝업) -->
+	<select id="couponList" parameterType="int" resultType="User_couponDto">
+		SELECT U.USER_COUPON_NUM
+			 , C.COUPON_NAME
+			 , C.COUPON_IMG
+			 , C.COUPON_MONEY
+			 , U.USER_COUPON_DATE
+		  FROM COUPON C
+		  	 , USER_COUPON U
+		 WHERE C.COUPON_NUM = U.COUPON_NUM
+		   AND U.USER_NUM = #{user_num}
+		 ORDER BY U.USER_COUPON_DATE
+	</select>
 	
 	
 </mapper>
