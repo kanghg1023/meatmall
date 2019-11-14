@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hk.meatmall.dtos.BasketDto;
+import com.hk.meatmall.dtos.CouponDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
+import com.hk.meatmall.dtos.OrderDto;
 import com.hk.meatmall.dtos.ReviewDto;
+import com.hk.meatmall.dtos.UserDto;
+import com.hk.meatmall.dtos.User_couponDto;
 import com.hk.meatmall.idaos.IGoodsDao;
 import com.hk.meatmall.iservices.IGoodsService;
 
@@ -169,7 +173,73 @@ public class GoodsService implements IGoodsService {
 	public List<ReviewDto> reviewList(int goods_num) {
 		return GoodsDao.reviewList(goods_num);
 	}
+	
+	//유저 정보
+	@Override
+	public UserDto userInfo(int user_num) {
+		return GoodsDao.userInfo(user_num);
+	}
 
+	//주문
+	@Override
+	public boolean insertOrder(OrderDto dDto) {
+		return GoodsDao.insertOrder(dDto);
+	}
+
+	//재고감소
+	@Override
+	public boolean optionSell(int option_num, int option_count) {
+		return GoodsDao.optionSell(option_num, option_count);
+	}
+	
+	//주문 정보
+	@Override
+	public List<OrderDto> orderInfo(int user_num) {
+		return GoodsDao.orderInfo(user_num);
+	}
+
+	//쿠폰목록(관리자)
+	@Override
+	public List<CouponDto> adminCouponList(String pnum) {
+		return GoodsDao.adminCouponList(pnum);
+	}
+
+	//쿠폰등록(관리자)
+	@Override
+	public boolean insertCoupon(CouponDto dto) {
+		return GoodsDao.insertCoupon(dto);
+	}
+
+	//쿠폰페이징
+	@Override
+	public int CouponPcount() {
+		return GoodsDao.CouponPcount();
+	}
+
+	//쿠폰 목록(사용자)
+	@Override
+	public List<User_couponDto> userCouponList(String pnum, int user_num) {
+		return GoodsDao.userCouponList(pnum,user_num);
+	}
+	
+	//쿠폰 상세정보
+	@Override
+	public CouponDto couponDetail(int coupon_num) {
+		return GoodsDao.couponDetail(coupon_num);
+	}
+	
+	//쿠폰 등록(사용자)
+	@Override
+	public boolean insertUserCoupon(int user_num, CouponDto dto) {
+		return GoodsDao.insertUserCoupon(user_num, dto);
+	}
+
+	@Override
+	public List<User_couponDto> couponList(int user_num) {
+		return GoodsDao.couponList(user_num);
+	}
+
+	
 	
 	
 }

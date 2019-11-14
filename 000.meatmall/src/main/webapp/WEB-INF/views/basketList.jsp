@@ -17,6 +17,23 @@ function allSel(ele) {
 	$("input[name=chk]").prop("checked", $(ele).prop("checked"));
 }
 
+function allSum(){
+	var sum = document.getElementsByClassName("sum");
+	var a;
+	var total = 0;
+	var i;
+	for(i=0;i<sum.length;i++){
+		a = sum[i].innerHTML.replace(/,/gi,"");
+		total += eval(a);
+	}
+	
+	var allSum = document.getElementsByClassName("totalSum");
+	
+	for(i=0;i<allSum.length;i++){
+		allSum[i].innerHTML = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+}
+
 $(function() {
 	$("form").submit(function() {
 		var bool = true;
@@ -37,32 +54,60 @@ $(function() {
 	$("body").on("click",".bt_up",function(){ 
 		var num = $(this).prev();
 		num.val(parseInt(num.val())+1);
-		var sell_price = $(this).parent().next("td").find(".fmtNum");
-		alert(sell_price.val());
 		
-		var sum = $(this).parent().next().find(".sum");
-		var a = sum.html().replace(",","").replace(",","");
-		var b = sell_price.val().replace(",","");
-		var ab = (eval(a)+eval(b));
-		sum.html(ab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-// 		sum.val(eval(sum.val())+sell_price.val();
+		changeBcount(num);
 	});
 	$("body").on("click",".bt_down",function(){
-		var num=$(this).parent().find(".basket_count");
+		var num = $(this).next();
+		if(num.val() == 1){
+			return;
+		}
 		num.val(parseInt(num.val())-1);
-		var sell_price=$(this).parent().next("td").find("input[name=sell_price]").val();
-		$(this).parent().next("td").find("input[name=sum]").val(sell_price*num.val());
-	})
+		
+		changeBcount(num);
+	});
 	
-// 	var asd = $("#asd");
-// 	var qwe = asd.html().replace(",","");
-// 	b = 기존+얼마
-// 	var zxc = eval(qwe)+123;
-//  	var aaa = b.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-// 	a.html(aaa);
-// 	asd.html(aaa);
-// 	alert(eval(qwe)+154);
-});	
+	$("body").on("change",".basket_count",function(){
+		var num = $(this);
+		changeBcount(num);
+	});
+	
+	
+	
+	function changeBcount(num){
+		var sell_price = num.parent().next("td").find(".fmtNum");
+		var sum = num.parent().next().find(".sum");
+		var totalAmount = sum.html().replace(/,/gi,"");
+		var amount = sell_price.val().replace(/,/gi,"");
+		var totalAmount = (eval(num.val())*eval(amount));
+		
+		sum.html(totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+		allSum();
+	};
+	
+	$("body").on("click",".sumBtn",function(){
+		var sum = document.getElementsByClassName("sum");
+		var a;
+		var total = 0;
+		var i;
+		for(i=0;i<sum.length;i++){
+			a = sum[i].innerHTML.replace(/,/gi,"");
+			total += eval(a);
+		}
+		
+		var allSum = document.getElementsByClassName("totalSum");
+		
+		for(i=0;i<allSum.length;i++){
+			allSum[i].innerHTML = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		
+	});
+	
+	$(document).ready(function() {
+		allSum();
+	});
+	
+});
 
 </script>
 </head>
@@ -81,6 +126,9 @@ $(function() {
 			<col width="90px" />
 		</colgroup>	
 			<thead>
+				<tr>
+					<td colspan="6"><input type="submit" value="삭제" class="button"/></td>
+				</tr>
 				<tr>
 					<th scope="colgroup" colspan="4">상품정보</th>
 					<th>상품금액</th>
@@ -106,7 +154,7 @@ $(function() {
 								<input type="hidden" name="option_num" class="option_num" value="${dto.option_num}" />
 								<input type="hidden" name="option_weight" class="option_weight" value="${dto.option_weight}" />
 								<img src="img/minus.png" alt="수량감소" width="10" height="10" class="bt_down" />
-								<input type="text" name="basket_count" value="${dto.basket_count}" class="basket_count" />
+								<input type="text" name="basket_count" value="${dto.basket_count}" class="basket_count" />개
 								<img src="img/plus.png" alt="수량증가" width="10" height="10" class="bt_up"/>
 							</td>
 							<td>
@@ -117,11 +165,17 @@ $(function() {
 						</tr>
 					</c:forEach>
 						<tr>
-							<th>총 상품 가격</th>
-							<td colspan="5">상품가격 00,000원 + 배송비 무료 = 주문금액 00,000원</td>
+							<td colspan="6">
+								총 상품가격 
+								<strong class="totalSum"><fmt:formatNumber value="0" maxFractionDigits="0" /></strong><strong> 원</strong>
+								+ 배송비 무료 = 주문금액
+								<strong class="totalSum"><fmt:formatNumber value="0" maxFractionDigits="0" /></strong><strong> 원</strong>
+							</td>
 						</tr>
 						<tr>
-							<td colspan="6"><input type="submit" value="삭제" class="button"/></td>
+							<td colspan="6">
+								<input type="button" value="구매하기" onclick="location.href='insertOrderForm.do?user_num=${ldto.user_num}'">
+							</td>
 						</tr>
 				</c:otherwise>
 			</c:choose>	

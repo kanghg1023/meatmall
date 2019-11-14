@@ -9,10 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hk.meatmall.dtos.BasketDto;
+import com.hk.meatmall.dtos.CouponDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
+import com.hk.meatmall.dtos.OrderDto;
 import com.hk.meatmall.dtos.ReviewDto;
+import com.hk.meatmall.dtos.UserDto;
+import com.hk.meatmall.dtos.User_couponDto;
 import com.hk.meatmall.idaos.IGoodsDao;
 
 @Repository
@@ -62,7 +66,8 @@ public class GoodsDao implements IGoodsDao {
 	//카테고리 추가
 	@Override
 	public boolean insertCategory(String kind_name) {
-		int count = sqlSession.insert(nameSpace+"insertCategory", kind_name);
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"insertCategory", kind_name);
 		return count > 0 ? true:false;
 	}
 	
@@ -72,7 +77,8 @@ public class GoodsDao implements IGoodsDao {
 		Map<String, String[]> map = new HashMap<>();
 		map.put("chk", chk);
 		
-		int count = sqlSession.delete(nameSpace+"delCategory", map);
+		int count = 0;
+		count = sqlSession.delete(nameSpace+"delCategory", map);
 		return count > 0 ? true:false;
 	}
 	
@@ -111,14 +117,16 @@ public class GoodsDao implements IGoodsDao {
 	//상품 추가
 	@Override
 	public boolean insertGoods(GoodsDto gDto) {
-		int count = sqlSession.insert(nameSpace+"insertGoods",gDto);
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"insertGoods",gDto);
 		return count > 0 ? true:false;
 	}
 
 	//상품 추가 (옵션)
 	@Override
 	public boolean insertGoods_option(Goods_optionDto oDto) {
-		int count = sqlSession.insert(nameSpace+"insertGoods_option",oDto);
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"insertGoods_option",oDto);
 		return count > 0 ? true:false;
 	}
 	
@@ -148,7 +156,8 @@ public class GoodsDao implements IGoodsDao {
 		map.put("chk", chk);
 		map.put("pnum", pnum);
 		
-		int count = sqlSession.update(nameSpace+"delGoods", map);
+		int count = 0;
+		count = sqlSession.update(nameSpace+"delGoods", map);
 		return count > 0 ? true:false;
 	}
 	
@@ -160,28 +169,32 @@ public class GoodsDao implements IGoodsDao {
 		map.put("kind_num", kind_num);
 		map.put("pnum", pnum);
 		
-		int count = sqlSession.update(nameSpace+"delCateGoods", map);
+		int count = 0;
+		count = sqlSession.update(nameSpace+"delCateGoods", map);
 		return count > 0 ? true:false;
 	}
 
 	//상품 수정
 	@Override
 	public boolean upGoods(GoodsDto gDto) {
-		int count = sqlSession.update(nameSpace+"upGoods", gDto);
+		int count = 0;
+		count = sqlSession.update(nameSpace+"upGoods", gDto);
 		return count > 0 ? true:false;
 	}
 
 	//상품 수정 (옵션)
 	@Override
 	public boolean upGoods_option(Goods_optionDto oDto) {
-		int count = sqlSession.update(nameSpace+"upGoods_option", oDto);
+		int count = 0;
+		count = sqlSession.update(nameSpace+"upGoods_option", oDto);
 		return count > 0 ? true:false;
 	}
 	
 	//상품 수정에서 옵션 추가
 	@Override
 	public boolean upInsertGoods_option(Goods_optionDto oDto) {
-		int count = sqlSession.insert(nameSpace+"upInsertGoods_option",oDto);
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"upInsertGoods_option",oDto);
 		return count > 0 ? true:false;
 	}
 
@@ -194,7 +207,8 @@ public class GoodsDao implements IGoodsDao {
 	//장바구니 상품 추가
 	@Override
 	public boolean insertBasket(BasketDto bDto) {
-		int count = sqlSession.insert(nameSpace+"insertBasket", bDto);
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"insertBasket", bDto);
 		return count > 0 ? true:false;
 	}
 
@@ -204,7 +218,8 @@ public class GoodsDao implements IGoodsDao {
 		Map<String, String[]> map = new HashMap<>();
 		map.put("chk", chk);
 		
-		int count = sqlSession.delete(nameSpace+"delBasket", map);
+		int count = 0;
+		count = sqlSession.delete(nameSpace+"delBasket", map);
 		return count > 0 ? true:false;
 	}
 
@@ -213,5 +228,99 @@ public class GoodsDao implements IGoodsDao {
 	public List<ReviewDto> reviewList(int goods_num) {
 		return sqlSession.selectList(nameSpace+"reviewList", goods_num);
 	}
+	
+	//유저 정보
+	@Override
+	public UserDto userInfo(int user_num) {
+		return sqlSession.selectOne(nameSpace+"userInfo", user_num);
+	}
+
+	//주문
+	@Override
+	public boolean insertOrder(OrderDto dDto) {
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"insertOrder", dDto);
+		return count > 0 ? true:false;
+	}
+
+	//재고감소
+	@Override
+	public boolean optionSell(int option_num, int option_count) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("option_num", option_num);
+		map.put("option_count", option_count);
+		
+		int count = 0;
+		count = sqlSession.update(nameSpace+"optionSell", map);
+		return count > 0 ? true:false;
+	}
+	
+	//주문 정보
+	@Override
+	public List<OrderDto> orderInfo(int user_num) {
+		return sqlSession.selectList(nameSpace+"orderInfo", user_num);
+	}
+
+	//쿠폰목록(관리자)
+	@Override
+	public List<CouponDto> adminCouponList(String pnum) {
+		return sqlSession.selectList(nameSpace+"adminCouponList", pnum);
+	}
+
+	//쿠폰등록(관리자)
+	@Override
+	public boolean insertCoupon(CouponDto dto) {
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"insertCoupon", dto);
+		return count > 0 ? true : false;
+	}
+
+	//쿠폰페이징
+	@Override
+	public int CouponPcount() {
+		return sqlSession.selectOne(nameSpace+"CouponPcount");
+	}
+
+	//쿠폰목록(사용자)
+	@Override
+	public List<User_couponDto> userCouponList(String pnum, int user_num) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("pnum", pnum);
+		map.put("user_num", user_num);
+		
+		return sqlSession.selectList(nameSpace+"userCouponList", map);
+	}
+	
+	//쿠폰상세정보
+	@Override
+	public CouponDto couponDetail(int coupon_num) {
+		return sqlSession.selectOne(nameSpace+"couponDetail",coupon_num);
+	}
+	
+	//쿠폰 등록(사용자)
+	@Override
+	public boolean insertUserCoupon(int user_num, CouponDto dto) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("user_num", user_num);
+		map.put("coupon_num", dto.getCoupon_num());
+		map.put("coupon_period",dto.getCoupon_period());
+		
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"insertUserCoupon", map);
+		return count > 0 ? true : false;
+	}
+
+	@Override
+	public List<User_couponDto> couponList(int user_num) {
+		return sqlSession.selectList(nameSpace+"couponList", user_num);
+	}
+
+	
+
+	
+
+	
+
+	
 
 }

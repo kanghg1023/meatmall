@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class OrderDto {
 
-	//주분 번호
+	//주문 번호
 	private int order_num;
 	//주문자 번호
 	private int user_num;
@@ -39,10 +39,10 @@ public class OrderDto {
 	//조인
 	//판매자 닉네임
 	private String user_nick;
+	//유저 주소
+	private String user_addr;
 	//상품명
 	private String goods_title;
-	//상품대표이미지
-	private String goods_img_title;
 	//선택한 옵션명
 	private String option_name;
 	

@@ -11,7 +11,7 @@
 <body>
 <jsp:include page="header.jsp" />
 
-"${search_word}" 검색 결과입니다
+<h3>"${search_word}" 검색 결과입니다.</h3>
 
 <h4>카테고리</h4>
 <table border="1">

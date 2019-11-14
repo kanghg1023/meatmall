@@ -33,6 +33,8 @@ public class BasketDto {
 	private String option_name;
 	//옵션 - 무게
 	private int option_weight;
+	//판매자 번호
+	private int seller_num;
 	
 	//최종가격
 	private int basket_cost;

@@ -302,6 +302,7 @@
 			 , G.GOODS_TITLE
 			 , G.GOODS_IMG_TITLE
 			 , G.GOODS_COST
+			 , G.USER_NUM AS SELLER_NUM
 			 , O.OPTION_NUM
 			 , O.OPTION_NAME
 			 , O.OPTION_WEIGHT
@@ -333,8 +334,71 @@
 			</foreach>
 	</delete>
 	
+	<select id="userInfo" resultType="UserDto" parameterType="int">
+		SELECT USER_NUM
+			 , USER_ID
+			 , USER_NAME
+			 , USER_NICK
+			 , USER_PH
+			 , USER_ADDR
+			 , USER_EMAIL
+			 , USER_BUSINESSNUM
+			 , LICENSE_LEVEL
+			 , USER_ROLE
+ 		  FROM USER_INFO
+		 WHERE USER_NUM = #{user_num}
+	</select>
+	
+<!-- 주문 -->
+	<insert id="insertOrder" parameterType="OrderDto">
+		INSERT INTO GOODS_ORDER
+		VALUES (
+		 		 GOODS_ORDER_SEQ.NEXTVAL
+	  		   , #{user_num}
+	   		   , #{order_seller}
+	  		   , #{goods_num}
+			   , #{option_num}
+			   , #{order_addr}
+			   , #{order_money}
+			   , SYSDATE
+			   , NULL
+			   , 1
+			   );
+	</insert>
+	
+	<update id="optionSell" parameterType="Map">
+		UPDATE GOODS_OPTION
+		   SET OPTION_COUNT = OPTION_COUNT - #{option_count}
+		 WHERE OPTION_NUM = #{option_num}
+	</update>
+	
+<!-- 주문 정보	 -->
+	<select id="orderInfo" parameterType="int" resultType="OrderDto">
+		SELECT D.ORDER_NUM
+			 , D.USER_NUM
+			 , D.ORDER_SELLER
+			 , D.GOODS_NUM
+			 , D.OPTION_NUM
+			 , D.ORDER_ADDR
+			 , D.ORDER_MONEY
+			 , D.ORDER_DATE
+			 , D.ORDER_DELIVERY_DATE
+			 , D.ORDER_STATE
+			 , U.USER_NICK
+			 , U.USER_ADDR
+			 , G.GOODS_TITLE
+			 , O.OPTION_NAME
+ 		  FROM GOODS_ORDER D
+    		 , USER_INFO U
+    		 , GOODS G
+    		 , GOODS_OPTION O
+		 WHERE D.USER_NUM = U.USER_NUM
+ 		   AND D.GOODS_NUM = G.GOODS_NUM
+		   AND D.OPTION_NUM = O.OPTION_NUM
+		   AND D.USER_NUM = #{user_num}
+	</select>
+	
 <!-- 후기 목록 -->
-<!-- 굿즈타이틀, 옵션네임 추가 -->
 	<select id="reviewList" parameterType="int" resultType="ReviewDto">
 		SELECT R.REVIEW_NUM
 		     , R.ORDER_NUM
@@ -357,5 +421,97 @@
 		   AND R.GOODS_NUM = #{goods_num}
 		 ORDER BY R.REVIEW_NUM DESC
 	</select>
+	
+<!-- 쿠폰목록(관리자) -->
+	<select id="adminCouponList" parameterType="String" resultType="CouponDto">
+		SELECT COUPON_NUM
+			 , COUPON_NAME
+			 , COUPON_IMG
+			 , COUPON_MONEY
+			 , COUPON_PERIOD
+		  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY COUPON_NUM DESC) AS RN
+		              , COUPON_NUM
+					  , COUPON_NAME
+					  , COUPON_IMG
+					  , COUPON_MONEY
+					  , COUPON_PERIOD
+		           FROM COUPON
+		       )
+		 WHERE CEIL(RN/6) = #{pnum}
+	</select>
+	
+<!-- 쿠폰등록(관리자) -->
+	<insert id="insertCoupon" parameterType="CouponDto">
+		INSERT INTO COUPON
+		VALUES (
+				 COUPON_SEQ.NEXTVAL
+			   , #{coupon_name}
+			   , #{coupon_img}
+			   , #{coupon_money}
+			   , #{coupon_period}
+			   )
+	</insert>
+	
+<!-- 쿠폰페이징  -->
+	<select id="CouponPcount" resultType="int">
+		SELECT CEIL(COUNT(*)/6)
+		  FROM COUPON
+	</select>
+	
+<!-- 쿠폰목록(사용자) -->
+	<select id="userCouponList" parameterType="String" resultType="User_couponDto">
+		SELECT USER_COUPON_NUM
+			 , COUPON_NAME
+			 , COUPON_MONEY
+			 , USER_COUPON_DATE
+		  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY USER_COUPON_NUM DESC) AS RN
+					  , USER_COUPON_NUM
+					  , COUPON_NAME
+					  , COUPON_MONEY
+					  , USER_COUPON_DATE
+		           FROM COUPON C
+		           	  , USER_COUPON U
+		          WHERE C.COUPON_NUM = U.COUPON_NUM
+		       )
+		 WHERE CEIL(RN/6) = #{pnum}
+	</select>
+	
+<!-- 	쿠폰 상세정보 -->
+	<select id="couponDetail" parameterType="int" resultType="CouponDto">
+		SELECT COUPON_NUM
+			 , COUPON_NAME
+			 , COUPON_MONEY
+			 , COUPON_PERIOD
+		  FROM COUPON
+		 WHERE COUPON_NUM = #{coupon_num}
+	</select>
+	
+<!-- 쿠폰 등록(사용자) -->
+	<insert id="insertUserCoupon" parameterType="Map">
+		INSERT INTO USER_COUPON
+		VALUES (
+			 	 USER_COUPON_SEQ.NEXTVAL
+			   , (SELECT COUPON_NUM FROM COUPON WHERE COUPON_NUM = #{coupon_num})
+			   , #{user_num}
+			   ,  SYSDATE + #{coupon_period}
+			   )
+	</insert>
+	
+<!-- 	쿠폰목록(팝업) -->
+	<select id="couponList" parameterType="int" resultType="User_couponDto">
+		SELECT U.USER_COUPON_NUM
+			 , C.COUPON_NAME
+			 , C.COUPON_IMG
+			 , C.COUPON_MONEY
+			 , U.USER_COUPON_DATE
+		  FROM COUPON C
+		  	 , USER_COUPON U
+		 WHERE C.COUPON_NUM = U.COUPON_NUM
+		   AND U.USER_NUM = #{user_num}
+		 ORDER BY U.USER_COUPON_DATE
+	</select>
+	
 	
 </mapper>
