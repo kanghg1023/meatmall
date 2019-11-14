@@ -581,15 +581,17 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/insertOrder.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String insertOrder( Model model
-								, OrderDto dto
-								, String addr
-								, String addrDetail
-								, int[] seller_num
-								, int[] goods_num
-								, int[] option_num
-								, int[] order_money
-								, int[] option_count) {
+							 , OrderDto dto
+							 , String addr
+							 , String addrDetail
+							 , int[] seller_num
+							 , int[] goods_num
+							 , int[] option_num
+							 , int[] order_money
+							 , int[] option_count
+							 , int user_coupon_num) {
 		logger.info("주문");
+		
 		boolean isInsert = false;
 		boolean isCount = false;
 		

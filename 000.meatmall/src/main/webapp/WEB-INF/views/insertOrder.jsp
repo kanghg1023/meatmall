@@ -21,11 +21,11 @@ function allSum(){
 		total += eval(a);
 	}
 	
-	var allSum = document.getElementsByClassName("totalSum");
+	var totalSum = document.getElementById("totalSum");
+	var realSum = document.getElementById("realSum");
 	
-	for(i=0;i<allSum.length;i++){
-		allSum[i].innerHTML = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
+	totalSum.innerHTML = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	realSum.innerHTML = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 $(function() {
@@ -42,18 +42,6 @@ $(function() {
 			$(".addrDetail").val("");
 		}
 	});
-
-	
-	function changeBcount(num){
-		var sell_price = num.parent().next("td").find(".fmtNum");
-		var sum = num.parent().next().find(".order_money");
-		var totalAmount = sum.html().replace(/,/gi,"");
-		var amount = sell_price.val().replace(/,/gi,"");
-		var totalAmount = (eval(num.val())*eval(amount));
-		
-		sum.html(totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-		allSum();
-	};
 	
 	$(document).ready(function() {
 		allSum();
@@ -71,9 +59,7 @@ $(function() {
 </script>
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
-	<jsp:include page="header.jsp" />
-</div>
+<jsp:include page="header.jsp" />
 <h1>주문/결제</h1>
 	<h3>구매자 정보</h3>
 		<form action="insertOrder.do" method="post">
@@ -136,24 +122,23 @@ $(function() {
 			<tr>
 				<th>총 상품 가격</th>
 				<td>
-					<strong class="totalSum"><fmt:formatNumber value="0" maxFractionDigits="0" /></strong><strong> 원</strong>
+					<strong id="totalSum">0</strong><strong> 원</strong>
 				</td>
 			</tr>
 			<tr>
-				<th>할인 쿠폰</th>
-				<td>0원<input type="button" id="coupon" value="선택" />
+				<th rowspan="2">할인 쿠폰</th>
+				<td></td>
+			</tr>
+			<tr>
+				<td><strong><span id="coupon_money">-</span></strong>
+					<input type="button" id="coupon" value="선택" />
 					<input type="hidden" id="user_coupon_num" name="user_coupon_num" value="" />
 				</td>
-<!-- 				팝업에서 오프너 위치구해서 한줄더만들고 태그포함 삽입  -->
-			</tr>
-			<tr>
-				<th>배송비</th>
-				<td>0원</td>
 			</tr>
 			<tr>
 				<th>총 결제 금액</th>
 				<td>
-					<strong class="realSum"><fmt:formatNumber value="0" maxFractionDigits="0" /></strong><strong> 원</strong>
+					<strong id="realSum"><fmt:formatNumber value="0" maxFractionDigits="0" /></strong><strong> 원</strong>
 				</td>
 			</tr>
 		</table>
