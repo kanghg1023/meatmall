@@ -112,9 +112,7 @@ $(function() {
 </script>
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
-	<jsp:include page="header.jsp" />
-</div>
+<jsp:include page="header.jsp" />
 <h1>장바구니</h1>
 <form action="delBasket.do" method="post">
 <table border="1" class="table">
@@ -174,7 +172,7 @@ $(function() {
 						</tr>
 						<tr>
 							<td colspan="6">
-								<input type="button" value="구매하기" onclick="location.href='insertOrderForm.do?user_num=${ldto.user_num}'">
+								<input type="button" value="구매하기" onclick="location.href='insertOrderForm.do?user_num=${ldto.user_num}&basket=basket'">
 							</td>
 						</tr>
 				</c:otherwise>

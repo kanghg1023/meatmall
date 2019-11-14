@@ -54,8 +54,7 @@
 		<a href="myPage.do" class="myPage"><span>내 정보보기</span></a>
 	</dd>
 	<dd>
-<!-- 		수정중 -->
-		<a href="category.do" class="category"><span>구매내역</span></a>
+		<a href="orderList.do?user_num=${ldto.user_num}" class="orderList"><span>구매내역</span></a>
 	</dd>
 	<dd>
 <!-- 		수정중 -->

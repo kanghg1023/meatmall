@@ -33,6 +33,12 @@ public class SearchController {
 		List<GoodsDto> soList = SearchService.goodsSearch(search_word,"SO");
 		List<BoardDto> bList = SearchService.boardSearch(search_word);
 		
+		if(bList == null) {
+			System.out.println("널");
+		}else {
+			System.out.println(bList);
+		}
+		
 		for (BoardDto dto:bList) {
 			String con = dto.getBoard_content();
 			if(con.length() > 10) {

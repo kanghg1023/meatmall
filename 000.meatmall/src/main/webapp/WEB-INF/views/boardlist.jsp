@@ -46,7 +46,7 @@
 					<td>공지</td>
 					<td>${dto.user_num}</td>
 					<td><a href="boarddetail.do?board_num=${dto.board_num}">${dto.board_title}</a></td>					
-					<td><fmt:formatDate value="${dto.board_regdate}" pattern="yyyy년MM월dd일"/> </td>					
+					<td><fmt:formatDate value="${dto.board_regdate}" pattern="yyyy년MM월dd일"/></td>					
 					<td>${dto.board_readcount}</td>
 				</tr>
 				</c:if>
@@ -54,7 +54,7 @@
 			<c:forEach items="${boardList}" var="dto">
 				<tr>					
 					<td>${dto.board_num}</td>
-					<td>${dto.user_num}</td>
+					<td><input type="hidden" value="${dto.user_num}" /><a id="a">${dto.user_nick}</a></td>
 					<c:choose>
 						<c:when test="${dto.board_delflag=='0'}">
 							<td>------삭제된 글입니다.------</td>

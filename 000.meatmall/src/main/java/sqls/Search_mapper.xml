@@ -55,9 +55,10 @@
 					  , BOARD_NOTICE
 				   FROM BOARD
 				  WHERE BOARD_TITLE LIKE '%'||#{search_word}||'%'
-				) B
+			   ) B
 			 , USER_INFO U
-		 WHERE CEIL(RN/5)=1
+		 WHERE B.USER_NUM = U.USER_NUM
+		   AND CEIL(B.RN/5) = 1
 	</select>
 	
 	

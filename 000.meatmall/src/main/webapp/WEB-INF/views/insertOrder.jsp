@@ -70,7 +70,7 @@ $(function() {
 					<td>${ldto.user_name}</td>
 				</tr>
 				<tr>
-					<th>배송 주소 <input type="checkbox" value="주소와 배송지 동일" class="myAddr"/></th>
+					<th>주소 <input type="checkbox" value="주소와 배송지 동일" class="myAddr"/></th>
 					<td>
 						<input type="text" id="user_addr" name="addr" class="addr" />
 						<input type="button" id="jusoApi" value="주소검색" />
@@ -99,7 +99,7 @@ $(function() {
 					<tr align="center">
 						<td align="left" ><img src="${dto.goods_img_title}" style="width:78px; height:78px;"></td>
 						<td>
-							${dto.goods_title} / ${dto.option_name} / ${dto.option_weight}G
+							${dto.goods_title} / ${dto.option_name} / ${dto.option_weight}g
 						</td>
 						<td>
 							<input type="hidden" name="seller_num" class="seller_num" value="${dto.seller_num}" />
@@ -109,7 +109,8 @@ $(function() {
 							${dto.basket_count}개
 						</td>
 						<td>
-							<input type="hidden" class="order_money" name="order_money" value="<fmt:formatNumber value="${(dto.option_weight/100*dto.goods_cost)}" maxFractionDigits="0" />" />
+							<fmt:parseNumber var="money" value="${(dto.option_weight/100*dto.goods_cost)*dto.basket_count}" integerOnly="true" />
+							<input type="hidden" class="order_money" name="order_money" value="${money}" />
 							<strong><fmt:formatNumber value="${(dto.option_weight/100*dto.goods_cost)*dto.basket_count}" maxFractionDigits="0" /></strong><strong> 원</strong>
 						</td>
 						<td>무료</td>
@@ -132,7 +133,7 @@ $(function() {
 			<tr>
 				<td><strong><span id="coupon_money">-</span></strong>
 					<input type="button" id="coupon" value="선택" />
-					<input type="hidden" id="user_coupon_num" name="user_coupon_num" value="" />
+					<input type="hidden" id="user_coupon_num" name="user_coupon_num" value="0" />
 				</td>
 			</tr>
 			<tr>

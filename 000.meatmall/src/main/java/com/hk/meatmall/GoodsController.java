@@ -552,7 +552,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/delBasket.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String delBasket(HttpSession session, Model model, String[] chk) {
+	public String delBasket(HttpSession session, Model model, int[] chk) {
 		logger.info("장바구니 상품 삭제");
 		UserDto ldto = (UserDto)session.getAttribute("ldto");
 		
@@ -568,20 +568,33 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/insertOrderForm.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String insertOrderForm(Model model, int user_num) {
+	public String insertOrderForm( Model model
+								 , int user_num
+								 , int[] option_num
+								 , int[] basket_count) {
 		logger.info("주문 폼");
+
+		List<BasketDto> basketList = new ArrayList<>();
+		BasketDto dto = new BasketDto();
 		
-		UserDto uDto = GoodsService.userInfo(user_num);
-		List<BasketDto> basketList = GoodsService.basketList(user_num);
+		if(option_num != null) {
+			for(int i=0;i<option_num.length;i++) {
+				dto = GoodsService.goodsData(option_num[i]);
+				dto.setUser_num(user_num);
+				dto.setBasket_count(basket_count[i]);
+				basketList.add(dto);
+			}
+		}else {
+			basketList = GoodsService.basketList(user_num);
+		}
 		
-		model.addAttribute("uDto", uDto);
 		model.addAttribute("basketList", basketList);
 		return "insertOrder";
 	}
 	
 	@RequestMapping(value = "/insertOrder.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String insertOrder( Model model
-							 , OrderDto dto
+							 , int user_num
 							 , String addr
 							 , String addrDetail
 							 , int[] seller_num
@@ -592,9 +605,12 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 							 , int user_coupon_num) {
 		logger.info("주문");
 		
+		OrderDto dto = new OrderDto();
+		
 		boolean isInsert = false;
 		boolean isCount = false;
 		
+		dto.setUser_num(user_num);
 		dto.setOrder_addr(addr+" "+addrDetail);
 		
 		for(int i=0;i<goods_num.length;i++) {
@@ -602,6 +618,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			dto.setGoods_num(goods_num[i]);
 			dto.setOption_num(option_num[i]);
 			dto.setOrder_money(order_money[i]);
+			dto.setOrder_count(option_count[i]);
 			isInsert = GoodsService.insertOrder(dto);
 			isCount = GoodsService.optionSell(option_num[i],option_count[i]);
 			
@@ -609,8 +626,20 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 				break;
 			}
 		}
-				
-		if(isInsert && isCount) {
+		
+		//장바구니삭제
+		boolean isDel = GoodsService.delBasket(option_num);
+		//쿠폰사용
+		boolean isUse = false;
+		
+		if(user_coupon_num > 0){
+			isUse = GoodsService.useCoupon(user_coupon_num);
+		}else {
+			isUse = true;
+		}
+		
+		
+		if(isInsert && isCount && isDel && isUse) {
 			return "redirect:allGoods.do?pnum=1";
 		}else {
 			model.addAttribute("msg", "주문 실패");
@@ -690,6 +719,17 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		model.addAttribute("clist", clist);
 		return "couponList";
 	}
+	
+	@RequestMapping(value = "/orderList.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String orderList(Model model, int user_num) {
+		logger.info("구매내역");
+			
+		List<OrderDto> olist = GoodsService.orderInfo(user_num);
+		
+		model.addAttribute("olist", olist);
+		return "orderList";
+	}
+		
 	
 	@RequestMapping(value = "/addReview.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String addReview(Model model, int user_num, ReviewDto dto) {

@@ -214,8 +214,8 @@ public class GoodsDao implements IGoodsDao {
 
 	//장바구니 상품 삭제
 	@Override
-	public boolean delBasket(String[] chk) {
-		Map<String, String[]> map = new HashMap<>();
+	public boolean delBasket(int[] chk) {
+		Map<String, int[]> map = new HashMap<>();
 		map.put("chk", chk);
 		
 		int count = 0;
@@ -237,9 +237,10 @@ public class GoodsDao implements IGoodsDao {
 
 	//주문
 	@Override
-	public boolean insertOrder(OrderDto dDto) {
+	public boolean insertOrder(OrderDto dto) {
+		System.out.println(dto);
 		int count = 0;
-		count = sqlSession.insert(nameSpace+"insertOrder", dDto);
+		count = sqlSession.insert(nameSpace+"insertOrder", dto);
 		return count > 0 ? true:false;
 	}
 
@@ -310,16 +311,25 @@ public class GoodsDao implements IGoodsDao {
 		return count > 0 ? true : false;
 	}
 
+	//쿠폰목록(팝업)
 	@Override
 	public List<User_couponDto> couponList(int user_num) {
 		return sqlSession.selectList(nameSpace+"couponList", user_num);
 	}
 
-	
+	//상품옵션정보(바로구매용)
+	@Override
+	public BasketDto goodsData(int option_num) {
+		return sqlSession.selectOne(nameSpace+"goodsData", option_num);
+	}
 
-	
-
-	
+	//쿠폰사용
+	@Override
+	public boolean useCoupon(int user_coupon_num) {
+		int count = 0;
+		count = sqlSession.update(nameSpace+"useCoupon", user_coupon_num);
+		return count > 0 ? true : false;
+	}
 
 	
 

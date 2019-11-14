@@ -164,7 +164,7 @@ public class GoodsService implements IGoodsService {
 
 	//장바구니 상품 삭제
 	@Override
-	public boolean delBasket(String[] chk) {
+	public boolean delBasket(int[] chk) {
 		return GoodsDao.delBasket(chk);
 	}
 
@@ -234,12 +234,23 @@ public class GoodsService implements IGoodsService {
 		return GoodsDao.insertUserCoupon(user_num, dto);
 	}
 
+	//쿠폰목록(팝업)
 	@Override
 	public List<User_couponDto> couponList(int user_num) {
 		return GoodsDao.couponList(user_num);
 	}
 
-	
+	//상품옵션정보(바로구매용)
+	@Override
+	public BasketDto goodsData(int option_num) {
+		return GoodsDao.goodsData(option_num);
+	}
+
+	//쿠폰 사용
+	@Override
+	public boolean useCoupon(int user_coupon_num) {
+		return GoodsDao.useCoupon(user_coupon_num);
+	}
 	
 	
 }

@@ -66,7 +66,7 @@
 					</span> 원
 				</strong>
 			</td>
-			<td>${dto.user_coupon_date}</td>
+			<td><fmt:formatDate value="${dto.user_coupon_date}" pattern="yyyy년MM월dd일"/> 까지</td>
 			<td>
 				<input type="hidden" value="${dto.user_coupon_num}" />
 				<input type="button" class="couponSelect" value="선택" />

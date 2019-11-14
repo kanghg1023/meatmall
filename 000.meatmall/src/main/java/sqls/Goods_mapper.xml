@@ -363,7 +363,8 @@
 			   , SYSDATE
 			   , NULL
 			   , 1
-			   );
+			   , #{order_count}
+			   )
 	</insert>
 	
 	<update id="optionSell" parameterType="Map">
@@ -371,32 +372,6 @@
 		   SET OPTION_COUNT = OPTION_COUNT - #{option_count}
 		 WHERE OPTION_NUM = #{option_num}
 	</update>
-	
-<!-- 주문 정보	 -->
-	<select id="orderInfo" parameterType="int" resultType="OrderDto">
-		SELECT D.ORDER_NUM
-			 , D.USER_NUM
-			 , D.ORDER_SELLER
-			 , D.GOODS_NUM
-			 , D.OPTION_NUM
-			 , D.ORDER_ADDR
-			 , D.ORDER_MONEY
-			 , D.ORDER_DATE
-			 , D.ORDER_DELIVERY_DATE
-			 , D.ORDER_STATE
-			 , U.USER_NICK
-			 , U.USER_ADDR
-			 , G.GOODS_TITLE
-			 , O.OPTION_NAME
- 		  FROM GOODS_ORDER D
-    		 , USER_INFO U
-    		 , GOODS G
-    		 , GOODS_OPTION O
-		 WHERE D.USER_NUM = U.USER_NUM
- 		   AND D.GOODS_NUM = G.GOODS_NUM
-		   AND D.OPTION_NUM = O.OPTION_NUM
-		   AND D.USER_NUM = #{user_num}
-	</select>
 	
 <!-- 후기 목록 -->
 	<select id="reviewList" parameterType="int" resultType="ReviewDto">
@@ -495,7 +470,8 @@
 			 	 USER_COUPON_SEQ.NEXTVAL
 			   , (SELECT COUPON_NUM FROM COUPON WHERE COUPON_NUM = #{coupon_num})
 			   , #{user_num}
-			   ,  SYSDATE + #{coupon_period}
+			   , SYSDATE + #{coupon_period}
+			   , 1
 			   )
 	</insert>
 	
@@ -510,7 +486,55 @@
 		  	 , USER_COUPON U
 		 WHERE C.COUPON_NUM = U.COUPON_NUM
 		   AND U.USER_NUM = #{user_num}
+		   AND U.USER_COUPON_DATE > SYSDATE
+		   AND USER_COUPON_USE = 1
 		 ORDER BY U.USER_COUPON_DATE
+	</select>
+	
+<!-- 	상품옵션정보(바로구매용) -->
+	<select id="goodsData" parameterType="int" resultType="BasketDto">
+		SELECT G.GOODS_NUM
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_TITLE
+			 , G.USER_NUM AS SELLER_NUM
+			 , G.GOODS_COST
+			 , O.OPTION_NUM
+			 , O.OPTION_NAME
+			 , O.OPTION_WEIGHT
+		  FROM GOODS G
+		  	 , GOODS_OPTION O
+		 WHERE G.GOODS_NUM = O.GOODS_NUM
+		   AND O.OPTION_NUM = #{option_num}
+	</select>
+	
+<!-- 	쿠폰사용 -->
+	<update id="useCoupon" parameterType="int">
+		UPDATE USER_COUPON
+		   SET USER_COUPON_USE = 0
+		 WHERE USER_COUPON_NUM = #{user_coupon_num}
+	</update>
+	
+<!-- 구매내역 -->
+	<select id="orderInfo" parameterType="int" resultType="OrderDto">
+		SELECT R.ORDER_NUM
+			 , R.ORDER_SELLER
+			 , R.GOODS_NUM
+			 , R.OPTION_NUM
+			 , R.ORDER_ADDR
+			 , R.ORDER_MONEY
+			 , R.ORDER_DATE
+			 , R.ORDER_DELIVERY_DATE
+			 , R.ORDER_STATE
+			 , R.ORDER_COUNT
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_TITLE
+			 , O.OPTION_NAME
+		  FROM GOODS_ORDER R
+		     , GOODS G
+		     , GOODS_OPTION O
+		 WHERE R.GOODS_NUM = G.GOODS_NUM
+		   AND R.OPTION_NUM = O.OPTION_NUM
+		   AND R.USER_NUM = #{user_num}
 	</select>
 	
 	

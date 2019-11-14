@@ -84,7 +84,7 @@ public interface IGoodsDao {
 	public boolean insertBasket(BasketDto bDto);
 	
 	//장바구니 상품 삭제
-	public boolean delBasket(String[] chk);
+	public boolean delBasket(int[] chk);
 	
 	//후기 목록
 	public List<ReviewDto> reviewList(int goods_num);
@@ -121,5 +121,11 @@ public interface IGoodsDao {
 	
 	//쿠폰목록(팝업)
 	public List<User_couponDto> couponList(int user_num);
+	
+	//상품옵션정보(바로구매용)
+	public BasketDto goodsData(int option_num);
+	
+	//쿠폰사용
+	public boolean useCoupon(int user_coupon_num);
 	
 }

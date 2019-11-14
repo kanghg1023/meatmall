@@ -35,6 +35,8 @@ public class OrderDto {
 	private Date order_delivery_date;
 	//배송 상태
 	private String order_state;
+	//주문 개수
+	private int order_count;
 
 	//조인
 	//판매자 닉네임
@@ -45,5 +47,7 @@ public class OrderDto {
 	private String goods_title;
 	//선택한 옵션명
 	private String option_name;
+	//상품 이미지
+	private String goods_img_title;
 	
 }
