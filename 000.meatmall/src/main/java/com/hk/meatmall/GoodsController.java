@@ -81,6 +81,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 				pcount = GoodsService.getAllPcount();
 				map=Paging.pagingValue(pcount, pnum, 5);
 			}
+			
 			if((gList.size()>0) || (p==1 && gList.size()==0)) {
 	              isList = false;
 	        }else {
@@ -89,14 +90,15 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	        }
 		}
 		
-		if(kind_num == null) {
-			model.addAttribute("gList", gList);
-			model.addAttribute("map",map);
-		}else {
-			model.addAttribute("gList", gList);
-			model.addAttribute("map",map);
+		if(kind_num != null) {
 			model.addAttribute("kind_num", kind_num);
 		}
+		
+		List<Goods_kindDto> cList = GoodsService.category();
+		
+		model.addAttribute("cList", cList);
+		model.addAttribute("map",map);
+		model.addAttribute("gList", gList);
 		return "allGoods";
 	}
 	
@@ -169,8 +171,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 								, MultipartHttpServletRequest mtfRequest
 								) throws IOException, Exception {
 		logger.info("전체상품에서 추가");
-		
-		
 		
 		//대표이미지
 		String imgUploadPath_T = uploadPath + File.separator + "imgUpload";

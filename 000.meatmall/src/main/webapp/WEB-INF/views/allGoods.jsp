@@ -35,13 +35,39 @@ $(function() {
 </script>
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
-	<jsp:include page="header.jsp" />
-</div>
+<jsp:include page="header.jsp" />
+
+<ul>
+<c:choose>
+	<c:when test="${kind_num == null}">
+		<li class="current">전체상품</li>
+	</c:when>
+	<c:otherwise>
+		<li>전체상품</li>
+	</c:otherwise>
+</c:choose>
+
+<c:forEach items="${cList}" var="dto">
+	<c:choose>
+		<c:when test="${kind_num eq dto.kind_num}">
+			<li class="current">
+				<a href="allGoods.do?kind_num=${dto.kind_num}&pnum=1">${dto.kind_name}</a>
+			</li>
+		</c:when>
+		<c:otherwise>
+			<li>
+				<a href="allGoods.do?kind_num=${dto.kind_num}&pnum=1">${dto.kind_name}</a>
+			</li>
+		</c:otherwise>
+	</c:choose>
+	
+</c:forEach>
+</ul>
+
 <h1>전체 상품</h1>
 	<form action="delAllGoods.do" method="post">
 	<c:choose>
-		<c:when test="${kind_num eq null}">
+		<c:when test="${kind_num == null}">
 			<h1>전체에서</h1>
 			<input type="hidden" name="pnum" value="${pnum}">
 		</c:when>
