@@ -6,22 +6,30 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
+<style type="text/css">
+   .catebtn { 
+   width: 100%;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:white;
+    font-weight: bold;
+}
+</style>
 </head>
 <body>
-	<h1>카테고리 추가하기</h1>
 <form action="insertCategory.do" method="get">
-	<table border="1">
-		<col width="100px"><col width="300px">
-		<tr>
-			<th>등록할 부위 이름 입력</th>
-			<td><input type="text" name="kind_name" required="required"/></td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<input type="submit" value="부위 추가" onclick="opener.document.location.reload(); javascript:self.close();" onclose="opener.parent.location.reload();"/>
-			</td>
-		</tr>
-	</table>
+   <table>
+      <col width="210px"><col width="180px"><col width="150px">
+      <tr>
+         <th>추가할 부위 입력</th>
+         <td><input type="text" name="kind_name" required="required"/></td>
+         <td><input type="submit" value="부위 추가" onclick="opener.document.location.reload(); javascript:self.close();" onclose="opener.parent.location.reload();" class="catebtn"/></td>      
+      </tr>
+   </table>
 </form>
 </body>
 </html>

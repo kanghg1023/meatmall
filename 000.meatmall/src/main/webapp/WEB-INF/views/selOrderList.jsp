@@ -94,5 +94,6 @@
 		</c:choose>
 	</table>
 </c:if>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

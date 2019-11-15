@@ -12,16 +12,75 @@ a.underline:link    { text-decoration:none }
 a.underline:visited { text-decoration:none }
 a.underline:hover   { text-decoration:underline }
 a.underline:active  { text-decoration:none }
+
+body {
+        font-family: "Montserrat", sans-serif; font-size:0.75em; color:#333
+
+}
+
+.list-table {
+    margin:100px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: center;
+  padding:10px;               
+}
+
+.list-table th{
+   height:40px;
+   border-top:2px solid #2AC37D;
+   border-bottom:1px solid #CCC;
+   font-weight: bold;
+   font-size: 17px;
+}
+.list-table td{
+   text-align:center;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
+.list-table .list:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .notice:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .buttonsignup {
+    width: 15%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.list-table .actionbutton {
+    margin-top:0%;
+}
+
+
+
 </style>
 <title></title>
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
+
 	<jsp:include page="header.jsp" />
-</div>
-<h1>1:1문의 글 리스트</h1>
-<table border="1">
-	<col width="100px" />
+
+<h1 style="text-align: center;">1:1문의 글 리스트</h1>
+<table class="list-table">
+	<col width="150px" />
 	<col width="100px" />
 	<col width="300px" />
 	<col width="130px" />
@@ -91,5 +150,6 @@ a.underline:active  { text-decoration:none }
 	</tr>
 	</c:if>
 </table>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

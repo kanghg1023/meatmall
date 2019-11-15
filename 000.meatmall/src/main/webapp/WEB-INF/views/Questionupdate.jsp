@@ -54,5 +54,6 @@ CKEDITOR.replace("ckeditor",{
     width : '800px' , height : '500px'
 }); //이미지 업로드 기능을 추가하기위한 코드
 </script>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

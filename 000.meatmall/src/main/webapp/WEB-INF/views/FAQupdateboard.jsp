@@ -37,7 +37,7 @@ $(function(){
 		</tr>
 		<tr>
 			<th>FAQ 내용</th>
-			<td><textarea rows="10" cols="60" name="faq_content" wrap="hard">${fdto.faq_content}</textarea></td>
+			<td><textarea rows="10" cols="102" name="faq_content" wrap="hard">${fdto.faq_content}</textarea></td>
 		</tr>
 		<tr>
 			<td colspan="2">

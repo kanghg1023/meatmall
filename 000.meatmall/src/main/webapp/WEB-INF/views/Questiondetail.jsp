@@ -28,6 +28,7 @@
 </script>
 </head>
 <body>
+<jsp:include page="header.jsp" />
 <h1>1:1문의하기</h1>
 <div style="width:800px;">
 <table border="1">
@@ -135,5 +136,6 @@ CKEDITOR.replace("ckeditor",{
     width : '800px' , height : '500px'
 }); //이미지 업로드 기능을 추가하기위한 코드
 </script>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

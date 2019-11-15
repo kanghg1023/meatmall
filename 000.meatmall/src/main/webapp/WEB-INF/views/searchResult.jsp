@@ -90,6 +90,6 @@
 		</c:otherwise>
 	</c:choose>
 </table>
-
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>
