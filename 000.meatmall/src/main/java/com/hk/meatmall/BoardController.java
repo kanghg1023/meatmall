@@ -471,5 +471,13 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 			return "error";
 		}
 	}
+	
+	//한우레시피
+	@RequestMapping(value = "/recipe.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String recipe() {
+		logger.info("한우레시피");
+		
+		return "recipe";
+	}
 
 }

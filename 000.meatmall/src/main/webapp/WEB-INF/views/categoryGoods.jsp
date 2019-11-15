@@ -34,9 +34,9 @@ $(function() {
 </script>
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
+
 	<jsp:include page="header.jsp" />
-</div>
+
 <h1>카테고리별 상품</h1>
 	<form action="delCateGoods.do" method="post">
 	<input type="hidden" name="kind_num" value="${kind_num}">
@@ -122,5 +122,6 @@ $(function() {
 			</c:if> 
 		</table>
 	</form>
+<jsp:include page="footer.jsp" /> 	
 </body>
 </html>

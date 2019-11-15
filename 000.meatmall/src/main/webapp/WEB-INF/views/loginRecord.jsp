@@ -10,9 +10,9 @@
 <title>로그인 기록보기</title>
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
+
 	<jsp:include page="header.jsp" />
-</div>
+
 <dl>
 	<dt>마이페이지</dt>
 	<dd>
@@ -55,5 +55,6 @@
 		</tr>
 	</c:forEach>
 </table>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

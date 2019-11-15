@@ -10,6 +10,68 @@
 <title></title>
 <style type="text/css">
 .basket_count {width:30px;}
+
+body {
+        font-family: "Montserrat", sans-serif; font-size:0.75em; color:#333
+
+}
+
+.list-table {
+    margin:100px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: center;
+  padding:10px;               
+}
+
+.list-table th{
+   height:40px;
+   width: 400px;
+   border-top:2px solid #2AC37D;
+   border-bottom:1px solid #CCC;
+   font-weight: bold;
+   font-size: 17px;
+}
+.list-table td{
+   text-align:center;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
+.list-table .list:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .notice:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .buttonsignup {
+    width: 15%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+    
+}
+
+.list-table .actionbutton {
+	
+    margin-top:0%;
+}
+
+
+
 </style>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
@@ -112,10 +174,12 @@ $(function() {
 </script>
 </head>
 <body>
-<jsp:include page="header.jsp" />
-<h1>장바구니</h1>
+
+	<jsp:include page="header.jsp" />
+
+<h1 style="text-align: center;">장바구니</h1>
 <form action="delBasket.do" method="post">
-<table border="1" class="table">
+<table  class="list-table">
 		<colgroup>
 			<col width="50px" />
 			<col width="80px" />
@@ -125,7 +189,7 @@ $(function() {
 		</colgroup>	
 			<thead>
 				<tr>
-					<td colspan="6"><input type="submit" value="삭제" class="button"/></td>
+					<td colspan="6"></td>
 				</tr>
 				<tr>
 					<th scope="colgroup" colspan="4">상품정보</th>
@@ -172,12 +236,14 @@ $(function() {
 						</tr>
 						<tr>
 							<td colspan="6">
-								<input type="button" value="구매하기" onclick="location.href='insertOrderForm.do?user_num=${ldto.user_num}&basket=basket'">
+								<input type="button" value="구매하기" class="buttonsignup actionbutton" onclick="location.href='insertOrderForm.do?user_num=${ldto.user_num}'">
+								<input type="submit" value="삭제" class="buttonsignup actionbutton"/>
 							</td>
 						</tr>
 				</c:otherwise>
 			</c:choose>	
 </table>
 </form>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

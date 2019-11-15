@@ -204,15 +204,88 @@ $(function(){
 	});
 });
 </script>
+
+<style type="text/css">
+
+#ps-products-wrap{
+   width:60%; text-align:left; margin:0px auto;
+}
+
+body {
+        font-family: "Montserrat", sans-serif; font-size:0.75em; color:#333
+
+}
+
+.list-table {
+   
+    text-align: left;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: left;
+  padding:10px;               
+}
+
+.list-table th{
+   height:40px;
+   
+   border-bottom:1px solid #2AC37D;
+   font-weight: bold;
+   font-size: 15px;
+}
+.list-table td{
+   text-align:left;
+   padding:10px 0;   
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 13px 
+}
+
+.list-table .list:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .notice:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .buttonsignup {
+    width: 35%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.list-table .actionbutton {
+    margin-top:2%;
+}
+
+
+</style>
+
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
+
 	<jsp:include page="header.jsp" />
-</div>
+
+
+<div class="ps-products-wrap pt-80 pb-80" id="ps-products-wrap">
+   <div class="ps-products" data-mh="product-listing">
+      <div class="ps-product__columns"> 
 
 <form action="userUpdate.do">
-	<input type="hidden" name="user_num" value="${ldto.user_num}" />
-	<table border="1">
+	<input type="hidden" name="user_num" value="${ldto.user_num}" />	
+	<table class="list-table">
+	
+	
 		<tr>
 			<th>아이디</th>
 			<td>${ldto.user_id}</td>
@@ -241,7 +314,7 @@ $(function(){
 			<th>주소</th>
 			<td>
 				<input type="text" name="user_addr" value="${ldto.user_addr}" readonly="readonly"/>
-				<input type="button" id="jusoApi" value="주소검색" />
+				<input type="button" id="jusoApi" class="buttonsignup actionbutton" value="주소검색" />
 			</td>
 		</tr>
 		<tr>
@@ -254,10 +327,30 @@ $(function(){
 		</tr>
 		<tr>
 			<td colspan="2" align="right">
-				<input type="submit" value="정보수정"/>
+				<input type="submit" class="buttonsignup actionbutton" value="정보수정"/>
 			</td>
 		</tr>
 	</table>
+	
 </form>
+ </div>
+   </div> 
+    <div class="ps-sidebar" data-mh="product-listing">
+          <aside class="ps-widget--sidebar ps-widget--category">
+            <div class="ps-widget__header">
+              <h3>마이페이지</h3>
+            </div>
+            <div class="ps-widget__content">
+              <ul class="ps-list--checked">                
+                <li class="current"><a href="myPage.do" class="myPage"><span>내 정보보기</span></a></li>
+                <li><a href="category.do" class="category"><span>구매내역</span></a></li>
+                <li><a href="faqlist.do" class="faqlist"><span>알림</span></a></li>
+                <li><a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a></li>        
+              </ul>
+            </div>
+          </aside>            
+        </div>        
+      </div>
+<jsp:include page="footer.jsp" />   
 </body>
 </html>
