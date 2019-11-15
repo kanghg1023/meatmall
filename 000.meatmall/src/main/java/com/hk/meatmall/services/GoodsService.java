@@ -194,8 +194,8 @@ public class GoodsService implements IGoodsService {
 	
 	//주문 정보
 	@Override
-	public List<OrderDto> orderInfo(int user_num) {
-		return GoodsDao.orderInfo(user_num);
+	public List<OrderDto> orderList(int user_num) {
+		return GoodsDao.orderList(user_num);
 	}
 
 	//쿠폰목록(관리자)
@@ -250,6 +250,22 @@ public class GoodsService implements IGoodsService {
 	@Override
 	public boolean useCoupon(int user_coupon_num) {
 		return GoodsDao.useCoupon(user_coupon_num);
+	}
+
+	//배송상태 변경
+	@Override
+	public boolean stateUpdate(int order_num) {
+		return GoodsDao.stateUpdate(order_num);
+	}
+
+	@Override
+	public List<OrderDto> orderDelivery(int user_num) {
+		return GoodsDao.orderDelivery(user_num);
+	}
+
+	@Override
+	public List<OrderDto> orderSeller(int user_num) {
+		return GoodsDao.orderSeller(user_num);
 	}
 	
 	

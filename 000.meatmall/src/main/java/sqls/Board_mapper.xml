@@ -142,6 +142,7 @@
 			          , BOARD_DELFLAG
 		           FROM BOARD
 		          WHERE BOARD_NOTICE = 1
+		            AND BOARD_DELFLAG = 1
 		       ) B
 		     , USER_INFO U
 		 WHERE B.USER_NUM = U.USER_NUM

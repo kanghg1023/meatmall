@@ -11,7 +11,7 @@
 <jsp:include page="header.jsp" />
 
 <dl>
-	<dt>마이페이지</dt>
+	<dt>관리자페이지</dt>
 	<dd>
 		<a href="myPage.do" class="myPage"><span>상품관리</span></a>
 	</dd>

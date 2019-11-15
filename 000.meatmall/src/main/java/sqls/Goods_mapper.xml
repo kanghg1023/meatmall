@@ -514,8 +514,8 @@
 		 WHERE USER_COUPON_NUM = #{user_coupon_num}
 	</update>
 	
-<!-- 구매내역 -->
-	<select id="orderInfo" parameterType="int" resultType="OrderDto">
+<!-- 구매내역 sel -->
+	<sql id="orderSelect">
 		SELECT R.ORDER_NUM
 			 , R.ORDER_SELLER
 			 , R.GOODS_NUM
@@ -532,10 +532,35 @@
 		  FROM GOODS_ORDER R
 		     , GOODS G
 		     , GOODS_OPTION O
+	</sql>
+	
+<!-- 구매내역 -->
+	<select id="orderList" parameterType="int" resultType="OrderDto">
+		<include refid="orderSelect" />
 		 WHERE R.GOODS_NUM = G.GOODS_NUM
 		   AND R.OPTION_NUM = O.OPTION_NUM
 		   AND R.USER_NUM = #{user_num}
+		 ORDER BY ORDER_NUM DESC
 	</select>
 	
+<!-- 배송상태 변경 -->
+	<update id="stateUpdate" parameterType="int">
+		UPDATE GOODS_ORDER
+		   SET ORDER_STATE = ORDER_STATE+1
+		   WHERE ORDER_NUM = #{order_num}
+	</update>
 	
+	<select id="orderSelList" parameterType="Map" resultType="OrderDto">
+		<include refid="orderSelect" />
+		 WHERE R.GOODS_NUM = G.GOODS_NUM
+		   AND R.OPTION_NUM = O.OPTION_NUM
+		   AND R.ORDER_SELLER = #{user_num}
+		<if test="delivery != null">
+		   AND R.ORDER_STATE = 1
+		</if>
+		<if test="seller != null">
+		   AND R.ORDER_STATE > 1
+		</if>
+		 ORDER BY ORDER_NUM DESC
+	</select>
 </mapper>

@@ -99,7 +99,7 @@ public interface IGoodsDao {
 	public boolean optionSell(int option_num, int option_count);
 	
 	//주문 정보
-	public List<OrderDto> orderInfo(int user_num);
+	public List<OrderDto> orderList(int user_num);
 	
 	//쿠폰목록(관리자)
 	public List<CouponDto> adminCouponList(String pnum);
@@ -127,5 +127,14 @@ public interface IGoodsDao {
 	
 	//쿠폰사용
 	public boolean useCoupon(int user_coupon_num);
+	
+	//배송상태 변경
+	public boolean stateUpdate(int order_num);
+	
+	//배송대기중인 상품 목록
+	public List<OrderDto> orderDelivery(int user_num);
+
+	//배송된 상품
+	public List<OrderDto> orderSeller(int user_num);
 	
 }

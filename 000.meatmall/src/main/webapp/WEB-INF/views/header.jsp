@@ -36,7 +36,7 @@
 						</c:if>
 						 <c:if test="${ldto.user_num != null }">
                   			<div class="header__actions"><a href="myPage.do">마이페이지</a></div>
-                  			<div class="header__actions"><a href="#">쪽지</a></div>
+                  			<div class="header__actions"><a href="messageList.do?pnum=1">쪽지</a></div>
                   	
                   		</c:if>
 					</c:otherwise>

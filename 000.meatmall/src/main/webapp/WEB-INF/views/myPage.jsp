@@ -56,10 +56,11 @@
 	<dd>
 		<a href="orderList.do?user_num=${ldto.user_num}" class="orderList"><span>구매내역</span></a>
 	</dd>
-	<dd>
-<!-- 		수정중 -->
-		<a href="faqlist.do" class="faqlist"><span>알림</span></a>
-	</dd>
+	<c:if test="${ldto.user_role ne 'USER'}">
+		<dd>
+			<a href="selOrderList.do?user_num=${ldto.user_num}" class="selOrderList"><span>판매내역</span></a>
+		</dd>	
+	</c:if>
 	<dd>
 		<a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a>
 	</dd>

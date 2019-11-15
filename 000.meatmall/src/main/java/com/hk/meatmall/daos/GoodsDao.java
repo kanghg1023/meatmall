@@ -258,8 +258,9 @@ public class GoodsDao implements IGoodsDao {
 	
 	//주문 정보
 	@Override
-	public List<OrderDto> orderInfo(int user_num) {
-		return sqlSession.selectList(nameSpace+"orderInfo", user_num);
+	public List<OrderDto> orderList(int user_num) {
+		
+		return sqlSession.selectList(nameSpace+"orderList", user_num);
 	}
 
 	//쿠폰목록(관리자)
@@ -329,6 +330,34 @@ public class GoodsDao implements IGoodsDao {
 		int count = 0;
 		count = sqlSession.update(nameSpace+"useCoupon", user_coupon_num);
 		return count > 0 ? true : false;
+	}
+
+	//배송상태 변경
+	@Override
+	public boolean stateUpdate(int order_num) {
+		int count = 0;
+		count = sqlSession.update(nameSpace+"stateUpdate", order_num);
+		return count > 0 ? true : false;
+	}
+
+	//배송대기중인 상품 목록
+	@Override
+	public List<OrderDto> orderDelivery(int user_num) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("user_num", user_num);
+		map.put("delivery", 1);
+		
+		return sqlSession.selectList(nameSpace+"orderSelList", map);
+	}
+
+	//배송된 상품
+	@Override
+	public List<OrderDto> orderSeller(int user_num) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("user_num", user_num);
+		map.put("seller", 1);
+		
+		return sqlSession.selectList(nameSpace+"orderSelList", map);
 	}
 
 	

@@ -721,15 +721,46 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/orderList.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String orderList(Model model, int user_num) {
+	public String orderList( Model model
+						   , int user_num) {
 		logger.info("구매내역");
-			
-		List<OrderDto> olist = GoodsService.orderInfo(user_num);
+		
+		List<OrderDto> olist = GoodsService.orderList(user_num);
 		
 		model.addAttribute("olist", olist);
 		return "orderList";
 	}
+	
+	@RequestMapping(value = "/selOrderList.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String selOrderList( Model model
+						   	  , int user_num) {
+		logger.info("판매관리");
 		
+			List<OrderDto> dlist = GoodsService.orderDelivery(user_num);
+			List<OrderDto> slist = GoodsService.orderSeller(user_num);
+			model.addAttribute("dlist", dlist);
+			model.addAttribute("slist", slist);
+		
+		return "selOrderList";
+	}
+	
+	@RequestMapping(value = "/stateUpdate.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String stateUpdate( HttpSession session
+							 , Model model
+						     , int order_num) {
+		logger.info("배송상태변경");
+		
+		boolean isUpdate = GoodsService.stateUpdate(order_num);
+		
+		if(isUpdate) {
+			UserDto ldto = (UserDto)session.getAttribute("ldto");
+			return "redirect:orderList.do?user_num="+ldto.getUser_num();
+		}else {
+			model.addAttribute("msg", "상태변경 실패");
+			model.addAttribute("url", "orderList.do");
+			return "error";
+		}
+	}
 	
 	@RequestMapping(value = "/addReview.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String addReview(Model model, int user_num, ReviewDto dto) {

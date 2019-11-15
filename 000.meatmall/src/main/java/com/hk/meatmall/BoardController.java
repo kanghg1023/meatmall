@@ -52,7 +52,6 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		}
 		
 		List<BoardDto> boardList = new ArrayList<>();
-		List<BoardDto> noticeList = new ArrayList<>();
 		
 		Map<String, Integer> pmap = new HashMap<>();
 		boolean isList = true;
@@ -61,12 +60,11 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		while(isList) {
 			if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
 				boardList = boardService.boardListPage(String.valueOf(p));
-				noticeList = boardService.noticeList();
 				int pcount2 = boardService.getPcount2();
 				pmap=Paging.pagingValue(pcount2, pnum, 5);
 			}else {
 				boardList = boardService.getAllList(String.valueOf(p));
-				noticeList = boardService.noticeList();
+				
 				int pcount = boardService.getPcount();
 				pmap=Paging.pagingValue(pcount, pnum, 5);
 			}
@@ -79,9 +77,13 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 			}
 		}
 		
+		if(pnum.equals("1")) {
+			List<BoardDto> noticeList = boardService.noticeList();
+			model.addAttribute("noticeList", noticeList);
+		}
+		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pmap", pmap);
-		model.addAttribute("noticeList", noticeList);	
 		return "boardlist";
 	}
 	
@@ -297,7 +299,6 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	@RequestMapping(value = "/messageList.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String messageList( HttpSession session
 							 , Model model
-							 , int user_num
 							 , String pnum) {
 		logger.info("받은 쪽지함");
 		
@@ -307,12 +308,14 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 			session.setAttribute("pnum", pnum);
 		}
 		
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
+		
 		List<MessageDto> mlist = new ArrayList<>();
 		boolean isList = true;
 		int p = Integer.parseInt(pnum);
 		
 		while(isList) {
-			mlist = boardService.messageList(user_num);
+			mlist = boardService.messageList(ldto.getUser_num());
 			
 			if(p==1 || mlist.size()>0) {
 				isList = false;
@@ -329,7 +332,7 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 			}
 		}
 		
-		int pcount = boardService.msgPcount(user_num);
+		int pcount = boardService.msgPcount(ldto.getUser_num());
 		Map<String, Integer> qmap=Paging.pagingValue(pcount, pnum, 5);
 		
 		model.addAttribute("mlist", mlist);
@@ -340,7 +343,6 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	@RequestMapping(value = "/sendMessageList.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String sendMessageList( HttpSession session
 								 , Model model
-								 , int message_from_num
 								 , String pnum) {
 		logger.info("보낸 쪽지함");
 		
@@ -349,6 +351,9 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		}else {
 			session.setAttribute("pnum", pnum);
 		}
+		
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
+		int message_from_num = ldto.getUser_num();
 		
 		List<MessageDto> sendmlist = new ArrayList<>();
 		boolean isList = true;
@@ -373,38 +378,46 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		}
 		
 		int pcount = boardService.sendMsgPcount(message_from_num);
-		Map<String, Integer> qmap=Paging.pagingValue(pcount, pnum, 5);
+		Map<String, Integer> pmap=Paging.pagingValue(pcount, pnum, 5);
 		
 		model.addAttribute("sendmlist", sendmlist);
-		model.addAttribute("qmap", qmap);
+		model.addAttribute("pmap", pmap);
 		return "sendMessageList";
 	}
 	
 	@RequestMapping(value = "/messageForm.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String messageForm(Model model) {
+	public String messageForm( Model model
+							 , int user_num
+							 , String user_nick) {
 		logger.info("쪽지 폼");
 		
+		model.addAttribute("user_num",user_num);
+		model.addAttribute("user_nick",user_nick);
 		return "messageForm";
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/insertMessage.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String insertMessage(Model model, MessageDto dto) {
+	public boolean insertMessage(Model model, MessageDto dto) {
 		logger.info("쪽지 보내기");
 		
 		boolean isInsert = boardService.insertMessage(dto);
 		
-		if(isInsert) {
-			return "redirect:sendMessageList.do";
-		}else {
-			model.addAttribute("msg", "쪽지 보내기 실패");
-			model.addAttribute("url", "sendMessageList.do");
-			return "error";
-		}
+		return isInsert;
 	}
 	
-	//
-	@RequestMapping(value = "/reviewDetail.do")
-	public String reviewDetail( HttpServletRequest request
+	@RequestMapping(value = "/messageDetail.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String messageDetail(Model model, int message_num) {
+		logger.info("쪽지 상세보기");
+		
+//		boolean isInsert = boardService.messageDetail(message_num);
+		
+		return "a";
+	}
+	
+	//쿠키로 페이징 - 참고자료 (아직 안씀)
+	@RequestMapping(value = "/pasing.do")
+	public String pasing( HttpServletRequest request
 							  , HttpServletResponse response
 							  , HttpSession session
 							  , int board_num) {

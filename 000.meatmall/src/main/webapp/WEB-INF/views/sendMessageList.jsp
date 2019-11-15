@@ -35,9 +35,9 @@
 			<th>날짜</th>
 		</tr>
 		<c:choose>
-			<c:when test="${empty mlist}">
+			<c:when test="${empty sendmlist}">
 				<tr>
-					<td colspan="4" id="noList">----작성된 글이 없습니다.----</td>
+					<td colspan="4" id="noList">----쪽지가 없습니다.----</td>
 				</tr>
 			</c:when>
 			<c:otherwise>
@@ -47,10 +47,10 @@
 							<input type="checkbox" name="chk" value="${dto.message_num}" />
 						</td>
 						<td align="left">
-							${dto.user_num}
+							${dto.user_nick}
 						</td>
 						<td>
-							<a href="BoardController.do?command=boarddetail&seq=${dto.message_from_num}">${dto.message_from_num}</a>
+							<a href="messageDetail.do?message_num=${dto.message_num}">${dto.message_content}</a>
 						</td>
 						<td>
 							<fmt:formatDate value="${dto.message_regdate}" pattern="yy-MM-dd [hh:mm]" />
@@ -60,7 +60,7 @@
 				<tr>
 					<td colspan="6" style="text-align: center;">
 						<c:if test="${pnum != 1}">
-							<a href="boardlist.do?pnum=${pmap.prePageNum}${statusPage==null?'':statusPage}">◀</a>				
+							<a href="sendMessageList.do?pnum=${pmap.prePageNum}">◀</a>				
 						</c:if>
 						<c:forEach var="i" begin="${pmap.startPage}" end="${pmap.endPage}" step="1" >																			
 							<c:choose>
@@ -68,15 +68,15 @@
 									${i}
 								</c:when>
 								<c:otherwise>
-									<a href="boardlist.do?pnum=${i}${statusPage==null?'':statusPage}" style="text-decoration: none">${i}</a>
+									<a href="sendMessageList.do?pnum=${i}" style="text-decoration: none">${i}</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:if test="${pnum < pmap.pcount}">																		
-						<a href="boardlist.do?pnum=${pmap.nextPageNum}${statusPage==null?'':statusPage}">▶</a>
+						<a href="sendMessageList.do?pnum=${pmap.nextPageNum}">▶</a>
 						</c:if>
 					</td>
-				</tr>		
+				</tr>
 			</c:otherwise>
 		</c:choose>
 	</table>
