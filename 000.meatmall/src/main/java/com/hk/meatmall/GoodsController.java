@@ -762,15 +762,42 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}
 	}
 	
+	@RequestMapping(value = "/reviewForm.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String reviewForm(Model model, int order_num) {
+		logger.info("리뷰 폼으로");
+		
+		OrderDto odto = GoodsService.getOrder(order_num);
+		
+		model.addAttribute("odto",odto);
+		return "insertReview";
+	}
+	
 	@RequestMapping(value = "/addReview.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String addReview(Model model, int user_num, ReviewDto dto) {
-		logger.info("리뷰 작성");
+	public String addReview( Model model
+						   , ReviewDto dto
+						   , int order_num
+						   , HttpSession session) {
+		logger.info("리뷰 등록");
 		
+		boolean isInsert = GoodsService.addReview(dto);
+		boolean isUpdate = GoodsService.stateUpdate(order_num);
 		
+		if(isInsert && isUpdate) {
+			
+			UserDto ldto = (UserDto)session.getAttribute("ldto");
+			return "redirect:orderList.do?user_num="+ldto.getUser_num();
+		}else {
+			model.addAttribute("msg", "상태변경 실패");
+			model.addAttribute("url", "orderList.do");
+			return "error";
+		}
 //		랜덤으로 배분
 //		CouponDto dto = GoodsService.couponDetail(coupon_num);
 //		GoodsService.insertUserCoupon(user_num, dto);
-		return "insertCouponForm";
 	}
 	
+	
+	
 }
+		
+

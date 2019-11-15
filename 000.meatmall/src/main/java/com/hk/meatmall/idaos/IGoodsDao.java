@@ -86,9 +86,6 @@ public interface IGoodsDao {
 	//장바구니 상품 삭제
 	public boolean delBasket(int[] chk);
 	
-	//후기 목록
-	public List<ReviewDto> reviewList(int goods_num);
-	
 	//유저 정보
 	public UserDto userInfo(int user_num);
 	
@@ -136,5 +133,14 @@ public interface IGoodsDao {
 
 	//배송된 상품
 	public List<OrderDto> orderSeller(int user_num);
+	
+	//후기 목록
+	public List<ReviewDto> reviewList(int goods_num);
+	
+	//주문 상세(리뷰용)
+	public OrderDto getOrder(int order_num);
+	
+	//리뷰 등록
+	public boolean addReview(ReviewDto dto);
 	
 }

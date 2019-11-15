@@ -550,6 +550,7 @@
 		   WHERE ORDER_NUM = #{order_num}
 	</update>
 	
+<!-- 판매상품 -->
 	<select id="orderSelList" parameterType="Map" resultType="OrderDto">
 		<include refid="orderSelect" />
 		 WHERE R.GOODS_NUM = G.GOODS_NUM
@@ -563,4 +564,34 @@
 		</if>
 		 ORDER BY ORDER_NUM DESC
 	</select>
+	
+	<select id="getOrder" parameterType="int" resultType="OrderDto">
+		SELECT O.ORDER_NUM
+			 , O.GOODS_NUM
+			 , O.ORDER_SELLER
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_TITLE
+			 , OP.OPTION_NAME
+		  FROM GOODS_ORDER O
+		 	 , GOODS G
+		 	 , GOODS_OPTION OP
+		 WHERE O.GOODS_NUM = G.GOODS_NUM
+		   AND O.OPTION_NUM = OP.OPTION_NUM
+		   AND ORDER_NUM = #{order_num}
+	</select>
+	
+	<insert id="addReview" parameterType="ReviewDto">
+		INSERT INTO REVIEW
+		VALUES (
+				 REVIEW_SEQ.NEXTVAL
+			   , #{order_num}
+			   , #{goods_num}
+			   , #{user_num}
+			   , #{user_id}
+			   , #{review_content}
+			   , #{review_score}
+			   , SYSDATE
+			   )
+	</insert>
+	
 </mapper>

@@ -360,6 +360,20 @@ public class GoodsDao implements IGoodsDao {
 		return sqlSession.selectList(nameSpace+"orderSelList", map);
 	}
 
+	//주문 상세(리뷰용)
+	@Override
+	public OrderDto getOrder(int order_num) {
+		return sqlSession.selectOne(nameSpace+"getOrder", order_num);
+	}
+	
+	//리뷰 등록
+	@Override
+	public boolean addReview(ReviewDto dto) {
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"addReview", dto);
+		return count > 0 ? true : false;
+	}
+
 	
 
 }

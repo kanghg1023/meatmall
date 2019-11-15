@@ -137,4 +137,10 @@ public interface IGoodsService {
 	//배송된 상품
 	public List<OrderDto> orderSeller(int user_num);
 	
+	//주문 상세(리뷰용)
+	public OrderDto getOrder(int order_num);
+	
+	//리뷰 등록
+	public boolean addReview(ReviewDto dto);
+	
 }

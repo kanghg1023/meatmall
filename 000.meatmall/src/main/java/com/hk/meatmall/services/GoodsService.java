@@ -267,6 +267,17 @@ public class GoodsService implements IGoodsService {
 	public List<OrderDto> orderSeller(int user_num) {
 		return GoodsDao.orderSeller(user_num);
 	}
+
+	@Override
+	public OrderDto getOrder(int order_num) {
+		return GoodsDao.getOrder(order_num);
+	}
+
+	//리뷰 등록
+	@Override
+	public boolean addReview(ReviewDto dto) {
+		return GoodsDao.addReview(dto);
+	}
 	
 	
 }

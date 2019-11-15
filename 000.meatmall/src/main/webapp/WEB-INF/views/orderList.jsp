@@ -16,6 +16,12 @@
 			var order_num = $(this).next().val();
 			location.href="stateUpdate.do?order_num="+order_num;
 		});
+		
+		$(".reviewForm").click(function(){
+			var order_num = $(this).next().val();
+			location.href="reviewForm.do?order_num="+order_num;
+		});
+		
 	});
 	
 </script>
@@ -56,7 +62,10 @@
 							</td>
 						</c:when>
 						<c:when test="${dto.order_state == 3}">
-							<td>배송완료<input type="button" value="후기작성" /></td>
+							<td>배송완료
+								<input type="button" class="reviewForm" value="후기작성" />
+								<input type="hidden" value="${dto.order_num}" />
+							</td>
 						</c:when>
 						<c:otherwise>
 							<td>완료(후기O)</td>
