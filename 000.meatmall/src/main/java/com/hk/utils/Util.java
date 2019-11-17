@@ -11,7 +11,6 @@ import java.util.UUID;
 import org.apache.commons.mail.HtmlEmail;
 
 import com.hk.meatmall.dtos.BasketDto;
-import com.hk.meatmall.dtos.MessageDto;
 
 public class Util {
 	

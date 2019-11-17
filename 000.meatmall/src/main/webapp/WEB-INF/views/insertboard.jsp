@@ -19,20 +19,14 @@ $(function(){
 		var bool = true;
 		var input = $(this).find("td").children().filter("[name]");
 		input.each(function(i){
-			if($(this).prop("tagName")=="TEXTAREA"){
-				if(CKEDITOR.instances.ckeditor.getData()==""){
-					alert("내용을 입력하세요");
-					bool = false;
-					return false;
-				}
-			}else{
-				if($(this).val()==""){
-					alert($(this).parent().prev().text()+"를 입력하세요");
-					$(this).focus();
-					bool = false;
-					return false;
-				}
-				
+			if($("#board_title").val() == ""){
+				alert("제목을 입력하세요.");
+				bool = false;
+				return false;
+			}else if($("#board_content").val() == ""){
+				alert("내용을 입력하세요");
+				bool = false;
+				return false;
 			}
 		});
 		return bool;
@@ -95,13 +89,9 @@ $(function(){
 <input type="hidden" name="user_num" value="${ldto.user_num}">
 
 <table class="list-table">
-<!-- 	<tr> -->
-<!-- 		<th>아이디</th> -->
-<%-- 		<td>${ldto.user_num}</td> --%>
-<!-- 	</tr> -->
 	<tr>
 		<th>제목</th>
-		<td><input type="text" name="board_title" autocomplete="off" placeholder="제목을 작성하세요" class="inputval"/></td>
+		<td><input type="text" name="board_title" id="board_title" autocomplete="off" placeholder="제목을 작성하세요" class="inputval"/></td>
 	</tr>
 	<tr>
 		<th>내용</th>

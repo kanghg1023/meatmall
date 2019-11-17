@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.ILoginService;
@@ -32,19 +31,6 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 
 	@Autowired
 	private ILoginService loginService;
-	
-	@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String main(Model model) {
-		logger.info("메인");
-		//메인페이지 출력에 필요한 것들 추가요망
-		
-		List<GoodsDto> doList = loginService.getMainList("DO");
-		List<GoodsDto> soList = loginService.getMainList("SO");
-		
-		model.addAttribute("doList",doList);
-		model.addAttribute("soList",soList);
-		return "main";
-	}
 	
 	@RequestMapping(value = "/loginPage.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String loginPage() {

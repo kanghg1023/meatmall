@@ -112,15 +112,6 @@
 		<td><input type="text" name="user_num" value="${ldto.user_num}" /></td>
 	</tr>
 	<tr>
-		<th>도소매구분</th>
-		<td>
-			<select name="goods_doso">
-				<option value="DO">도매</option>
-				<option value="SO">소매</option>
-			</select>
-		</td>
-	</tr>
-	<tr>
 		<th>대표이미지</th>
 		<td>
 			<div class="inputArea">

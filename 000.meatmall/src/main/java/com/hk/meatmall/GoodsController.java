@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hk.meatmall.dtos.BasketDto;
+import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.CouponDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
@@ -31,6 +32,7 @@ import com.hk.meatmall.dtos.OrderDto;
 import com.hk.meatmall.dtos.ReviewDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.dtos.User_couponDto;
+import com.hk.meatmall.iservices.IBoardService;
 import com.hk.meatmall.iservices.IGoodsService;
 import com.hk.utils.Paging;
 import com.hk.utils.UploadFileUtils_D;
@@ -46,6 +48,39 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 
 	@Autowired
 	private IGoodsService GoodsService;
+	
+	@Autowired
+	private IBoardService boardService;
+	
+	@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String main( HttpSession session
+					  , Model model) {
+		logger.info("메인");
+		
+		
+		if(session.getAttribute("category") == null) {
+			List<Goods_kindDto> category = GoodsService.category();
+			session.setAttribute("category", category);
+		}
+		
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
+		
+		if(session.getAttribute("basketCount") == null && ldto != null) {
+			int basketCount = GoodsService.basketCount(ldto.getUser_num());
+			session.setAttribute("basketCount", basketCount);
+		}
+		
+		//공지
+		if(session.getAttribute("noticeList") == null) {
+			List<BoardDto> noticeList = boardService.noticeList();
+			session.setAttribute("noticeList", noticeList);
+		}
+		
+		List<GoodsDto> mainList = GoodsService.getMainList();
+		
+		model.addAttribute("mainList",mainList);
+		return "main";
+	}
 	
 	@RequestMapping(value = "/allGoods.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String allGoods( HttpSession session
@@ -77,7 +112,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 				map=Paging.pagingValue(pcount, pnum, 5);
 			}else {
 				gList = GoodsService.allGoods(String.valueOf(p));
-				System.out.println(gList.get(0));
 				pcount = GoodsService.getAllPcount();
 				map=Paging.pagingValue(pcount, pnum, 5);
 			}
@@ -106,9 +140,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	public String category(Model model) {
 		logger.info("부위별 카테고리");
 		
-		List<Goods_kindDto> cList = GoodsService.category();
 		
-		model.addAttribute("cList", cList);
 		return "category";
 	}
 	
@@ -153,7 +185,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/insertGoodsForm.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String insertForm(Model model) {
-		logger.info("추가 폼으로");
+		logger.info("상품추가 폼으로");
 		
 		List<Goods_kindDto> kList = GoodsService.kind_num();
 		
@@ -170,13 +202,13 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 								, MultipartFile title_file
 								, MultipartHttpServletRequest mtfRequest
 								) throws IOException, Exception {
-		logger.info("전체상품에서 추가");
+		logger.info("상품 추가");
 		
 		//대표이미지
 		String imgUploadPath_T = uploadPath + File.separator + "imgUpload";
 		String ymdPath_T = UploadFileUtils_T.calcPath(imgUploadPath_T);
 		String fileName_T = null;
-
+		
 		if(title_file != null) {
 			fileName_T = UploadFileUtils_T.fileUpload_T(imgUploadPath_T, title_file.getOriginalFilename(), title_file.getBytes(), ymdPath_T);
 		}else {
@@ -313,7 +345,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/goodsDetail.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String goodsDetail(Model model, int goods_num) {
-		logger.info("전체상품에서 상세");
+		logger.info("상세");
 		
 		GoodsDto gDto = GoodsService.getGoods(goods_num);
 		List<Goods_optionDto> oList = GoodsService.getGoods_option(goods_num);
@@ -511,22 +543,25 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/basketList.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String basketList(Model model, int user_num, GoodsDto gDto, Goods_optionDto oDto) {
+	public String basketList(Model model, int user_num) {
 		logger.info("장바구니 목록");
+		
+		if(user_num == 0) {
+			return "redirect:loginPage.do";
+		}
 		
 		List<BasketDto> basketList = new ArrayList<>();
 		
 		basketList = GoodsService.basketList(user_num);
 
 		model.addAttribute("basketList", basketList);
-		model.addAttribute("gDto", gDto);
-		model.addAttribute("oDto", oDto);
 		return "basketList";
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/insertBasket.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public boolean insertBasket( Model model
+	public String insertBasket( HttpSession session
+							  , Model model
 							  , int user_num
 							  , int goods_num
 							  , @RequestParam(value="option_num[]")List<Integer> option_num
@@ -548,7 +583,10 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			}
 		}
 		
-		return isInsert;
+		int basketCount = GoodsService.basketCount(user_num);
+		session.setAttribute("basketCount", basketCount);
+		
+		return isInsert+","+basketCount;
 	}
 	
 	@RequestMapping(value = "/delBasket.do", method = {RequestMethod.POST, RequestMethod.GET})

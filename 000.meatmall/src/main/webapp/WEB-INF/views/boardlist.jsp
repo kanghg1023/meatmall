@@ -106,17 +106,17 @@ body {
 			</tr>
 		</c:when>
 		<c:otherwise>
-			<c:forEach items="${noticeList}" var="dto">
-				<c:if test="${dto.board_notice == 1}">
-				<tr class="notice">									
-					<td>공지</td>
-					<td>${dto.user_num}</td>
-					<td><a href="boarddetail.do?board_num=${dto.board_num}">${dto.board_title}</a></td>					
-					<td><fmt:formatDate value="${dto.board_regdate}" pattern="yyyy년MM월dd일"/> </td>					
-					<td>${dto.board_readcount}</td>
-				</tr>
-				</c:if>
-			</c:forEach>
+			<c:if test="${pnum == 1}">
+				<c:forEach items="${noticeList}" var="dto">
+					<tr class="notice">									
+						<td>공지</td>
+						<td>${dto.user_nick}</td>
+						<td><a href="boarddetail.do?board_num=${dto.board_num}">${dto.board_title}</a></td>					
+						<td><fmt:formatDate value="${dto.board_regdate}" pattern="yyyy년MM월dd일"/> </td>					
+						<td>${dto.board_readcount}</td>
+					</tr>
+				</c:forEach>
+			</c:if>
 			<c:forEach items="${boardList}" var="dto">
 				<tr class="list">					
 					<td>${dto.board_num}</td>

@@ -173,10 +173,6 @@ public class LoginDao implements ILoginDao {
 		return count;
 	}
 
-	@Override
-	public List<GoodsDto> getMainList(String goods_doso) {
-		List<GoodsDto> list = sqlSession.selectList(nameSpace+"getMainList",goods_doso);
-		return list;
-	}
+	
 	
 }

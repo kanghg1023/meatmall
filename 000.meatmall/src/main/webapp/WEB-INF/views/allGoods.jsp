@@ -23,41 +23,10 @@
     font-weight: bold;
 }
 </style>
-<script type="text/javascript"
-   src="http://code.jquery.com/jquery-latest.js"></script>
-<script type="text/javascript">
-$(function() {
-   $("form").submit(function() {
-      var bool = true;
-      var count = $(this).find("input[name=chk]:checked").length; //체크된 input태그의 개수
-      if (count == 0) {
-         alert("하나이상 선택하시오");
-         bool = false;
-      }else{
-         var isDel = confirm(count+" 개 카테고리를 정말 삭제하시겠습니까?");
-         if(!(isDel)){
-            bool = false;
-         }
-      }
-      return bool;
-   });
-});   
-</script>
 </head>
 <body>
 <jsp:include page="header.jsp" />
 <main class="ps-main">
-      <c:choose>
-      <c:when test="${kind_num eq null}">
-         <h1>전체에서</h1>
-         <input type="hidden" name="pnum" value="${pnum}">
-      </c:when>
-      <c:otherwise>
-         <h1>카테고리에서</h1>
-         <input type="hidden" name="kind_num" value="${kind_num}">
-         <input type="hidden" name="pnum" value="${pnum}">
-      </c:otherwise>
-   </c:choose>
       <div class="ps-products-wrap pt-80 pb-80">
         <div class="ps-products" data-mh="product-listing">
           <c:choose>
@@ -70,7 +39,7 @@ $(function() {
             <c:forEach items="${gList}" var="dto">
             <div class="ps-product__column">
               <div class="ps-shoe mb-30">
-                <div class="ps-shoe__thumbnail">                  
+                <div class="ps-shoe__thumbnail">
                   <c:choose>
                         <c:when test="${dto.goods_delflag eq 0}"><img src="" alt="삭제된 이미지"></c:when>
                         <c:otherwise>
@@ -78,10 +47,10 @@ $(function() {
                         </c:otherwise>
                   </c:choose>
                 </div>
-                <div class="ps-shoe__content">                 
+                <div class="ps-shoe__content">
                   <div class="ps-shoe__detail"><a class="ps-shoe__name" href="#">등심이</a>
                     <p class="ps-shoe__categories">500만원</p>
-                    <p>1kg단위</p>                     
+                    <p>1kg단위</p>
                   </div>
                 </div>
               </div>
@@ -93,12 +62,25 @@ $(function() {
           <div class="ps-product-action">
             <div class="ps-pagination">
               <ul class="pagination">
-                <li><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">...</a></li>
-                <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+              	<c:if test="${pnum != 1}">
+					<li><a href="allGoods.do?pnum=${pmap.prePageNum}${statusPage==null?'':statusPage}"><i class="fa fa-angle-left"></i></a></li>				
+				</c:if>
+				<c:forEach var="i" begin="${pmap.startPage}" end="${pmap.endPage}" step="1" >																			
+					<c:choose>
+						<c:when test="${i == 0}">
+							<li class="active"><a href="#">1</a></li>
+						</c:when>
+						<c:when test="${pnum eq i}">
+							<li class="active"><a href="#">${i}</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="allGoods.do?pnum=${i}${statusPage==null?'':statusPage}">${i}</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				<c:if test="${pnum < pmap.pcount}">
+					 <li><a href="allGoods.do?pnum=${pmap.nextPageNum}${statusPage==null?'':statusPage}"><i class="fa fa-angle-right"></i></a></li>
+				</c:if>
               </ul>
             </div>
           </div>
@@ -140,20 +122,19 @@ $(function() {
                  </c:choose>
                  </c:forEach>
               </ul>
+              <c:if test="${ldto.user_role eq 'ADMIN'}">
+	            <input type="button" value="상품 등록" 
+	            	onclick="location.href='insertGoodsForm.do'" class="catebtn" />
+	         </c:if>
             </div>
           </aside>
          <aside class="ps-widget--sidebar ps-widget--filter">    
-         <div>       
-         <c:if test="${ldto.user_role eq 'ADMIN'}">
-            <input type="button" value="카테고리 추가" 
-            onclick="window.open('insertCategoryForm.do','insertCategory','width=450px,height=30px,location=no,status=no,scrollbars=no')" class="catebtn" />
-            <input type="submit" value="카테고리 삭제" class="catebtn" />
-         </c:if>
+         <div>
             </div>
-          </aside>     
-        </div>        
-      </div>      
+          </aside>
+        </div>
+      </div>
     </main>
-<jsp:include page="footer.jsp" />    
+<jsp:include page="footer.jsp" />
 </body>
 </html>

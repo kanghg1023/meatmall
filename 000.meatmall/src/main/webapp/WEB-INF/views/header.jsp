@@ -81,12 +81,16 @@
                    <li class="menu-item"><a href="allGoods.do?pnum=1">전체상품보기</a></li>
                   <li class="menu-item menu-item-has-children dropdown"><a href="#">괴기한우(도매)</a>
                      <ul class="sub-menu">
-                        <li class="menu-item"><a href="category.do">부위별 상품</a></li>                     	
+                     	<c:forEach items="${category}" var="dto">
+                       	 <li class="menu-item"><a href="category.do">${dto.kind_name}</a></li>
+                     	</c:forEach>
                      </ul>
-                  </li>                  
+                  </li>
                   <li class="menu-item menu-item-has-children dropdown"><a href="#">괴기한우(소매)</a>
                  	 <ul class="sub-menu">
-                     	<li class="menu-item"><a href="category.do">부위별 상품</a></li>                     	                      
+                     	<c:forEach items="${category}" var="dto">
+                       	 <li class="menu-item"><a href="category.do">${dto.kind_name}</a></li>
+                     	</c:forEach>
                     </ul>
                   </li>                  
                   <li class="menu-item menu-item-has-children dropdown"><a href="boardlist.do?pnum=1">커뮤니티</a></li>
@@ -104,7 +108,7 @@
               <input class="form-control" type="text" placeholder="검색…">
               <button><i class="ps-icon-search"></i></button>
             </form>
-            <div class="ps-cart"><a class="ps-cart__toggle" href="basketList.do?user_num=${ldto.user_num}"><span><i>6</i></span><i class="ps-icon-shopping-cart"></i></a>
+            <div class="ps-cart"><a class="ps-cart__toggle" href="basketList.do?user_num=${ldto != null ? ldto.user_num : '0'}"><span><i id="basketCount">${basketCount != null ? basketCount : '0'}</i></span><i class="ps-icon-shopping-cart"></i></a>
               <div class="ps-cart__listing">                                              
             </div>
             <div class="menu-toggle"><span></span></div>
@@ -114,12 +118,19 @@
     </header>
 <div class="header-services">
       <div class="ps-services owl-slider" data-owl-auto="true" data-owl-loop="true" data-owl-speed="7000" data-owl-gap="0" data-owl-nav="true" data-owl-dots="false" data-owl-item="1" data-owl-item-xs="1" data-owl-item-sm="1" data-owl-item-md="1" data-owl-item-lg="1" data-owl-duration="1000" data-owl-mousedrag="on">
-        <p class="ps-service"><i class="ps-icon-delivery"></i><strong>Free delivery</strong>: Get free standard delivery on every order with Sky Store1</p>
-        <p class="ps-service"><i class="ps-icon-delivery"></i><strong>Free delivery</strong>: Get free standard delivery on every order with Sky Store2</p>
-        <p class="ps-service"><i class="ps-icon-delivery"></i><strong>Free delivery</strong>: Get free standard delivery on every order with Sky Store3</p>
-        <p class="ps-service"><i class="ps-icon-delivery"></i><strong>Free delivery</strong>: Get free standard delivery on every order with Sky Store4</p>
+        <c:choose>
+        	<c:when test="${empty noticeList}">
+        		<p class="ps-service"><i class="ps-icon-delivery"></i><strong>공지가 없습니다.</strong></p>
+        		<p class="ps-service"><i class="ps-icon-delivery"></i><strong>공지가 없습니다.</strong></p>
+        	</c:when>
+        	<c:otherwise>
+	        	<c:forEach items="${noticeList}" var="dto">
+			        <p class="ps-service"><i class="ps-icon-delivery"></i><strong>[공지]</strong> ${dto.board_title}</p>
+		      	</c:forEach>
+        	</c:otherwise>
+        </c:choose>
       </div>
-</div>   
+</div>
 
 
 
