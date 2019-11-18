@@ -18,8 +18,8 @@ public class SearchService implements ISearchService {
 	private ISearchDao searchDao;
 	
 	@Override
-	public List<GoodsDto> goodsSearch(String search_word, String goods_doso) {
-		return searchDao.goodsSearch(search_word,goods_doso);
+	public List<GoodsDto> goodsSearch(String search_word) {
+		return searchDao.goodsSearch(search_word);
 	}
 
 	@Override

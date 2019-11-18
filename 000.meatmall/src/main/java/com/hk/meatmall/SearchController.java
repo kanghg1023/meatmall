@@ -27,10 +27,9 @@ public class SearchController {
 	@RequestMapping(value = "/search.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String search(Model model, String search_word) {
 		logger.info("전체 검색");
-		
+		System.out.println("search_word = "+search_word);
 		List<Goods_kindDto> caList = SearchService.CategorySearch(search_word);
-		List<GoodsDto> doList = SearchService.goodsSearch(search_word,"DO");
-		List<GoodsDto> soList = SearchService.goodsSearch(search_word,"SO");
+		List<GoodsDto> goodsList = SearchService.goodsSearch(search_word);
 		List<BoardDto> bList = SearchService.boardSearch(search_word);
 		
 		if(bList == null) {
@@ -48,8 +47,7 @@ public class SearchController {
 		
 		model.addAttribute("search_word",search_word);
 		model.addAttribute("caList",caList);
-		model.addAttribute("doList",doList);
-		model.addAttribute("soList",soList);
+		model.addAttribute("goodsList",goodsList);
 		model.addAttribute("bList",bList);
 		return "searchResult";
 	}

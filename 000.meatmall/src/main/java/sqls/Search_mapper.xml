@@ -5,7 +5,7 @@
 
 <mapper namespace="com.search">
 
-	<select id="goodsSearch" parameterType="Map" resultType="GoodsDto">
+	<select id="goodsSearch" parameterType="String" resultType="GoodsDto">
 		SELECT G.GOODS_NUM
 			 , G.GOODS_TITLE
 			 , G.GOODS_IMG_TITLE
@@ -21,7 +21,6 @@
 					  , USER_NUM
 				   FROM GOODS
 				  WHERE GOODS_TITLE LIKE '%'||#{search_word}||'%'
-				    AND GOODS_DOSO = #{goods_doso}
 			   ) G
 			 , USER_INFO U
 		 WHERE G.USER_NUM = U.USER_NUM

@@ -9,7 +9,7 @@ import com.hk.meatmall.dtos.Goods_kindDto;
 public interface ISearchDao {
 
 	public List<Goods_kindDto> CategorySearch(String search_word);
-	public List<GoodsDto> goodsSearch(String search_word, String goods_doso);
+	public List<GoodsDto> goodsSearch(String search_word);
 	public List<BoardDto> boardSearch(String search_word);
 	
 }
