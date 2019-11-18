@@ -13,6 +13,11 @@
 		<beans:constructor-arg
 			value="C:\Users\HKEDU\git\meatmall\000.meatmall\src\main\webapp\resources\" />
 	</beans:bean>
+<!-- 	한결집 -->
+<!-- 	<beans:bean class="java.lang.String" id="uploadPath"> -->
+<!-- 		<beans:constructor-arg -->
+<!-- 			value="C:\Users\10H\git\meatmall\000.meatmall\src\main\webapp\resources\" /> -->
+<!-- 	</beans:bean> -->
 
 	<!-- 일반 파일 업로드 경로 -->
 	<resources mapping="/imgUpload/**"

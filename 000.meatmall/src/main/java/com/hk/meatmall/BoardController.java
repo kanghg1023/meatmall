@@ -83,8 +83,14 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	}
 	
 	@RequestMapping(value = "/insertForm.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String insertForm() {
+	public String insertForm(HttpSession session) {
 		logger.info("글추가폼이동");
+		
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
+        
+        if(ldto == null) {
+           return "redirect:loginPage.do";
+        }
 		
 		return "insertboard";
 	}
