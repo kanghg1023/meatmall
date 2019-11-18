@@ -105,7 +105,7 @@
           </div>
           <div class="navigation__column right">
             <form class="ps-search--header" action="search.do" method="post">
-              <input class="form-control" type="text" placeholder="검색…">
+              <input class="form-control" type="text" name="search_word" placeholder="검색…">
               <button><i class="ps-icon-search"></i></button>
             </form>
             <div class="ps-cart"><a class="ps-cart__toggle" href="basketList.do?user_num=${ldto != null ? ldto.user_num : '0'}"><span><i id="basketCount">${basketCount != null ? basketCount : '0'}</i></span><i class="ps-icon-shopping-cart"></i></a>

@@ -31,36 +31,16 @@
 	</c:choose>
 </table>
 
-<h4>상품 도매</h4>
+<h4>상품</h4>
 <table border="1">
 	<c:choose>
-		<c:when test="${empty doList}">
+		<c:when test="${empty goodsList}">
 			<tr>
 				<td>결과가 없습니다.</td>
 			</tr>
 		</c:when>
 		<c:otherwise>
-			<c:forEach items="${doList}" var="dto">
-				<tr>
-					<td><img src="${dto.goods_img_title}"  style="width:250px; height:230px;" ></td>
-					<td><a href="goodsDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}">${dto.goods_title}</a></td>
-					<td>${dto.goods_cost}</td>
-				</tr>
-			</c:forEach>
-		</c:otherwise>
-	</c:choose>
-</table>
-
-<h4>상품 소매</h4>
-<table border="1">
-	<c:choose>
-		<c:when test="${empty soList}">
-			<tr>
-				<td>결과가 없습니다.</td>
-			</tr>
-		</c:when>
-		<c:otherwise>
-			<c:forEach items="${soList}" var="dto">
+			<c:forEach items="${goodsList}" var="dto">
 				<tr>
 					<td><img src="${dto.goods_img_title}"  style="width:250px; height:230px;" ></td>
 					<td><a href="goodsDetail.do?goods_num=${dto.goods_num}&pnum=${pnum}">${dto.goods_title}</a></td>

@@ -22,12 +22,9 @@ public class SearchDao implements ISearchDao {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public List<GoodsDto> goodsSearch(String search_word, String goods_doso) {
-		Map<String, String> map = new HashMap<>();
-		map.put("search_word", search_word);
-		map.put("goods_doso", goods_doso);
+	public List<GoodsDto> goodsSearch(String search_word) {
 		
-		return sqlSession.selectList(nameSpace+"goodsSearch", map);
+		return sqlSession.selectList(nameSpace+"goodsSearch", search_word);
 	}
 
 	@Override
