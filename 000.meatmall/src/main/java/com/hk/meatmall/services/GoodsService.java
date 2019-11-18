@@ -23,6 +23,12 @@ public class GoodsService implements IGoodsService {
 	@Autowired
 	private IGoodsDao GoodsDao;
 	
+	//메인 상품리스트
+	@Override
+	public List<GoodsDto> getMainList() {
+		return GoodsDao.getMainList();
+	}
+	
 	//전체 상품 + 페이징
 	@Override
 	public List<GoodsDto> allGoods(String pnum) {
@@ -267,6 +273,21 @@ public class GoodsService implements IGoodsService {
 	public List<OrderDto> orderSeller(int user_num) {
 		return GoodsDao.orderSeller(user_num);
 	}
-	
+
+	@Override
+	public OrderDto getOrder(int order_num) {
+		return GoodsDao.getOrder(order_num);
+	}
+
+	//리뷰 등록
+	@Override
+	public boolean addReview(ReviewDto dto) {
+		return GoodsDao.addReview(dto);
+	}
+
+	@Override
+	public int basketCount(int user_num) {
+		return GoodsDao.basketCount(user_num);
+	}
 	
 }

@@ -77,11 +77,6 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 			}
 		}
 		
-		if(pnum.equals("1")) {
-			List<BoardDto> noticeList = boardService.noticeList();
-			model.addAttribute("noticeList", noticeList);
-		}
-		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pmap", pmap);
 		return "boardlist";
@@ -99,12 +94,13 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 							 , Model model
 							 , BoardDto dto) {
 		logger.info("글추가하기");
-						
-		if(dto.getBoard_notice() == null) {
-			dto.setBoard_notice("0");
-		}
 		
 		boolean isInsert = boardService.insertBoard(dto);
+		
+		if(dto.getBoard_notice() == 1) {
+			List<BoardDto> noticeList = boardService.noticeList();
+			session.setAttribute("noticeList", noticeList);
+		}
 		
 		if(isInsert) {
 			return "redirect:boardlist.do";
@@ -471,6 +467,14 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 			// 에러 페이지 설정
 			return "error";
 		}
+	}
+	
+	//한우레시피
+	@RequestMapping(value = "/recipe.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String recipe() {
+		logger.info("한우레시피");
+		
+		return "recipe";
 	}
 
 }

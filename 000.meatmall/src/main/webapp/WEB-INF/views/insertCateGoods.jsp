@@ -94,9 +94,9 @@
 </script>
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
+
 	<jsp:include page="header.jsp" />
-</div>
+
 <h1>상품 추가</h1>
 <form action="insertCateGoods.do" method="post" enctype="multipart/form-data">
 <table border="1" class="table">
@@ -178,5 +178,6 @@
 	</tr>
 </table>
 </form>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

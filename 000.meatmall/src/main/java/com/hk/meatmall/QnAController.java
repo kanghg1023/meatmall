@@ -282,8 +282,10 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 	 
 	        // 이미지를 업로드할 디렉토리(배포 디렉토리로 설정)
 //		        String uploadPath ="D:\\java_lec_2class\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\000.meatmall4ck\\images\\";
-		        String uploadPath ="D:\\java_lec_2class\\000.meatmallzz\\src\\main\\webapp\\resources\\ckimages\\";
+//		        String uploadPath ="D:\\java_lec_2class\\000.meatmallzz\\src\\main\\webapp\\resources\\ckimages\\";
 //		        String uploadPath ="C:\\Users\\HKEDU\\git\\meatmall\\000.meatmall\\src\\main\\webapp\\resources\\ckimages\\";
+		        //한결집		    
+		        String uploadPath = "C:\\Users\\10H\\git\\meatmall\\000.meatmall\\src\\main\\webapp\\resources\\ckimages\\";
 		        OutputStream out = new FileOutputStream(new File(uploadPath + stored_fname));
 		        
 		        // 서버로 업로드

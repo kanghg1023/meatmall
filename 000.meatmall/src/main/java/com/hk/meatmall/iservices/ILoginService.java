@@ -24,7 +24,5 @@ public interface ILoginService {
 	public boolean pwChange(String user_id, String user_pw);
 	public List<RecordDto> loginRecordList(int user_num);
 	
-	//
-	public List<GoodsDto> getMainList(String goods_doso);
 	
 }

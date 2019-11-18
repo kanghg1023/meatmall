@@ -5,12 +5,36 @@
 
 <mapper namespace="com.goods">
 
+<!-- 메인 상품리스트 -->
+	<select id="getMainList" resultType="GoodsDto">
+		SELECT G.GOODS_NUM
+			 , G.GOODS_TITLE
+			 , G.USER_NUM
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_DELFLAG
+			 , G.GOODS_COST
+			 , U.USER_NICK
+		  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY GOODS_NUM DESC) AS RN
+		              , GOODS_NUM
+			 		  , GOODS_TITLE
+					  , USER_NUM
+					  , GOODS_IMG_TITLE
+					  , GOODS_DELFLAG
+					  , GOODS_COST
+		           FROM GOODS
+		          WHERE GOODS_DELFLAG = 1
+		       ) G
+		     , USER_INFO U
+		 WHERE G.USER_NUM = U.USER_NUM
+		   AND CEIL(G.RN/8) = 1
+	</select>
+
 <!-- 전체 상품 + 페이징 -->
 	<select id="allGoods" resultType="GoodsDto" parameterType="String">
 		SELECT G.GOODS_NUM
 	   		 , G.GOODS_TITLE
 	   		 , G.USER_NUM
-	   		 , G.GOODS_DOSO
 	   		 , G.GOODS_IMG_TITLE
 	   		 , G.GOODS_DELFLAG
 	   		 , G.GOODS_COST
@@ -20,7 +44,6 @@
 		              , GOODS_NUM
 	   		 		  , GOODS_TITLE
 	   				  , USER_NUM
-	   				  , GOODS_DOSO
 	   				  , GOODS_IMG_TITLE
 	   				  , GOODS_DELFLAG
 	   				  , GOODS_COST
@@ -36,7 +59,6 @@
 		SELECT G.GOODS_NUM
 			 , G.GOODS_TITLE
 			 , G.USER_NUM
-			 , G.GOODS_DOSO
 			 , G.GOODS_IMG_TITLE
 			 , G.GOODS_DELFLAG
 			 , G.GOODS_COST
@@ -46,7 +68,6 @@
 		              , GOODS_NUM
 			 		  , GOODS_TITLE
 					  , USER_NUM
-					  , GOODS_DOSO
 					  , GOODS_IMG_TITLE
 					  , GOODS_DELFLAG
 					  , GOODS_COST
@@ -102,7 +123,6 @@
 		SELECT G.GOODS_NUM
 			 , G.GOODS_TITLE
 			 , G.USER_NUM
-			 , G.GOODS_DOSO
 			 , G.GOODS_IMG_TITLE
 			 , G.GOODS_DELFLAG
 			 , G.KIND_NUM
@@ -113,7 +133,6 @@
 		              , GOODS_NUM
 			 		  , GOODS_TITLE
 					  , USER_NUM
-					  , GOODS_DOSO
 					  , GOODS_IMG_TITLE
 					  , GOODS_DELFLAG
 					  , KIND_NUM
@@ -131,7 +150,6 @@
 		SELECT G.GOODS_NUM
 			 , G.GOODS_TITLE
 			 , G.USER_NUM
-			 , G.GOODS_DOSO
 			 , G.GOODS_IMG_TITLE
 			 , G.GOODS_DELFLAG
 			 , G.KIND_NUM
@@ -142,7 +160,6 @@
 		              , GOODS_NUM
 			 		  , GOODS_TITLE
 					  , USER_NUM
-					  , GOODS_DOSO
 					  , GOODS_IMG_TITLE
 					  , GOODS_DELFLAG
 					  , KIND_NUM
@@ -179,7 +196,6 @@
 		 		 GOODS_SEQ.NEXTVAL
 	   		   , #{goods_title}
 	   		   , #{user_num}
-	  		   , #{goods_doso}
 	  		   , #{goods_img_title}
 	  		   , #{goods_img_detail}
 	  		   , SYSDATE
@@ -270,7 +286,6 @@
 	<update id="upGoods" parameterType="GoodsDto">
 		UPDATE GOODS
   		   SET GOODS_TITLE = #{goods_title}
-			 , GOODS_DOSO = #{goods_doso}
 		<if test="goods_img_title != null">
 			 , GOODS_IMG_TITLE = #{goods_img_title}
 		</if>
@@ -550,6 +565,7 @@
 		   WHERE ORDER_NUM = #{order_num}
 	</update>
 	
+<!-- 판매상품 -->
 	<select id="orderSelList" parameterType="Map" resultType="OrderDto">
 		<include refid="orderSelect" />
 		 WHERE R.GOODS_NUM = G.GOODS_NUM
@@ -562,5 +578,40 @@
 		   AND R.ORDER_STATE > 1
 		</if>
 		 ORDER BY ORDER_NUM DESC
+	</select>
+	
+	<select id="getOrder" parameterType="int" resultType="OrderDto">
+		SELECT O.ORDER_NUM
+			 , O.GOODS_NUM
+			 , O.ORDER_SELLER
+			 , G.GOODS_IMG_TITLE
+			 , G.GOODS_TITLE
+			 , OP.OPTION_NAME
+		  FROM GOODS_ORDER O
+		 	 , GOODS G
+		 	 , GOODS_OPTION OP
+		 WHERE O.GOODS_NUM = G.GOODS_NUM
+		   AND O.OPTION_NUM = OP.OPTION_NUM
+		   AND ORDER_NUM = #{order_num}
+	</select>
+	
+	<insert id="addReview" parameterType="ReviewDto">
+		INSERT INTO REVIEW
+		VALUES (
+				 REVIEW_SEQ.NEXTVAL
+			   , #{order_num}
+			   , #{goods_num}
+			   , #{user_num}
+			   , #{user_id}
+			   , #{review_content}
+			   , #{review_score}
+			   , SYSDATE
+			   )
+	</insert>
+	
+	<select id="basketCount" parameterType="int" resultType="int">
+		SELECT COUNT(GOODS_NUM)
+		  FROM BASKET
+		 WHERE USER_NUM = #{user_num}
 	</select>
 </mapper>

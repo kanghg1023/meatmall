@@ -14,6 +14,9 @@ import com.hk.meatmall.dtos.User_couponDto;
 
 public interface IGoodsService {
 
+	//메인 상품리스트
+	public List<GoodsDto> getMainList();
+	
 	//전체 상품 + 페이징
 	public List<GoodsDto> allGoods(String pnum);
 	
@@ -137,4 +140,12 @@ public interface IGoodsService {
 	//배송된 상품
 	public List<OrderDto> orderSeller(int user_num);
 	
+	//주문 상세(리뷰용)
+	public OrderDto getOrder(int order_num);
+	
+	//리뷰 등록
+	public boolean addReview(ReviewDto dto);
+	
+	//장바구니 담겨있는갯수
+	public int basketCount(int user_num);
 }

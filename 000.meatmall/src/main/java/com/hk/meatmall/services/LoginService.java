@@ -104,14 +104,5 @@ public class LoginService implements ILoginService {
 		loginDao.loginRecordDel();
 		return loginDao.loginRecordList(user_num);
 	}
-
-	//
-	@Override
-	public List<GoodsDto> getMainList(String goods_doso) {
-		return loginDao.getMainList(goods_doso);
-	}
-	
-
-	
 	
 }

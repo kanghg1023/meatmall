@@ -24,6 +24,4 @@ public interface ILoginDao {
 	public List<RecordDto> loginRecordList(int user_num);
 	public int loginRecordDel();
 	
-	//
-	public List<GoodsDto> getMainList(String goods_doso);
 }

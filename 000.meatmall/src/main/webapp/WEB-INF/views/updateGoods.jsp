@@ -95,9 +95,9 @@
 </script>
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
+
 	<jsp:include page="header.jsp" />
-</div>
+
 <h1>상품 수정</h1>
 <form action="upGoods.do" method="post" enctype="multipart/form-data">
 <input type="hidden" name="goods_num" value="${gDto.goods_num}"/>
@@ -193,5 +193,6 @@
 	</tr>
 </table>
 </form>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

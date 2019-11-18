@@ -37,6 +37,7 @@ $(function(){
 </script>
 </head>
 <body>
+<jsp:include page="header.jsp" />
 <h1>1:1문의글 추가하기</h1>
 <form action="questioninsert.do" method="post" >
 	<input type="hidden" name="user_num" value="${ldto.user_num}"/>
@@ -70,5 +71,6 @@ CKEDITOR.replace("ckeditor",{
 }); //이미지 업로드 기능을 추가하기위한 코드
 
 </script>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

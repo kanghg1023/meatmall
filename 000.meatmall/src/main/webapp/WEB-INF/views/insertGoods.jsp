@@ -97,9 +97,9 @@
 </script>
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
+
 	<jsp:include page="header.jsp" />
-</div>
+
 <h1>상품 추가</h1>
 <form action="insertGoods.do" method="post" enctype="multipart/form-data">
 <table border="1" class="table">
@@ -110,15 +110,6 @@
 	<tr>
 		<th>판매자</th>
 		<td><input type="text" name="user_num" value="${ldto.user_num}" /></td>
-	</tr>
-	<tr>
-		<th>도소매구분</th>
-		<td>
-			<select name="goods_doso">
-				<option value="DO">도매</option>
-				<option value="SO">소매</option>
-			</select>
-		</td>
 	</tr>
 	<tr>
 		<th>대표이미지</th>
@@ -190,5 +181,6 @@
 	</tr>
 </table>
 </form>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

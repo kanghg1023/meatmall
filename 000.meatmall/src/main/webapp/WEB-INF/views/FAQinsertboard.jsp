@@ -36,7 +36,7 @@ $(function(){
 		</tr>
 		<tr>
 			<th>FAQ 내용</th>
-			<td><textarea rows="10" cols="60" id="textarea" name="faq_content" wrap="hard"></textarea> </td>
+			<td><textarea rows="10" cols="102" id="textarea" name="faq_content" wrap="hard"></textarea> </td>
 		</tr>
 		<tr>
 			<td colspan="2">

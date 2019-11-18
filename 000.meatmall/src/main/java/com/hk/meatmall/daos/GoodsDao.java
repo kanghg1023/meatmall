@@ -31,6 +31,13 @@ public class GoodsDao implements IGoodsDao {
 		super();
 	}
 	
+	//메인출력
+	@Override
+	public List<GoodsDto> getMainList() {
+		List<GoodsDto> list = sqlSession.selectList(nameSpace+"getMainList");
+		return list;
+	}
+	
 	//전체 상품 + 페이징
 	@Override
 	public List<GoodsDto> allGoods(String pnum) {
@@ -358,6 +365,25 @@ public class GoodsDao implements IGoodsDao {
 		map.put("seller", 1);
 		
 		return sqlSession.selectList(nameSpace+"orderSelList", map);
+	}
+
+	//주문 상세(리뷰용)
+	@Override
+	public OrderDto getOrder(int order_num) {
+		return sqlSession.selectOne(nameSpace+"getOrder", order_num);
+	}
+	
+	//리뷰 등록
+	@Override
+	public boolean addReview(ReviewDto dto) {
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"addReview", dto);
+		return count > 0 ? true : false;
+	}
+
+	@Override
+	public int basketCount(int user_num) {
+		return sqlSession.selectOne(nameSpace+"basketCount", user_num);
 	}
 
 	

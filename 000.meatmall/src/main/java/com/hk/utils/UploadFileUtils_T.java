@@ -18,11 +18,11 @@ public class UploadFileUtils_T {
 		 						  , byte[] fileData
 		 						  , String ymdPath) throws Exception {
   UUID uid = UUID.randomUUID();
-  
   String newFileName = uid + "_" + fileName;
   String imgPath = uploadPath + ymdPath;
 
   File target = new File(imgPath, newFileName);
+  
   FileCopyUtils.copy(fileData, target);
 
   return newFileName;

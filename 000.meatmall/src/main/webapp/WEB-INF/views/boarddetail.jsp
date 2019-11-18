@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
+
 <script type="text/javascript">
 
 	$(function(){
@@ -39,6 +40,14 @@
 	});
 	
 	$(function(){
+		//대댓글의 들여쓰기 기능
+		$(".boardlist123").each(function(){
+			if($(this).children().eq(0).is("li")){
+				$(this).css("padding-left","30px");		
+			}
+		})
+		
+		
 		$("#commentBtn").click(function(){
 			$("#commentForm").toggle(1000);
 			var replyPosition = $("#commentForm").offset().top;
@@ -63,14 +72,11 @@
 			$("#recomment").remove();
 			$(".cancelBtn").attr('class','recommentForm');
 			comment_num = $(this).val();
-			var aCount = $(this).parent().parent().next();
-			aCount.after("<tr id='recomment'>"
-							+"<td></td>"
-							+"<td colspan='2'>"
+			var aCount = $(this).parent();
+			aCount.after("<li id='recomment' class='boardlist123'>"
 							+"<textarea rows='2' cols='55' id='content2' ></textarea>"
 							+"<input type='button' id='recommentBtn' value='등록' />"
-							+"</td>"
-						+"</tr>");
+						+"</li>");
 			$(this).attr('class','cancelBtn');
 		});
 		
@@ -93,11 +99,11 @@
 		$("body").on("click",".updatecommentForm",function(){
 			$(".cancelBtn1").attr('class','updatecommentForm');
 			comment_num = $(this).val();
-			var aCount = $(this).parent().parent().next();
-				
-			var txt=aCount.children('td').text();
-			aCount.children('td').text("");
-			aCount.children("td").append("<textarea rows='2' cols='55' id='content2' >"
+			var aCount = $(this).parent();
+			var recomment = aCount.children(".recomment");
+			var txt=recomment.text();
+			recomment.text("");
+			recomment.append("<textarea rows='2' cols='55' id='content2' >"
 					+txt+"</textarea>"
 					+"<input type='button' id='updatecommentBtn' value='수정' />"
 					);
@@ -137,14 +143,96 @@
 	}
 </script>
 <style type="text/css">
-	img{width: 12px; height: 12px;}
+#im img{width: 12px; height: 12px;}
+
+
+
+.list-table {
+    margin:100px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: center;
+  padding:10px;               
+}
+
+.list-table th{
+   height:20px;
+   
+   border-bottom:1px solid #CCC;
+   font-weight: bold;
+   font-size: 15px;
+}
+.list-table td{
+   text-align:center;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
+.list-table .buttonsignup {
+    width: 15%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.list-table .actionbutton {
+    margin-top:0%;
+}
+
+.commentlist{         
+/* 	text-align: center; */
+}
+
+
+
+.boardlist123 li{
+	list-style: none;
+	
+	border-left	:1px solid #2AC37D;
+	border-left-style:dotted;	
+	
+}
+
+
+.boardlist123{ 
+	width: 600px;
+	background-color : #f9f9f9; 
+	border-width: 1px 0;
+	border-bottom:1px solid #2AC37D;
+	
+ 	border-collapse: collapse;
+ 	
+	margin: 0 auto;
+	border-bottom-style:dotted;
+		
+}
+
+
+
 
 </style>
 </head>
 <body>
+
+
+<jsp:include page="header.jsp" />
+
 <div id="container">
-<h1>게시글상세보기</h1>
-<table border="1">
+
+<table class="list-table">
+	<col width="100px">
+	<col width="500px">
+	
+	
 	<tr>
 		<th>번호</th>
 		<td>${boarddto.board_num}</td>
@@ -158,20 +246,24 @@
 		<td>${boarddto.board_title}</td>
 	</tr>
 	<tr>
-		<th>내용</th>
-		<td><textarea rows="10" cols="60" readonly="readonly">${boarddto.board_content}</textarea> </td>
+		
+		<td colspan="4" style="height: 200px;">
+			<div style="height: 100%;overflow: auto;">
+				${boarddto.board_content}
+			</div>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
 			<c:if test="${boarddto.user_num eq ldto.user_num or ldto.user_role eq 'ADMIN'}">
-				<button onclick="updateForm(${boarddto.board_num})">수정</button>
-				<button onclick="delBoard(${boarddto.board_num})">삭제</button>
+				<button class="buttonsignup actionbutton" onclick="updateForm(${boarddto.board_num})">수정</button>
+				<button class="buttonsignup actionbutton" onclick="delBoard(${boarddto.board_num})">삭제</button>
 			</c:if>					
-			<button onclick="location.href='boardlist.do?pnum=${pnum}'">글목록</button>
-			<button id="commentBtn">댓글</button>
+			<button class="buttonsignup actionbutton" onclick="location.href='boardlist.do?pnum=${pnum}'">글목록</button>
+			<button id="commentBtn" class="buttonsignup actionbutton" >댓글</button>
 			<c:choose>
 				<c:when test="${boarddto != null}">			
-					<a href="" id="like"><img alt="좋아요" src="img/heart${like ? '2' : '1'}.png">${likecount}</a>								
+					<a href="" id="like"><img id="im" alt="좋아요" src="img/heart${like ? '2' : '1'}.png">${likecount}</a>								
 				</c:when>
 				<c:otherwise>
 					<img alt="좋아요" src="img/heart1.png">${likecount}
@@ -180,54 +272,61 @@
 		</td>
 	</tr>
 </table>
-<div id="commentForm">
+<br/>
+<div id="commentForm" class="commentlist" >
 	<form action="addcomment.do" method="post">		
 		<input type="hidden" name="board_num" value="${boarddto.board_num}" />
 		<c:if test="${boarddto != null || clist != null}">
-			<table border="1" class="commentTable">
-				<c:if test="${boarddto != null}">
-					<tr>
-						<td colspan="3">
-							<textarea rows="2" cols="75" name="comment_content" ></textarea>
-							<input type="submit" value="등록" id="btn"/>
-						</td>
-					</tr>
-				</c:if>
-				<c:if test="${clist != null}">
-					<c:forEach items="${clist}" var="cdto">
-					<tr>
-						<c:if test="${cdto.comment_refer >= 0}">
-							<td rowspan="2" class="arrowSel"><img src="img/arrow.png" alt="답글" /></td>
-						</c:if>
-						<td>${cdto.user_num}</td>
-						<td colspan="2">
-							<fmt:formatDate value="${cdto.comment_regdate}" pattern="yyyy-MM-dd HH:mm"/>
-							<c:if test="${boarddto != null}">
-								<button type="button" class="recommentForm" value="${cdto.comment_num}">답글</button>
-							</c:if>
-							<c:if test="${cdto.user_num eq ldto.user_num or ldto.user_role eq 'ADMIN'}">
-								<button type="button" onclick="delcomment(${cdto.comment_num})">삭제</button>
-								<button type="button" class="updatecommentForm" value="${cdto.comment_num}">수정</button>
-							</c:if>
-						</td>
-					</tr>
-					<c:choose>
-						<c:when test="${cdto.comment_delflag=='0'}">
-							<td>------삭제된 댓글입니다.------</td>
-						</c:when>
-						<c:otherwise>
-							<tr style="white-space:pre;">
-								<td colspan="3" class="conSel">${cdto.comment_content}</td>
-							</tr>
-						</c:otherwise>
-					</c:choose>	
-					
-					</c:forEach>
-				</c:if>
-			</table>
+				
+			<c:if test="${clist != null}">
+				<c:forEach items="${clist}" var="cdto" varStatus="dto">
+					<div class="boardlist123" >
+						<c:choose>
+							<c:when test="${clist[dto.index+1].comment_re_check > 0 && cdto.comment_delflag == 0 && cdto.comment_re_check == 0}">
+								<p style="font-size: 15px">&nbsp;삭제된 댓글입니다</p>
+							</c:when>
+							<c:when test="${cdto.comment_re_check > 0 && cdto.comment_delflag > 0}">
+								
+								<li class="comm">								
+									<strong>&nbsp;${cdto.user_num}</strong>
+									<fmt:formatDate value="${cdto.comment_regdate}" pattern="yyyy-MM-dd HH:mm"/>
+									<c:if test="${cdto.user_num eq ldto.user_num}">
+										<button type="button" onclick="delcomment(${cdto.comment_num})">삭제</button>
+										<button type="button" class="updatecommentForm" value="${cdto.comment_num}">수정</button>
+									</c:if>
+								<p class="recomment">&nbsp;${cdto.comment_content}</p>
+								</li>
+								&nbsp;
+							</c:when>							
+							<c:when test="${cdto.comment_re_check == 0 && cdto.comment_delflag > 0}">
+									<strong>&nbsp;${cdto.user_num}</strong>
+									<fmt:formatDate value="${cdto.comment_regdate}" pattern="yyyy-MM-dd HH:mm"/>
+									<c:if test="${ldto != null}">
+										<button type="button" class="recommentForm" value="${cdto.comment_num}">답글</button>
+									</c:if>
+									<c:if test="${cdto.user_num eq ldto.user_num}">
+										<button type="button" onclick="delcomment(${cdto.comment_num})">삭제</button>
+										<button type="button" class="updatecommentForm" value="${cdto.comment_num}">수정</button>
+									</c:if>
+								<p class="recomment" style="border-bottom : 0px solid #2AC37D;">&nbsp;${cdto.comment_content}</p>
+								
+							</c:when>
+							<c:otherwise>
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</c:forEach>
+			</c:if>
+			<c:if test="${boarddto != null}">
+				<div style="width: 600px; margin: 0 auto;" >
+					<textarea rows="2" cols="75" name="comment_content" ></textarea>
+					<input type="submit" value="등록" id="btn" />
+				</div>
+			</c:if>
 		</c:if>
 	</form>
-</div>	
-</div>	
+</div>
+</div>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>
