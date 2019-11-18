@@ -15,7 +15,7 @@
 	<tr>
 		<th>보낸 사람</th>
 		<td>${mdto.user_nick}</td>
-	</tr>
+	</tr> 
 	<tr>
 		<th>받은시간</th>
 		<td><fmt:formatDate value="${dto.message_regdate}" pattern="yy-MM-dd [hh:mm]" /></td>
