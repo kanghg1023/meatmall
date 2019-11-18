@@ -338,4 +338,15 @@
 			   )
 	</insert>
 	
+	<select id="messageDetail" parameterType="int" resultType="MessageDto">
+		SELECT M.MESSAGE_NUM
+			 , M.MESSAGE_FROM_NUM
+			 , M.MESSAGE_CONTENT
+			 , M.MESSAGE_REGDATE
+			 , U.USER_NICK
+		  FROM MESSAGE M
+			 , USER_INFO U
+		 WHERE M.MESSAGE_FROM_NUM = U.USER_NUM
+		   AND MESSAGE_NUM = #{message_num}
+	</select>
 </mapper>

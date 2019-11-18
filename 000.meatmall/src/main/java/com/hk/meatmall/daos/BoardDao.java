@@ -157,6 +157,11 @@ public class BoardDao implements IBoardDao {
 		return count>0 ? true : false;
 	}
 
+	@Override
+	public MessageDto messageDetail(int message_num) {
+		return sqlSession.selectOne(nameSpace+"messageDetail",message_num);
+	}
+
 	
 
 

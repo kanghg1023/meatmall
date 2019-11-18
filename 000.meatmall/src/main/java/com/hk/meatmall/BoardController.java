@@ -410,9 +410,10 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	public String messageDetail(Model model, int message_num) {
 		logger.info("쪽지 상세보기");
 		
-//		boolean isInsert = boardService.messageDetail(message_num);
+		MessageDto mdto = boardService.messageDetail(message_num);
 		
-		return "a";
+		model.addAttribute("mdto",mdto);
+		return "messageDetail";
 	}
 	
 	//쿠키로 페이징 - 참고자료 (아직 안씀)

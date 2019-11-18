@@ -37,6 +37,7 @@ public interface IBoardService {
 	public boolean insertLike(Board_likeDto dto);
 	//좋아요 삭제
 	public boolean deleteLike(Board_likeDto dto);
+	
 	//댓글 목록 보기
 	public List<CommentDto> commentList(int board_num);
 	//모댓글 추가
@@ -47,6 +48,7 @@ public interface IBoardService {
 	public boolean delcomment(int comment_num);
 	// 댓글 수정
 	public boolean updatecomment(CommentDto dto);
+	
 	//받은 쪽지 페이지수
 	public int msgPcount(int user_num);
 	//보낸 쪽지 페이지수
@@ -57,4 +59,8 @@ public interface IBoardService {
 	public List<MessageDto> sendMessageList(int message_from_num);
 	//쪽지 보내기
 	public boolean insertMessage(MessageDto dto);
+	//쪽지 상세보기
+	public MessageDto messageDetail(int message_num);
+	
+	
 }

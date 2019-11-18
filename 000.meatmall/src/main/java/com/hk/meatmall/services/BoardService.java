@@ -138,6 +138,11 @@ public class BoardService implements IBoardService {
 		return boardDao.insertMessage(dto);
 	}
 
+	@Override
+	public MessageDto messageDetail(int message_num) {
+		return boardDao.messageDetail(message_num);
+	}
+
 	
 
 

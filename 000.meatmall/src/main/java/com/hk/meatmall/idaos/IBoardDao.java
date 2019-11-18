@@ -58,5 +58,7 @@ public interface IBoardDao {
 	public List<MessageDto> sendMessageList(int message_from_num);
 	//쪽지 보내기
 	public boolean insertMessage(MessageDto dto);
+	//쪽지 상세보기
+	public MessageDto messageDetail(int message_num);
 	
 }
