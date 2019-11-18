@@ -104,10 +104,10 @@ $(function() {
          datatype:"text",
          async:false,
          success:function(insertBasket){
-        	 var a = likechange.split(",");
+        	 var a = insertBasket.split(",");
             if(a[0]){
                alert("추가했습니다.");
-               $("#basketCount").html("a[1]");
+               $("#basketCount").html(a[1]);
             }else {
                alert("error:추가실패");
             }
