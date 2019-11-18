@@ -2,7 +2,6 @@ package com.hk.meatmall.iservices;
 
 import java.util.List;
 
-import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 
@@ -23,6 +22,11 @@ public interface ILoginService {
 	public boolean inquiryChk(UserDto dto);
 	public boolean pwChange(String user_id, String user_pw);
 	public List<RecordDto> loginRecordList(int user_num);
-	
+	//회원 탈퇴
+	public boolean withdraw(int user_num);
+	//회원 리스트
+	public List<UserDto> userlist(String pnum);
+	// ㄴ페이지수
+	public int userPcount();
 	
 }

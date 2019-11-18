@@ -13,9 +13,6 @@
 <!-- <div id="header" class="header" style="outline: none;"> -->
    <jsp:include page="header.jsp" />
 <!-- </div> -->
-<%
-   session.setAttribute("page", "main");
-%>
 <input type="hidden" name="page" value="main">
 
 <main class="ps-main">

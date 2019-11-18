@@ -378,12 +378,18 @@ public class GoodsDao implements IGoodsDao {
 	public boolean addReview(ReviewDto dto) {
 		int count = 0;
 		count = sqlSession.insert(nameSpace+"addReview", dto);
-		return count > 0 ? true : false;
+		return count>0 ? true : false;
 	}
 
 	@Override
 	public int basketCount(int user_num) {
 		return sqlSession.selectOne(nameSpace+"basketCount", user_num);
+	}
+
+	@Override
+	public boolean beBasket(int option_num) {
+		int count = sqlSession.insert(nameSpace+"beBasket", option_num);
+		return count>0 ? true : false;
 	}
 
 	

@@ -7,7 +7,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
+<script type="text/javascript">
+$(function(){
+	$(".msg").click(function(){
+		var message_num = $(this).prev().val();
+		window.open("messageDetail.do?message_num="+message_num+"&fromTo=0","","width=640px,height=480px");
+	});
+});
+</script>
 </head>
 <body>
 <div id="header" class="header" style="outline: none;">
@@ -15,9 +24,6 @@
 </div>
 <dl>
 	<dt>쪽지</dt>
-	<dd>
-		<a href="messageForm.do"><span>쪽지 보내기</span></a>
-	</dd>
 	<dd>
 		<a href="messageList.do?user_num=${ldto.user_num}"><span>받은 쪽지함</span></a>
 	</dd>
@@ -50,7 +56,8 @@
 							${dto.user_nick}
 						</td>
 						<td>
-							<a href="messageDetail.do?message_num=${dto.message_num}">${dto.message_content}</a>
+							<input type="hidden" value="${dto.message_num}"/>
+							<a class="msg">${dto.message_content}</a>
 						</td>
 						<td>
 							<fmt:formatDate value="${dto.message_regdate}" pattern="yy-MM-dd [hh:mm]" />
@@ -64,6 +71,9 @@
 						</c:if>
 						<c:forEach var="i" begin="${pmap.startPage}" end="${pmap.endPage}" step="1" >																			
 							<c:choose>
+								<c:when test="${i == 0}">
+									1
+								</c:when>
 								<c:when test="${pnum eq i}">
 									${i}
 								</c:when>

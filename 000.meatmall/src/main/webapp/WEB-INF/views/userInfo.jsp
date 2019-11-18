@@ -143,9 +143,6 @@ function emailChkfun(){
 }
 
 $(function(){
-	$("#user_id").blur(function(){
-		idChkfun();
-	});
 	
 	$("#user_pw").blur(function(){
 		pwChkfun();
@@ -202,6 +199,14 @@ $(function(){
 			}
 		}
 	});
+	
+	$("#withdraw").click(function(){
+		var isS = confirm("정말 탈퇴 하시겠습니까?");
+		if(isS){
+			location.href="withdraw.do?user_num=${ldto.user_num}"
+		}
+	});
+	
 });
 </script>
 
@@ -328,6 +333,7 @@ body {
 		<tr>
 			<td colspan="2" align="right">
 				<input type="submit" class="buttonsignup actionbutton" value="정보수정"/>
+				<input type="button" id="withdraw" class="buttonsignup actionbutton" value="회원탈퇴"/>
 			</td>
 		</tr>
 	</table>

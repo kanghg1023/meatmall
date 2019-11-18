@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,6 +23,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.iservices.ILoginService;
+import com.hk.utils.Paging;
 import com.hk.utils.Util;
 
 @Controller
@@ -45,8 +47,6 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 					   , String user_id
 					   , String pw) throws NoSuchAlgorithmException {
 		logger.info("로그인");
-		
-		String page = (String)session.getAttribute("page");
 		
 		String errorMsg1 = "아이디가 존재하지 않거나 비밀번호가 틀립니다.";
 		String errorMsg2 = "해당 계정은 5회이상 로그인 실패하여 계정 보호중입니다.";
@@ -115,7 +115,7 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		}
 		
 		if(record_check > 0) {
-			return page;
+			return "redirect:main.do";
 		}else {
 			return "loginPage";
 		}
@@ -126,6 +126,7 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		logger.info("로그아웃");
 		
 		session.removeAttribute("ldto");
+		session.removeAttribute("basketCount");
 		
 		return "redirect:main.do";
 	}
@@ -328,11 +329,32 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		return "getAddr";
 	}
 	
-	@RequestMapping(value = "/withdrawForm.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String withdrawForm(Model model, UserDto dto) {
-		logger.info("주소api");
+	@RequestMapping(value = "/withdraw.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String withdraw(Model model, int user_num) {
+		logger.info("회원 탈퇴");
 		
-		return "withdrawForm";
+		boolean isWithdraw = loginService.withdraw(user_num);
+		
+		if(isWithdraw) {
+			return "redirect:logout.do";
+		}else {
+			model.addAttribute("msg", "탈퇴 실패");
+			model.addAttribute("url", "userInfo.do");
+			return "error";
+		}
+	}
+	
+	@RequestMapping(value = "/userAdmin.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String userAdmin(Model model, String pnum) {
+		logger.info("회원 관리페이지");
+		
+		List<UserDto> userlist = loginService.userlist(pnum);
+		int pcount = loginService.userPcount();
+		Map<String, Integer> pmap=Paging.pagingValue(pcount, pnum, 5);
+		
+		model.addAttribute("userlist", userlist);
+		model.addAttribute("pmap", pmap);
+		return "userAdmin";
 	}
 	
 }

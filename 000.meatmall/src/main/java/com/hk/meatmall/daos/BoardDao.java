@@ -1,6 +1,8 @@
 package com.hk.meatmall.daos;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,13 +144,21 @@ public class BoardDao implements IBoardDao {
 	}
 	
 	@Override
-	public List<MessageDto> messageList(int user_num) {
-		return sqlSession.selectList(nameSpace+"messageList",user_num);
+	public List<MessageDto> messageList(int user_num, String pnum) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("user_num", user_num);
+		map.put("pnum", pnum);
+		
+		return sqlSession.selectList(nameSpace+"messageList",map);
 	}
 
 	@Override
-	public List<MessageDto> sendMessageList(int message_from_num) {
-		return sqlSession.selectList(nameSpace+"sendMessageList",message_from_num);
+	public List<MessageDto> sendMessageList(int message_from_num, String pnum) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("message_from_num", message_from_num);
+		map.put("pnum", pnum);
+		
+		return sqlSession.selectList(nameSpace+"sendMessageList",map);
 	}
 
 	@Override
@@ -161,6 +171,27 @@ public class BoardDao implements IBoardDao {
 	public MessageDto messageDetail(int message_num) {
 		return sqlSession.selectOne(nameSpace+"messageDetail",message_num);
 	}
+
+	@Override
+	public MessageDto messageDetail2(int message_num) {
+		return sqlSession.selectOne(nameSpace+"messageDetail2",message_num);
+	}
+	
+	@Override
+	public boolean deleteMessage(int message_num) {
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"deleteMessage",message_num);
+		return count>0 ? true : false;
+	}
+
+	@Override
+	public boolean deleteMessage2(int message_num) {
+		int count = 0;
+		count = sqlSession.insert(nameSpace+"deleteMessage2",message_num);
+		return count>0 ? true : false;
+	}
+
+	
 
 	
 

@@ -199,5 +199,42 @@
 		]]>
 	</delete>
 	
+	<update id="withdraw" parameterType="int">
+		UPDATE USER_INFO
+		   SET USER_ENABLED = 0
+		 WHERE USER_NUM = #{user_num}
+	</update>
 	
+	<select id="userlist" parameterType="String" resultType="UserDto">
+		SELECT USER_NUM
+			 , USER_ID
+			 , USER_NAME
+			 , USER_NICK
+			 , USER_PH
+			 , USER_ADDR
+			 , USER_ADDR_DETAIL
+			 , USER_EMAIL
+			 , USER_ENABLED
+			 , USER_ROLE
+		  FROM (
+				 SELECT ROW_NUMBER() OVER (ORDER BY USER_NUM DESC) AS RN
+					  , USER_NUM
+					  , USER_ID
+					  , USER_NAME
+					  , USER_NICK
+					  , USER_PH
+					  , USER_ADDR
+					  , USER_ADDR_DETAIL
+					  , USER_EMAIL
+					  , USER_ENABLED
+					  , USER_ROLE
+				   FROM USER_INFO
+			   )
+		 WHERE CEIL(RN/10) = #{pnum}
+	</select>
+	
+	<select id="userPcount" resultType="int">
+		SELECT CEIL(COUNT(*)/10)
+		  FROM USER_INFO
+	</select>
 </mapper>

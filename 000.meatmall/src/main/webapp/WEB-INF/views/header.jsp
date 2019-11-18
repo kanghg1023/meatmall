@@ -55,16 +55,15 @@
         				<div class="header__actions"><a href="signUpPage.do">회원가입</a></div>
 					</c:when>
 					<c:otherwise>
-						<div class="header__actions"><a href="#" class="user_info">${ldto.user_nick}님</a></div>
-						<div class="header__actions"><a href="logout.do" class="logout">로그아웃</a></div>
 						<c:if test="${ldto.user_role eq 'ADMIN'}">
-							<div class="header__actions"><a href="logout.do" class="logout">관리자 페이지</a></div>
+							<div class="header__actions"><a href="adminPage.do" class="logout">관리자 페이지</a></div>
 						</c:if>
 						 <c:if test="${ldto.user_num != null }">
                   			<div class="header__actions"><a href="myPage.do">마이페이지</a></div>
                   			<div class="header__actions"><a href="messageList.do?pnum=1">쪽지</a></div>
-                  	
                   		</c:if>
+						<div class="header__actions"><a href="logout.do" class="logout">로그아웃</a></div>
+						<div class="header__actions"><a href="#" class="user_info">${ldto.user_nick}님</a></div>
 					</c:otherwise>
 				</c:choose>  	                                              	            	
            </div>
@@ -82,23 +81,16 @@
                   <li class="menu-item menu-item-has-children dropdown"><a href="#">괴기한우(도매)</a>
                      <ul class="sub-menu">
                      	<c:forEach items="${category}" var="dto">
-                       	 <li class="menu-item"><a href="category.do">${dto.kind_name}</a></li>
+                       	 <li class="menu-item"><a href="allGoods.do?pnum=1&kind_num=${dto.kind_num}">${dto.kind_name}</a></li>
                      	</c:forEach>
                      </ul>
-                  </li>
-                  <li class="menu-item menu-item-has-children dropdown"><a href="#">괴기한우(소매)</a>
-                 	 <ul class="sub-menu">
-                     	<c:forEach items="${category}" var="dto">
-                       	 <li class="menu-item"><a href="category.do">${dto.kind_name}</a></li>
-                     	</c:forEach>
-                    </ul>
-                  </li>                  
+                  </li>                
                   <li class="menu-item menu-item-has-children dropdown"><a href="boardlist.do?pnum=1">커뮤니티</a></li>
                   <li class="menu-item"><a href="recipe.do">레시피</a></li>
                   <li class="menu-item menu-item-has-children dropdown"><a href="#">고객센터</a>
                     <ul class="sub-menu">
                        <li class="menu-item"><a href="faqlist.do">자주묻는 질문</a></li>
-                       <li class="menu-item"><a href="questionlist.do">1 : 1 문의</a></li>
+                       <li class="menu-item"><a href="questionlist.do?pnum=1">1 : 1 문의</a></li>
                     </ul>
                   </li>
                 </ul>

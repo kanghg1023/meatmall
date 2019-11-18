@@ -87,7 +87,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 						  , Model model
 						  , String pnum	
 						  , String kind_num) {
-		logger.info("전체 상품");
+		logger.info("상품 목록");
 		
 		UserDto ldto = (UserDto)session.getAttribute("ldto");
 		
@@ -136,6 +136,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		return "allGoods";
 	}
 	
+	//관리자 메뉴
 	@RequestMapping(value = "/category.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String category(Model model) {
 		logger.info("부위별 카테고리");
@@ -266,83 +267,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}
 	}
 	
-	@RequestMapping(value = "/insertCateGoodsForm.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String insertCateForm(Model model, String kind_num) {
-		logger.info("카테고리상품에서 추가 폼");
-		
-		model.addAttribute("kind_num",kind_num);
-		return "insertCateGoods";
-	}
-	
-	@RequestMapping(value = "/insertCateGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String insertCateGoods( Model model
-								 , GoodsDto gDto
-								 , String[] option_name
-								 , int[] option_count
-								 , int[] option_weight
-								 , String kind_num
-								 , MultipartFile title_file
-								 , MultipartHttpServletRequest mtfRequest) throws IOException, Exception {
-		logger.info("카테고리상품에서 추가");
-		
-		Goods_optionDto oDto = new Goods_optionDto();
-		
-		//대표이미지
-		String imgUploadPath_T = uploadPath + File.separator + "imgUpload";
-		String ymdPath_T = UploadFileUtils_T.calcPath(imgUploadPath_T);
-		String fileName_T = null;
-
-		if(title_file != null) {
-			fileName_T = UploadFileUtils_T.fileUpload_T(imgUploadPath_T, title_file.getOriginalFilename(), title_file.getBytes(), ymdPath_T);
-		}else {
-			fileName_T = uploadPath + File.separator + "images" + File.separator + "none.png";
-		}
-
-		gDto.setGoods_img_title("imgUpload" + ymdPath_T + File.separator + fileName_T);
-		
-		//상세이미지
-		List<MultipartFile> detail_file = mtfRequest.getFiles("detail_file");
-		
-		String imgUploadPath_D = uploadPath + File.separator + "imgUpload";
-		String ymdPath_D = UploadFileUtils_D.calcPath(imgUploadPath_D);
-		List<String> fileName_D = new ArrayList<>();
-		String fileName_D_html = "";
-
-		if(detail_file != null) {
-			for(int i=0;i<detail_file.size();i++) {
-				fileName_D.add(UploadFileUtils_T.fileUpload_T(imgUploadPath_T, detail_file.get(i).getOriginalFilename(), detail_file.get(i).getBytes(), ymdPath_T));
-				
-				if(i>0) {
-					fileName_D_html += "<br />";
-				}
-				fileName_D_html += "<img src='imgUpload" + ymdPath_D + File.separator + fileName_D.get(i) + "' style='width: 800px; height: 580px;'>";
-			}
-		}else {
-			fileName_D.add(uploadPath + File.separator + "images" + File.separator + "none.png");
-		}
-
-		System.out.println(fileName_D_html);
-		
-		gDto.setGoods_img_detail(fileName_D_html);
-
-		boolean isS = GoodsService.insertGoods(gDto);
-				
-		for(int i=0;i<option_name.length;i++) {
-			oDto.setOption_name(option_name[i]);
-			oDto.setOption_count(option_count[i]);
-			oDto.setOption_weight(option_weight[i]);
-			isS = GoodsService.insertGoods_option(oDto);
-		}
-				
-		if(isS) {
-			return "redirect:categoryGoods.do?pnum=1&kind_num="+kind_num;
-		}else {
-			model.addAttribute("msg", "추가 실패");
-			model.addAttribute("url", "insertGoodsForm.do");
-			return "error";
-		}
-	}
-	
 	@RequestMapping(value = "/goodsDetail.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String goodsDetail(Model model, int goods_num) {
 		logger.info("상세");
@@ -357,20 +281,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		return "goodsDetail";
 	}
 	
-	@RequestMapping(value = "/goodsCateDetail.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String goodsCateDetail(Model model, int goods_num) {
-		logger.info("카테고리상품에서 상세");
-		
-		GoodsDto gDto = GoodsService.getGoods(goods_num);
-		List<Goods_optionDto> oList = GoodsService.getGoods_option(goods_num);
-		List<ReviewDto> rList = GoodsService.reviewList(goods_num);
-		
-		model.addAttribute("gDto", gDto);
-		model.addAttribute("oList", oList);
-		model.addAttribute("rList", rList);
-		return "goodsCateDetail";
-	}
-	
+	//내 상품에서 삭제로 변경
 	@RequestMapping(value = "/delAllGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String delAllGoods( HttpSession session
 							 , Model model
@@ -392,29 +303,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}else {
 			model.addAttribute("msg", "삭제 실패");
 			model.addAttribute("url", "allGoods.do");
-			return "error";
-		}
-	}
-	
-	@RequestMapping(value = "/delCateGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String delCateGoods(HttpSession session, Model model, String[] chk, String kind_num, String pnum) {
-		logger.info("카테고리 상품에서 삭제");
-		
-		if(pnum==null) {
-			pnum=(String)session.getAttribute("pnum");
-		}else {
-			session.setAttribute("pnum", pnum);
-		}
-		
-		boolean isDelete = GoodsService.delCateGoods(chk, kind_num, pnum);
-		
-		if(isDelete) {
-			model.addAttribute("kind_num",kind_num);
-			model.addAttribute("pnum",pnum);
-			return "redirect:categoryGoods.do";
-		}else {
-			model.addAttribute("msg", "삭제 실패");
-			model.addAttribute("url", "categoryGoods.do");
 			return "error";
 		}
 	}
@@ -574,9 +462,14 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		bDto.setGoods_num(goods_num);
 		
 		for(int i=0;i<option_num.size();i++) {
-			bDto.setOption_num(option_num.get(i));
-			bDto.setBasket_count(basket_count.get(i));
-			isInsert = GoodsService.insertBasket(bDto);
+			boolean isBe = GoodsService.beBasket(option_num.get(i));
+			if(isBe) {
+				isInsert = true;
+			}else {
+				bDto.setOption_num(option_num.get(i));
+				bDto.setBasket_count(basket_count.get(i));
+				isInsert = GoodsService.insertBasket(bDto);
+			}
 			
 			if(!(isInsert)) {
 				break;
@@ -597,6 +490,8 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		boolean isDelete = GoodsService.delBasket(chk);
 		
 		if(isDelete) {
+			int basketCount = GoodsService.basketCount(ldto.getUser_num());
+			session.setAttribute("basketCount", basketCount);
 			return "redirect:basketList.do?user_num="+ldto.getUser_num();
 		}else {
 			model.addAttribute("msg", "삭제 실패");
@@ -707,7 +602,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
 		List<CouponDto> coulist = GoodsService.adminCouponList(pnum);
 
-		model.addAttribute("pnum",pnum);
 		model.addAttribute("map",map);
 		model.addAttribute("coulist", coulist);
 		return "adminCouponList";

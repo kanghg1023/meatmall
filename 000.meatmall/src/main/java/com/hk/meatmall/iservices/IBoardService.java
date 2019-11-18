@@ -54,13 +54,18 @@ public interface IBoardService {
 	//보낸 쪽지 페이지수
 	public int sendMsgPcount(int message_from_num);
 	//받은 쪽지함
-	public List<MessageDto> messageList(int user_num);
+	public List<MessageDto> messageList(int user_num, String pnum);
 	//보낸 쪽지함
-	public List<MessageDto> sendMessageList(int message_from_num);
+	public List<MessageDto> sendMessageList(int message_from_num, String pnum);
 	//쪽지 보내기
 	public boolean insertMessage(MessageDto dto);
-	//쪽지 상세보기
+	//받은 쪽지 보기
 	public MessageDto messageDetail(int message_num);
-	
+	//보낸 쪽지 보기
+	public MessageDto messageDetail2(int message_num);
+	//받은 쪽지삭제
+	public boolean deleteMessage(int message_num);
+	//보낸 쪽지삭제
+	public boolean deleteMessage2(int message_num);
 	
 }

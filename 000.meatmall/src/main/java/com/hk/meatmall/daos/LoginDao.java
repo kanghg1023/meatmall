@@ -8,7 +8,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.RecordDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.idaos.ILoginDao;
@@ -171,6 +170,23 @@ public class LoginDao implements ILoginDao {
 		count = sqlSession.update(nameSpace+"loginRecordDel");
 		
 		return count;
+	}
+
+	@Override
+	public boolean withdraw(int user_num) {
+		int count = 0;
+		count = sqlSession.update(nameSpace+"withdraw",user_num);
+		return count>0 ? true : false;
+	}
+
+	@Override
+	public List<UserDto> userlist(String pnum) {
+		return sqlSession.selectList(nameSpace+"userlist",pnum);
+	}
+
+	@Override
+	public int userPcount() {
+		return sqlSession.selectOne(nameSpace+"userPcount");
 	}
 
 	

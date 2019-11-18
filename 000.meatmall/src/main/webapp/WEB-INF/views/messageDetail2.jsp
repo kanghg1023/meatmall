@@ -8,54 +8,60 @@
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-<title>쪽지 보내기</title>
+<title>받은쪽지 상세보기</title>
+</head>
 <script type="text/javascript">
 	$(function(){
 		
 		$("#insert").click(function(){
-			var message_from_num = $("#message_from_num").val();
-			var user_num = $("#user_num").val();
-			var message_content = $("#message_content").val();
+			
+			
+		});
+		
+		$("#delete").click(function(){
+			var message_num = $(this).prev().val();
 			
 			$.ajax({
-				url:"insertMessage.do",
-				data:{"message_from_num":message_from_num
-					, "user_num":user_num
-					, "message_content":message_content},
+				url:"deleteMessage.do",
+				data:{"message_num":message_num
+					, "fromTo":0},
 				method:"post",
 				datatype:"json",
 				async:false,
-				success:function(isInsert){
-					if(isInsert){
-						alert("쪽지를 보냈습니다.");
+				success:function(isDelete){
+					if(isDelete){
+						opener.location.reload();
 						self.close();
 					}else{
-						alert("쪽지보내기 실패");
+						alert("삭제 실패");
 					}
 				},
 				error:function(){
 					alert("서버통신에러: 관리자에게 문의주세요");
 				}
 			});
+			
 		});
 	});
 </script>
-</head>
 <body>
-<input type="hidden" id="message_from_num" value="${ldto.user_num}">
-<input type="hidden" id="user_num" value="${user_num}">
 <table border="1">
 	<tr>
 		<th>받는 사람</th>
-		<td>${user_nick}</td>
+		<td>${mdto.user_nick}</td>
+	</tr> 
+	<tr>
+		<th>보낸 시간</th>
+		<td><fmt:formatDate value="${mdto.message_regdate}" pattern="yy-MM-dd [hh:mm]" /></td>
 	</tr>
 	<tr>
 		<th>내용</th>
-		<td><textarea rows="10" cols="60" id="message_content" class="inputval"></textarea></td>
+		<td>${mdto.message_content}</td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<input type="button" id="insert" value="쪽지 보내기"/>
+			<input type="hidden" value="${mdto.message_num}" />
+			<input type="button" id="delete" value="삭제"/>
 		</td>
 	</tr>
 </table>

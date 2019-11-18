@@ -289,5 +289,10 @@ public class GoodsService implements IGoodsService {
 	public int basketCount(int user_num) {
 		return GoodsDao.basketCount(user_num);
 	}
+
+	@Override
+	public boolean beBasket(int option_num) {
+		return GoodsDao.beBasket(option_num);
+	}
 	
 }

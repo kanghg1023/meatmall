@@ -148,4 +148,7 @@ public interface IGoodsDao {
 	
 	//장바구니 담겨있는갯수
 	public int basketCount(int user_num);
+	
+	//장바구니에 존재하는지 체크
+	public boolean beBasket(int option_num);
 }

@@ -311,7 +311,7 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		int p = Integer.parseInt(pnum);
 		
 		while(isList) {
-			mlist = boardService.messageList(ldto.getUser_num());
+			mlist = boardService.messageList(ldto.getUser_num(),pnum);
 			
 			if(p==1 || mlist.size()>0) {
 				isList = false;
@@ -356,7 +356,7 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		int p = Integer.parseInt(pnum);
 		
 		while(isList) {
-			sendmlist = boardService.sendMessageList(message_from_num);
+			sendmlist = boardService.sendMessageList(message_from_num, pnum);
 			
 			if(p==1 || sendmlist.size()>0) {
 				isList = false;
@@ -403,13 +403,36 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	}
 	
 	@RequestMapping(value = "/messageDetail.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String messageDetail(Model model, int message_num) {
+	public String messageDetail(Model model, int message_num, int fromTo) {
 		logger.info("쪽지 상세보기");
 		
-		MessageDto mdto = boardService.messageDetail(message_num);
+		MessageDto mdto = new MessageDto();
 		
-		model.addAttribute("mdto",mdto);
-		return "messageDetail";
+		if(fromTo > 0) {
+			mdto = boardService.messageDetail(message_num);
+			model.addAttribute("mdto",mdto);
+			return "messageDetail";
+		}else {
+			mdto = boardService.messageDetail2(message_num);
+			model.addAttribute("mdto",mdto);
+			return "messageDetail2";
+		}
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/deleteMessage.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public boolean deleteMessage(Model model, int message_num, int fromTo) {
+		logger.info("쪽지 삭제하기");
+		boolean isDelete;
+		System.out.println(message_num);
+		if(fromTo > 0) {
+			isDelete = boardService.deleteMessage(message_num);
+		}else {
+			isDelete = boardService.deleteMessage2(message_num);
+		}
+		
+		return isDelete;
 	}
 	
 	//쿠키로 페이징 - 참고자료 (아직 안씀)

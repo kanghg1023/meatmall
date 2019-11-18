@@ -13,16 +13,13 @@
 <dl>
 	<dt>관리자페이지</dt>
 	<dd>
-		<a href="myPage.do" class="myPage"><span>상품관리</span></a>
+		<a href="userAdmin.do?pnum=1"><span>회원관리</span></a>
 	</dd>
 	<dd>
 		<a href="adminCouponList.do?pnum=1"><span>쿠폰관리</span></a>
 	</dd>
 	<dd>
-		<a href="faqlist.do" class="faqlist"><span>알림</span></a>
-	</dd>
-	<dd>
-		<a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a>
+		<a href="bannerAdmin"><span>배너관리</span></a>
 	</dd>
 </dl>
 </body>

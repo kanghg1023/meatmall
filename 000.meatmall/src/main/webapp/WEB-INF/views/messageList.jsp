@@ -7,7 +7,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title>내 쪽지함</title>
+<script type="text/javascript">
+$(function(){
+	$(".msg").click(function(){
+		var message_num = $(this).prev().val();
+		window.open("messageDetail.do?message_num="+message_num+"&fromTo=1","","width=640px,height=480px");
+	});
+});
+</script>
 </head>
 <body>
 <div id="header" class="header" style="outline: none;">
@@ -47,7 +56,8 @@
 							${dto.user_nick}
 						</td>
 						<td>
-							<a href="messageDetail.do?message_num=${dto.message_num}">${dto.message_content}</a>
+							<input type="hidden" value="${dto.message_num}"/>
+							<a class="msg">${dto.message_content}</a>
 						</td>
 						<td>
 							<fmt:formatDate value="${dto.message_regdate}" pattern="yy-MM-dd [hh:mm]" />
@@ -61,6 +71,9 @@
 						</c:if>
 						<c:forEach var="i" begin="${pmap.startPage}" end="${pmap.endPage}" step="1" >																			
 							<c:choose>
+								<c:when test="${i == 0}">
+									1
+								</c:when>
 								<c:when test="${pnum eq i}">
 									${i}
 								</c:when>
@@ -69,7 +82,7 @@
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-						<c:if test="${pnum < pmap.pcount}">																		
+						<c:if test="${pnum < pmap.pcount}">							
 						<a href="messageList.do?pnum=${pmap.nextPageNum}">▶</a>
 						</c:if>
 					</td>

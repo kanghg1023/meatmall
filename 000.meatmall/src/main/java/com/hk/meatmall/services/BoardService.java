@@ -124,13 +124,13 @@ public class BoardService implements IBoardService {
 	}
 	
 	@Override
-	public List<MessageDto> messageList(int user_num) {
-		return boardDao.messageList(user_num);
+	public List<MessageDto> messageList(int user_num, String pnum) {
+		return boardDao.messageList(user_num,pnum);
 	}
 
 	@Override
-	public List<MessageDto> sendMessageList(int message_from_num) {
-		return boardDao.sendMessageList(message_from_num);
+	public List<MessageDto> sendMessageList(int message_from_num, String pnum) {
+		return boardDao.sendMessageList(message_from_num,pnum);
 	}
 
 	@Override
@@ -143,6 +143,22 @@ public class BoardService implements IBoardService {
 		return boardDao.messageDetail(message_num);
 	}
 
+	@Override
+	public MessageDto messageDetail2(int message_num) {
+		return boardDao.messageDetail2(message_num);
+	}
+	
+	@Override
+	public boolean deleteMessage(int message_num) {
+		return boardDao.deleteMessage(message_num);
+	}
+
+	@Override
+	public boolean deleteMessage2(int message_num) {
+		return boardDao.deleteMessage2(message_num);
+	}
+
+	
 	
 
 

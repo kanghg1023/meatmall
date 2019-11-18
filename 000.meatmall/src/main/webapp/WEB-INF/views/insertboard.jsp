@@ -19,14 +19,20 @@ $(function(){
 		var bool = true;
 		var input = $(this).find("td").children().filter("[name]");
 		input.each(function(i){
-			if($("#board_title").val() == ""){
-				alert("제목을 입력하세요.");
-				bool = false;
-				return false;
-			}else if($("#board_content").val() == ""){
-				alert("내용을 입력하세요");
-				bool = false;
-				return false;
+			if($(this).prop("tagName")=="TEXTAREA"){
+				if(CKEDITOR.instances.ckeditor.getData()==""){
+					alert("내용을 입력하세요");
+					bool = false;
+					return false;
+				}
+			}else{
+				if($(this).val()==""){
+					alert($(this).parent().prev().text()+"를 입력하세요");
+					$(this).focus();
+					bool = false;
+					return false;
+				}
+				
 			}
 		});
 		return bool;
@@ -95,7 +101,7 @@ $(function(){
 	</tr>
 	<tr>
 		<th>내용</th>
-		<td><textarea rows="10" cols="60" name="board_content" id="board_content" autocomplete="off" placeholder="내용을 입력하세요" class="inputval"></textarea></td>
+		<td><textarea rows="10" cols="60" name="board_content" id="ckeditor" autocomplete="off" placeholder="내용을 입력하세요" class="inputval"></textarea></td>
 	</tr>
 	<tr>
 		<td colspan="3" >
@@ -110,7 +116,7 @@ $(function(){
 </form>
 <script>
 //id가 board_content인 태그에 ckeditor를 적용시킴
-CKEDITOR.replace("board_content",{
+CKEDITOR.replace("ckeditor",{
     filebrowserUploadUrl : "/meatmall"+"/imageUpload.do",			//,width : '800px'
     width : '800px' , height : '500px'
 }); //이미지 업로드 기능을 추가하기위한 코드

@@ -291,38 +291,59 @@
 	<select id="msgPcount" parameterType="int" resultType="int">
 		<include refid="msgPaging" />
 		 WHERE USER_NUM = #{user_num}
+		   AND MESSAGE_TO_DELFLAG = 1
 	</select>
 	
 	<select id="sendMsgPcount" parameterType="int" resultType="int">
 		<include refid="msgPaging" />
 		 WHERE MESSAGE_FROM_NUM = #{message_from_num}
+		   AND MESSAGE_FROM_DELFLAG = 1
 	</select>
 	
-	<select id="messageList" parameterType="int" resultType="MessageDto">
+	<select id="messageList" parameterType="Map" resultType="MessageDto">
 		SELECT M.MESSAGE_NUM
 			 , M.MESSAGE_FROM_NUM
 			 , M.USER_NUM
 			 , M.MESSAGE_CONTENT
 			 , M.MESSAGE_REGDATE
 			 , U.USER_NICK
-		  FROM MESSAGE M
+		  FROM (
+		  		 SELECT ROW_NUMBER() OVER (ORDER BY MESSAGE_NUM DESC) AS RN
+		  		 	  , MESSAGE_NUM
+		  		 	  , MESSAGE_FROM_NUM
+		  		 	  , USER_NUM
+		  		 	  , MESSAGE_CONTENT
+		  		 	  , MESSAGE_REGDATE
+		  		   FROM MESSAGE
+		  		  WHERE MESSAGE_TO_DELFLAG = 1
+		  	   ) M
 		 	 , USER_INFO U
 		 WHERE M.USER_NUM = U.USER_NUM
 		   AND U.USER_NUM = #{user_num}
-		   AND M.MESSAGE_TO_DELFLAG = 1
+		   AND CEIL(M.RN/20) = #{pnum}
 	</select>
 	
-	<select id="sendMessageList" parameterType="int" resultType="MessageDto">
+	<select id="sendMessageList" parameterType="Map" resultType="MessageDto">
 		SELECT M.MESSAGE_NUM
 			 , M.MESSAGE_FROM_NUM
 			 , M.USER_NUM
 			 , M.MESSAGE_CONTENT
 			 , M.MESSAGE_REGDATE
-		  FROM MESSAGE M
+			 , U.USER_NICK
+		  FROM (
+		  		 SELECT ROW_NUMBER() OVER (ORDER BY MESSAGE_NUM DESC) AS RN
+		  		 	  , MESSAGE_NUM
+		  		 	  , MESSAGE_FROM_NUM
+		  		 	  , USER_NUM
+		  		 	  , MESSAGE_CONTENT
+		  		 	  , MESSAGE_REGDATE
+		  		   FROM MESSAGE
+		  		  WHERE MESSAGE_FROM_DELFLAG = 1
+		  	   ) M
 		 	 , USER_INFO U
 		 WHERE M.MESSAGE_FROM_NUM = U.USER_NUM
 		   AND M.MESSAGE_FROM_NUM = #{message_from_num}
-		   AND MESSAGE_FROM_DELFLAG = 1
+		   AND CEIL(M.RN/20) = #{pnum}
 	</select>
 	
 	<insert id="insertMessage" parameterType="MessageDto">
@@ -348,5 +369,38 @@
 			 , USER_INFO U
 		 WHERE M.MESSAGE_FROM_NUM = U.USER_NUM
 		   AND MESSAGE_NUM = #{message_num}
+	</select>
+	
+	<select id="messageDetail2" parameterType="int" resultType="MessageDto">
+		SELECT M.MESSAGE_NUM
+			 , M.USER_NUM
+			 , M.MESSAGE_CONTENT
+			 , M.MESSAGE_REGDATE
+			 , U.USER_NICK
+		  FROM MESSAGE M
+			 , USER_INFO U
+		 WHERE M.USER_NUM = U.USER_NUM
+		   AND MESSAGE_NUM = #{message_num}
+	</select>
+	
+<!-- 	받은쪽지 삭제 -->
+	<update id="deleteMessage" parameterType="int">
+		UPDATE MESSAGE
+		   SET MESSAGE_TO_DELFLAG = 0
+		 WHERE MESSAGE_NUM = #{message_num}
+	</update>
+	
+<!-- 	보낸쪽지 삭제 -->
+	<update id="deleteMessage2" parameterType="int">
+		UPDATE MESSAGE
+		   SET MESSAGE_FROM_DELFLAG = 0
+		 WHERE MESSAGE_NUM = #{message_num}
+	</update>
+	
+	
+	<select id="beBasket" parameterType="int" resultType="int">
+		SELECT COUNT(OPTION_NUM)
+		  FROM BASKET
+		 WHERE OPTION_NUM = #{option_num}
 	</select>
 </mapper>

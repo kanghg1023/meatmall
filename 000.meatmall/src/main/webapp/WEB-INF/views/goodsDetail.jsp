@@ -90,7 +90,7 @@ $(function() {
            optionArray.push($(this).val());
         });
         
-        $(basket_count).each(function(i){//체크된 리스트 저장
+        $(basket_count).each(function(i){
            countArray.push($(this).val());
         });
         
