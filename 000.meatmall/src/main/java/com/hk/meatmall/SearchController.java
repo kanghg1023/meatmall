@@ -27,16 +27,10 @@ public class SearchController {
 	@RequestMapping(value = "/search.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String search(Model model, String search_word) {
 		logger.info("전체 검색");
-		System.out.println("search_word = "+search_word);
+		
 		List<Goods_kindDto> caList = SearchService.CategorySearch(search_word);
 		List<GoodsDto> goodsList = SearchService.goodsSearch(search_word);
 		List<BoardDto> bList = SearchService.boardSearch(search_word);
-		
-		if(bList == null) {
-			System.out.println("널");
-		}else {
-			System.out.println(bList);
-		}
 		
 		for (BoardDto dto:bList) {
 			String con = dto.getBoard_content();

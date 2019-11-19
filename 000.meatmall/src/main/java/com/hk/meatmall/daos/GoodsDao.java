@@ -392,6 +392,11 @@ public class GoodsDao implements IGoodsDao {
 		return count>0 ? true : false;
 	}
 
+	@Override
+	public List<Integer> AllCouponList() {
+		return sqlSession.selectList(nameSpace+"AllCouponList");
+	}
+
 	
 
 }

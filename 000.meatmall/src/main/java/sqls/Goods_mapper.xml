@@ -621,4 +621,9 @@
 		  FROM BASKET
 		 WHERE OPTION_NUM = #{option_num}
 	</select>
+	
+	<select id="AllCouponList">
+		SELECT COUPON_NUM
+          FROM COUPON
+	</select>
 </mapper>

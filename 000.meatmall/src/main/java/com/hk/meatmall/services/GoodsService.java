@@ -294,5 +294,10 @@ public class GoodsService implements IGoodsService {
 	public boolean beBasket(int option_num) {
 		return GoodsDao.beBasket(option_num);
 	}
+
+	@Override
+	public List<Integer> AllCouponList() {
+		return GoodsDao.AllCouponList();
+	}
 	
 }

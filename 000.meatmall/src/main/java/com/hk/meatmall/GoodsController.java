@@ -711,29 +711,27 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 						   , HttpSession session) {
 		logger.info("리뷰 등록");
 		
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
+		
 		boolean isInsert = GoodsService.addReview(dto);
 		boolean isUpdate = GoodsService.stateUpdate(order_num);
 		
-		if(isInsert && isUpdate) {
-			
-			UserDto ldto = (UserDto)session.getAttribute("ldto");
+		//랜덤으로 쿠폰 증정
+		List<Integer> coulist = GoodsService.AllCouponList();
+        int ran = (int)(Math.random() * coulist.size()) -1;
+        int coupon_num = coulist.get(ran);
+        
+		CouponDto cdto = GoodsService.couponDetail(coupon_num);
+		boolean isCoupon = GoodsService.insertUserCoupon(ldto.getUser_num(),cdto);
+		
+		if(isInsert && isUpdate && isCoupon) {
 			return "redirect:orderList.do?user_num="+ldto.getUser_num();
 		}else {
 			model.addAttribute("msg", "상태변경 실패");
 			model.addAttribute("url", "orderList.do");
 			return "error";
 		}
-//		랜덤으로 배분
-//		CouponDto dto = GoodsService.couponDetail(coupon_num);
-//		GoodsService.insertUserCoupon(user_num, dto);
-//		List<CouponDto> coulist = GoodsService.adminCouponList(pnum);
-//        int ran = (int)(Math.random() * cards.size()) -1;
-//
-//        String get_Card = cards.get(ran);
-//
-//        cards.remove(ran);
-//
-//        System.out.println(get_Card);
+
 	}
 	
 	

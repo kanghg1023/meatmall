@@ -97,7 +97,7 @@ function allSum(){
 }
 
 $(function() {
-	$("form").submit(function() {
+	$("#del").submit(function() {
 		var bool = true;
 		var count = $(this).find("input[name=chk]:checked").length; //체크된 input태그의 개수
 		if (count == 0) {
@@ -178,7 +178,7 @@ $(function() {
 	<jsp:include page="header.jsp" />
 
 <h1 style="text-align: center;">장바구니</h1>
-<form action="delBasket.do" method="post">
+<form action="delBasket.do" method="post" id="del">
 <table  class="list-table">
 		<colgroup>
 			<col width="50px" />

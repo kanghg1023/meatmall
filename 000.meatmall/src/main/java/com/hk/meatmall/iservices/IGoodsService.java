@@ -106,49 +106,40 @@ public interface IGoodsService {
 	
 	//쿠폰목록(관리자)
 	public List<CouponDto> adminCouponList(String pnum);
-	
 	//쿠폰등록(관리자)
 	public boolean insertCoupon(CouponDto dto);
-	
 	//쿠폰페이징
 	public int CouponPcount();
 	
 	//쿠폰목록(사용자)
 	public List<User_couponDto> userCouponList(String pnum, int user_num);
-	
 	//쿠폰상세정보
 	public CouponDto couponDetail(int coupon_num);
-	
 	//쿠폰 등록(사용자)
 	public boolean insertUserCoupon(int user_num, CouponDto dto);
-	
 	//쿠폰목록(팝업)
 	public List<User_couponDto> couponList(int user_num);
-	
 	//상품옵션정보(바로구매용)
 	public BasketDto goodsData(int option_num);
-	
 	//쿠폰사용
 	public boolean useCoupon(int user_coupon_num);
-	
 	//배송상태 변경
 	public boolean stateUpdate(int order_num);
-	
 	//배송대기중인 상품 목록
 	public List<OrderDto> orderDelivery(int user_num);
-
 	//배송된 상품
 	public List<OrderDto> orderSeller(int user_num);
-	
 	//주문 상세(리뷰용)
 	public OrderDto getOrder(int order_num);
-	
 	//리뷰 등록
 	public boolean addReview(ReviewDto dto);
+	//전체 쿠폰 목록
+	public List<Integer> AllCouponList();
 	
 	//장바구니 담겨있는갯수
 	public int basketCount(int user_num);
-	
 	//장바구니에 존재하는지 체크
 	public boolean beBasket(int option_num);
+	
+
 }
