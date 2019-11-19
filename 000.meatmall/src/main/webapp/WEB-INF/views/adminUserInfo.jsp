@@ -39,34 +39,27 @@ body {
 
 .list-table th{
    height:40px;
-   border-top:2px solid #2AC37D;
-   border-bottom:1px solid #CCC;
+   
+   border-bottom:1px solid #2AC37D;
    font-weight: bold;
    font-size: 17px;
 }
+
 .list-table td{
-   text-align:center;
+   text-align:left;
    padding:10px 0;
    border-bottom:1px solid #CCC; height:20px;
    font-size: 14px 
 }
 
-.list-table .list:hover td{
-   background-color: #eee;
-   cursor : pointer;
-}
 
-.list-table .notice:hover td{
-   background-color: #eee;
-   cursor : pointer;
-}
 
 .list-table .buttonsignup {
-    width: 15%;
+    width: 16%;
     height: 30px;
     padding: 0;
     border: 0;
-    display: block;
+    display: inline-block;
     background-color: #2AC37D;
     border-radius:5px;
     cursor:pointer;
@@ -76,7 +69,16 @@ body {
 
 .list-table .actionbutton {
     margin-top:0%;
+    
 }
+
+.list-table .butt{
+   text-align:right;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
 	
 </style>
 <script type="text/javascript">
@@ -174,7 +176,7 @@ body {
 		</tr>
 	</c:if>
 	<tr>
-		<td colspan="2" align="right">
+		<td colspan="2" align="right" class="butt">
 			<input type="hidden" value="${udto.user_num}" />
 			<input type="button" id="stop" class="buttonsignup actionbutton" value="회원 정지"/>
 			<input type="hidden" value="${udto.user_enabled}" />
