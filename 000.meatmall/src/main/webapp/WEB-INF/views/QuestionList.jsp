@@ -103,7 +103,7 @@ body {
 			<c:forEach items="${qlist}" var="dto">
 				<tr>
 					<td>${dto.question_num}</td>
-					<td>${dto.user_num}</td>
+					<td>${dto.user_nick}</td>
 					<td><a href="questiondetail.do?question_num=${dto.question_num}" class="underline">${dto.question_title}</a></td>
 					<td><fmt:formatDate value="${dto.question_regdate}" pattern="yyyy년MM월dd일"/></td>
 					<c:choose>
@@ -144,12 +144,13 @@ body {
 	<c:if test="${ldto.user_role eq 'USER' || ldto.user_role eq 'LICENSE'}">
 	<tr>
 		<td colspan="10">
-			<input type="button" value="글추가" 
+			<input type="button" value="글추가" class="buttonsignup actionbutton"
 			       onclick="location.href='questioninsertform.do'"/>       
 		</td>
 	</tr>
 	</c:if>
 </table>
+<br/><br/>
 <jsp:include page="footer.jsp" /> 
 </body>
 </html>

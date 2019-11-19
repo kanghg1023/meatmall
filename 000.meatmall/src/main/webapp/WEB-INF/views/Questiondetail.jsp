@@ -12,6 +12,51 @@
 <script type="text/javascript" src="/meatmall/ckeditor/ckeditor.js"></script>
 <style type="text/css">
 	img{max-width: 700px; height: auto;}
+	
+.list-table {
+    margin:100px auto 0px auto;
+    
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: center;
+  padding:10px;               
+}
+
+.list-table th{
+   height:20px;
+   
+   border-bottom:1px solid #CCC;
+   font-weight: bold;
+   font-size: 15px;
+}
+.list-table td{
+
+   text-align:center;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
+.list-table .buttonsignup {
+    width: 15%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.list-table .actionbutton {
+    margin-top:0%;
+}	
+	
+	
 </style>
 
 <title></title>
@@ -29,9 +74,8 @@
 </head>
 <body>
 <jsp:include page="header.jsp" />
-<h1>1:1문의하기</h1>
-<div style="width:800px;">
-<table border="1">
+<div>
+<table class="list-table">
 	<col width="100px">
 	<col width="100px">
 	<col width="100px">
@@ -39,7 +83,7 @@
 	
 	<tr>
 		<th>작성자</th>
-		<td>${qdto.user_num}</td>
+		<td>${qdto.user_nick}</td>
 		<th>작성일</th>
 		<td><fmt:formatDate value="${qdto.question_regdate}" pattern="yyyy년MM월dd일"/></td>
 	</tr>
@@ -48,7 +92,7 @@
 		<td colspan="3">${qdto.question_title}</td>
 	</tr>
 	<tr>
-		<th>문의 내용</th>
+		<th style="border-right:1px solid #CCC;">문의 내용</th>
 		<td colspan="3" style="height: 400px;">
 			<div style="height: 100%;overflow: auto;">
 				${qdto.question_content}
@@ -59,17 +103,17 @@
 		<td colspan="4">
 			<c:choose>
 				<c:when test="${ldto.user_role eq 'ADMIN'}">
-					<input type="button" value="목록" 
+					<input type="button" value="목록" class="buttonsignup actionbutton"
 					          onclick="location.href='questionlist.do'"/>	
-					<button onclick="answerinsert()">문의 답글 달기</button>
+					<button class="buttonsignup actionbutton" onclick="answerinsert()">문의 답글 달기</button>
 				</c:when>
 				<c:otherwise>
 					<c:if test="${qdto.question_status == 0}">
-					<button onclick="questionupdateForm(${qdto.question_num})">수정</button>
-					<input type="button" value="삭제"
+					<button class="buttonsignup actionbutton" onclick="questionupdateForm(${qdto.question_num})">수정</button>
+					<input type="button" value="삭제" class="buttonsignup actionbutton"
 					          onclick="location.href='questiondelete.do?question_num=${qdto.question_num}'" />
 					</c:if>
-					<input type="button" value="목록"
+					<input type="button" value="목록" class="buttonsignup actionbutton"
 					          onclick="location.href='questionlist.do?user_num=${qdto.user_num}'"/>
 				</c:otherwise>
 			</c:choose>
@@ -77,13 +121,13 @@
 	</tr>
 </table>
 </div>
-
+<br/>
 <div id="awswerForm" style="display: ${qdto.question_status == 2 ? '' : 'none'};">
-<h1>1:1문의답글</h1>
+<h1 style="text-align: center;">1:1문의답글</h1>
 	<form action="answerinsert.do" method="post" >
 		<input type="hidden" name="question_num" value="${qdto.question_num}"/>
-		<div style="width:800px;">
-		<table border="1">
+		<div>
+		<table class="list-table">
 			<col width="100px">
 			<col width="700px">
 			<c:choose>
@@ -120,7 +164,7 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input type="submit" value="등록"/>
+							<input type="submit" class="buttonsignup actionbutton" value="등록"/>
 						</td>
 					</tr>
 				</c:otherwise>
@@ -129,6 +173,7 @@
 		</div>
 	</form>
 </div>
+<br/><br/>
 <script>
 //id가 ckeditor인 태그에 ckeditor를 적용시킴
 CKEDITOR.replace("ckeditor",{

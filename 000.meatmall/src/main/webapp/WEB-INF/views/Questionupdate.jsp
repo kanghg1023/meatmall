@@ -27,11 +27,61 @@ $(function(){
 	});
 });
 </script>
+
+<style type="text/css">
+
+.list-table {
+    margin:100px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  padding:10px;
+                 
+}
+
+.list-table th{
+   height:40px;
+   
+   border-bottom:1px solid #2AC37D;
+   font-weight: bold;
+   font-size: 17px;
+   
+}
+.list-table td{
+   
+   padding:15px 0;
+   border-bottom:1px solid #2AC37D; height:20px;
+   font-size: 14px
+   
+    
+}
+
+.list-table .buttonsignup {
+    width: 80px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.list-table .actionbutton {
+	margin-top:0%;
+}
+
+</style>
+
 </head>
 <body>
+<jsp:include page="header.jsp" />
 <form action="questionupdate.do" method="post">
 	<input type="hidden" name="question_num" value="${qdto.question_num}"/>
-	<table border="1">
+	<table class="list-table">
 		<tr>
 			<th>문의제목</th>
 			<td><input type="text" name="question_title" value="${qdto.question_title}"/></td>
@@ -42,7 +92,7 @@ $(function(){
 		</tr>
 		<tr>
 			<td colspan="2">
-				<input type="submit" value="수정완료"/>
+				<input type="submit" class="buttonsignup actionbutton" value="수정완료"/>
 			</td>
 		</tr>
 	</table>
