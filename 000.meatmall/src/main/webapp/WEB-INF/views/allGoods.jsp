@@ -90,7 +90,7 @@
             <div class="ps-widget__header">
               <h3>Category</h3>
             </div>
-                 
+               
             <div class="ps-widget__content">
               <ul class="ps-list--checked">
             <c:choose>
