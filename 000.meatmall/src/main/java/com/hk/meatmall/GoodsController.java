@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.hk.meatmall.dtos.BannerDto;
 import com.hk.meatmall.dtos.BasketDto;
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.CouponDto;
@@ -526,7 +527,8 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/insertOrder.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String insertOrder( Model model
+	public String insertOrder( HttpSession session
+							 , Model model
 							 , int user_num
 							 , String addr
 							 , String addrDetail
@@ -573,6 +575,8 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		
 		
 		if(isInsert && isCount && isDel && isUse) {
+			int basketCount = GoodsService.basketCount(user_num);
+			session.setAttribute("basketCount", basketCount);
 			return "redirect:allGoods.do?pnum=1";
 		}else {
 			model.addAttribute("msg", "주문 실패");
@@ -686,14 +690,15 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	@RequestMapping(value = "/stateUpdate.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String stateUpdate( HttpSession session
 							 , Model model
-						     , int order_num) {
+						     , int order_num
+						     , int chk) {
 		logger.info("배송상태변경");
 		
 		boolean isUpdate = GoodsService.stateUpdate(order_num);
 		
 		if(isUpdate) {
 			UserDto ldto = (UserDto)session.getAttribute("ldto");
-			if(ldto.getUser_role().equals("USER")) {
+			if(chk > 0) {
 				return "redirect:orderList.do?user_num="+ldto.getUser_num();
 			}else {
 				return "redirect:selOrderList.do?user_num="+ldto.getUser_num();
@@ -748,7 +753,34 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 
 	}
 	
-	
+	@RequestMapping(value = "/insertBanner.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String insertBanner( Model model
+							  , BannerDto dto
+							  , MultipartFile title_file) throws IOException, Exception {
+		logger.info("배너생성");
+
+		String imgUploadPath_T = uploadPath + File.separator + "imgUpload";
+		String ymdPath_T = UploadFileUtils_T.calcPath(imgUploadPath_T);
+		String fileName_T = null;
+
+		if(title_file != null) {
+			fileName_T = UploadFileUtils_T.fileUpload_T(imgUploadPath_T, title_file.getOriginalFilename(), title_file.getBytes(), ymdPath_T);
+		}else {
+			fileName_T = uploadPath + File.separator + "images" + File.separator + "none.png";
+		}
+
+		dto.setBanner_img_name("imgUpload" + ymdPath_T + File.separator + fileName_T);
+		
+		boolean isInsert = true;
+		
+		if(isInsert) {
+			return "redirect:adminCouponList.do";
+		}else {
+			model.addAttribute("msg", "추가 실패");
+			model.addAttribute("url", "insertCouponForm.do");
+			return "error";
+		}
+	}
 	
 }
 		
