@@ -17,23 +17,88 @@ $(function(){
 	});
 });
 </script>
+
+<style type="text/css" media="screen">
+
+body {
+        font-family: "Montserrat", sans-serif; font-size:0.75em; color:#333
+
+}
+
+.list-table {
+    margin:50px auto 0px auto;
+    margin-bottom: 10%;
+    
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: center;
+  padding:10px;               
+}
+
+.list-table th{
+   height:40px;
+   border-top:2px solid #2AC37D;
+   border-bottom:1px solid #CCC;
+   font-weight: bold;
+   font-size: 17px;
+}
+.list-table td{
+   text-align:center;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
+
+.list-table .buttonsignup {
+    width: 15%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.list-table .actionbutton {
+    margin-top:0%;
+}
+
+.mass{
+	text-align: left;
+	margin-left: 25%;
+	margin-top: 3%
+}
+
+	
+</style>
+
 </head>
 <body>
-<div id="header" class="header" style="outline: none;">
+
 	<jsp:include page="header.jsp" />
-</div>
-<dl>
-	<dt>쪽지</dt>
+
+<dl class="mass">
+	<dt style="font-size: 35px">쪽지</dt>
 	<dd>
-		<a href="messageList.do?user_num=${ldto.user_num}"><span>받은 쪽지함</span></a>
+		<a href="messageList.do?user_num=${ldto.user_num}" style="border-bottom:2px solid #2AC37D; font-size: 15px"><span>받은 쪽지함</span></a>
 	</dd>
 	<dd>
-		<a href="sendMessageList.do?message_from_num=${ldto.user_num}" class="category"><span>보낸 쪽지함</span></a>
+		<a href="sendMessageList.do?message_from_num=${ldto.user_num}" class="category" style="border-bottom:2px solid #2AC37D; font-size: 15px"><span>보낸 쪽지함</span></a>
 	</dd>
 </dl>
 
 <div>
-	<table border="1">
+	<table class="list-table">
+	<col width="100px" />
+	<col width="150px" />
+	<col width="400px" />
+	<col width="200px" />
 		<tr>
 			<th><input type="checkbox" name="all" onclick="allSel(this)" /></th>
 			<th>받는 사람</th>

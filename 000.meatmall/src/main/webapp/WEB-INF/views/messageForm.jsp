@@ -40,11 +40,61 @@
 		});
 	});
 </script>
+
+<style type="text/css" media="screen">
+
+.list-table {
+    margin:50px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  padding:10px;
+                 
+}
+
+.list-table th{
+   height:40px;
+   
+   border-bottom:1px solid #2AC37D;
+   font-weight: bold;
+   font-size: 17px;
+   
+}
+.list-table td{
+   
+   padding:15px 0;
+   border-bottom:1px solid #2AC37D; height:20px;
+   font-size: 14px
+   
+    
+}
+
+.list-table .buttonsignup {
+    width: 80px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.list-table .actionbutton {
+	margin-top:0%;
+}
+</style>
+
 </head>
 <body>
 <input type="hidden" id="message_from_num" value="${ldto.user_num}">
 <input type="hidden" id="user_num" value="${user_num}">
-<table border="1">
+<table class="list-table">
+	<col width="200px" />
+	<col width="500px" />
 	<tr>
 		<th>받는 사람</th>
 		<td>${user_nick}</td>
@@ -55,7 +105,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<input type="button" id="insert" value="쪽지 보내기"/>
+			<input type="button" id="insert" class="buttonsignup actionbutton" value="쪽지 보내기"/>
 		</td>
 	</tr>
 </table>

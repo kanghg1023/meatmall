@@ -237,6 +237,42 @@
 	margin-left:85% 
 }
 
+
+.buttonsignup2 {
+    width: 80px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.actionbutton2 {
+	margin-top:0%;
+	margin-left:85% 
+}
+
+#buttonsignup2{
+    width: 50px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #008AC5;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+    font-size: 14px;
+    margin-top: 1px;
+    
+
+}
+
 </style>
 </head>
 <body>
@@ -306,11 +342,11 @@
 							<c:when test="${cdto.comment_re_check > 0 && cdto.comment_delflag > 0}">
 								
 								<li class="comm">								
-									<strong>&nbsp;${dto.user_num}</strong>
+									<strong>&nbsp;${cdto.user_nick}</strong>
 									<fmt:formatDate value="${cdto.comment_regdate}" pattern="yyyy-MM-dd HH:mm"/>
-									<c:if test="${cdto.user_num eq ldto.user_num}">
-										<button type="button" onclick="delcomment(${cdto.comment_num})">삭제</button>
-										<button type="button" class="updatecommentForm" value="${cdto.comment_num}">수정</button>
+									<c:if test="${cdto.user_num == ldto.user_num}">
+										<button type="button" id="buttonsignup2" onclick="delcomment(${cdto.comment_num})">삭제</button>
+										<button type="button" id="buttonsignup2" class="updatecommentForm" value="${cdto.comment_num}">수정</button>
 									</c:if>
 								<p class="recomment">&nbsp;${cdto.comment_content}</p>
 								</li>
@@ -320,11 +356,11 @@
 									<strong>&nbsp;${cdto.user_nick}</strong>
 									<fmt:formatDate value="${cdto.comment_regdate}" pattern="yyyy-MM-dd HH:mm"/>
 									<c:if test="${ldto != null}">
-										<button type="button" class="recommentForm" value="${cdto.comment_num}">답글</button>
+										<button type="button" class="recommentForm" id="buttonsignup2" value="${cdto.comment_num}" >답글</button>
 									</c:if>
 									<c:if test="${cdto.user_num eq ldto.user_num}">
-										<button type="button" onclick="delcomment(${cdto.comment_num})">삭제</button>
-										<button type="button" class="updatecommentForm" value="${cdto.comment_num}">수정</button>
+										<button type="button" id="buttonsignup2" onclick="delcomment(${cdto.comment_num})">삭제</button>
+										<button type="button" class="updatecommentForm" id="buttonsignup2" value="${cdto.comment_num}">수정</button>
 									</c:if>
 								<p class="recomment" style="border-bottom : 0px solid #2AC37D;">&nbsp;${cdto.comment_content}</p>
 								
