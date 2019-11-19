@@ -57,6 +57,10 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		boolean isList = true;
 		int p = Integer.parseInt(pnum);
 		
+		if(p == 1) {
+			List<BoardDto> noticeList = boardService.noticeList();
+			session.setAttribute("noticeList", noticeList);
+		}
 		while(isList) {
 			if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
 				boardList = boardService.boardListPage(String.valueOf(p));
@@ -441,6 +445,53 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		return isDelete;
 	}
 	
+	//한우레시피
+	@RequestMapping(value = "/recipe.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String recipe() {
+		logger.info("한우레시피");
+		
+		return "recipe";
+	}
+	
+	@RequestMapping(value = "/myboardlist.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String myboardlist( HttpSession session
+						   , Model model
+						   , String pnum) {
+		logger.info("내가 쓴 글");
+		
+		UserDto ldto = (UserDto)session.getAttribute("ldto");
+		session.removeAttribute("readcount");
+		
+		if(pnum == null) {
+			pnum = (String)session.getAttribute("pnum");
+		}else {
+			session.setAttribute("pnum", pnum);
+		}
+		
+		List<BoardDto> myboardList = new ArrayList<>();
+		
+		Map<String, Integer> pmap = new HashMap<>();
+		boolean isList = true;
+		int p = Integer.parseInt(pnum);
+		
+		while(isList) {
+			myboardList = boardService.myboardList(ldto.getUser_num(),String.valueOf(p));
+			int pcount = boardService.myboardPcount(ldto.getUser_num());
+			pmap=Paging.pagingValue(pcount, pnum, 5);
+		
+			if((myboardList.size()>0) || (p==1 && myboardList.size()==0)) {
+				isList = false;
+			}else {
+				pnum = String.valueOf(--p);
+				session.setAttribute("pnum", pnum);
+			}
+		}
+		
+		model.addAttribute("myboardList", myboardList);
+		model.addAttribute("pmap", pmap);
+		return "myboardList";
+	}
+	
 	//쿠키로 페이징 - 참고자료 (아직 안씀)
 	@RequestMapping(value = "/pasing.do")
 	public String pasing( HttpServletRequest request
@@ -498,12 +549,5 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		}
 	}
 	
-	//한우레시피
-	@RequestMapping(value = "/recipe.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String recipe() {
-		logger.info("한우레시피");
-		
-		return "recipe";
-	}
-
+	
 }

@@ -117,7 +117,7 @@
         	</c:when>
         	<c:otherwise>
 	        	<c:forEach items="${noticeList}" var="dto">
-			        <p class="ps-service"><i class="ps-icon-delivery"></i><strong>[공지]</strong> ${dto.board_title}</p>
+			        <p class="ps-service"><i class="ps-icon-delivery"></i><a href="boarddetail.do?board_num=${dto.board_num}"><strong>[공지]</strong> ${dto.board_title}</a></p>
 		      	</c:forEach>
         	</c:otherwise>
         </c:choose>

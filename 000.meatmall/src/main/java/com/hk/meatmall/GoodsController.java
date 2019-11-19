@@ -726,6 +726,14 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 //		랜덤으로 배분
 //		CouponDto dto = GoodsService.couponDetail(coupon_num);
 //		GoodsService.insertUserCoupon(user_num, dto);
+//		List<CouponDto> coulist = GoodsService.adminCouponList(pnum);
+//        int ran = (int)(Math.random() * cards.size()) -1;
+//
+//        String get_Card = cards.get(ran);
+//
+//        cards.remove(ran);
+//
+//        System.out.println(get_Card);
 	}
 	
 	

@@ -396,11 +396,39 @@
 		   SET MESSAGE_FROM_DELFLAG = 0
 		 WHERE MESSAGE_NUM = #{message_num}
 	</update>
-	
-	
-	<select id="beBasket" parameterType="int" resultType="int">
-		SELECT COUNT(OPTION_NUM)
-		  FROM BASKET
-		 WHERE OPTION_NUM = #{option_num}
+
+<!-- 내가 쓴 글 목록 -->
+	<select id="myboardList" parameterType="Map" resultType="BoardDto">
+		SELECT BOARD_NUM
+			 , USER_NUM
+			 , BOARD_TITLE
+			 , BOARD_CONTENT
+			 , BOARD_REGDATE
+			 , BOARD_READCOUNT
+			 , BOARD_NOTICE
+			 , BOARD_DELFLAG
+		  FROM (
+		         SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NUM DESC) AS RN
+		              , BOARD_NUM
+					  , USER_NUM
+			 		  , BOARD_TITLE
+			 		  , BOARD_CONTENT
+			 		  , BOARD_REGDATE
+					  , BOARD_READCOUNT
+			 		  , BOARD_NOTICE
+			 		  , BOARD_DELFLAG
+		           FROM BOARD
+		          WHERE USER_NUM = #{user_num}
+		            AND BOARD_DELFLAG = 1
+		       )
+		 WHERE CEIL(RN/5) = #{pnum}
+	</select>
+
+<!-- 내가 쓴 글 페이징 -->
+	<select id="myboardPcount" parameterType="int" resultType="int">
+		SELECT CEIL(COUNT(BOARD_NUM)/5)
+		  FROM BOARD
+		 WHERE USER_NUM = #{user_num}
+		   AND BOARD_DELFLAG = 1
 	</select>
 </mapper>

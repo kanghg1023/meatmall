@@ -68,4 +68,9 @@ public interface IBoardService {
 	//보낸 쪽지삭제
 	public boolean deleteMessage2(int message_num);
 	
+	//내가 쓴 글 페이징
+	public int myboardPcount(int user_num);
+	//내가 쓴 글 목록
+	public List<BoardDto> myboardList(int user_num, String pnum);
+	
 }

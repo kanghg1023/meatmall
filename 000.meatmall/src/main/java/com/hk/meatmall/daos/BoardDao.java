@@ -191,6 +191,20 @@ public class BoardDao implements IBoardDao {
 		return count>0 ? true : false;
 	}
 
+	@Override
+	public int myboardPcount(int user_num) {
+		return sqlSession.selectOne(nameSpace+"myboardPcount",user_num);
+	}
+
+	@Override
+	public List<BoardDto> myboardList(int user_num, String pnum) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("user_num", user_num);
+		map.put("pnum", pnum);
+		
+		return sqlSession.selectList(nameSpace+"myboardList",map);
+	}
+
 	
 
 	

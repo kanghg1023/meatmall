@@ -105,7 +105,7 @@ body {
 					<td>${dto.question_num}</td>
 					<td>${dto.user_nick}</td>
 					<td><a href="questiondetail.do?question_num=${dto.question_num}" class="underline">${dto.question_title}</a></td>
-					<td><fmt:formatDate value="${dto.question_regdate}" pattern="yyyy년MM월dd일"/></td>
+					<td><fmt:formatDate value="${dto.question_regdate}" pattern="yy-MM-dd [hh:mm]"/></td>
 					<c:choose>
 						<c:when test="${dto.question_status == 2}">
 							<td>답변완료</td>

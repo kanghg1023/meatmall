@@ -296,31 +296,7 @@ $(function() {
                       <p>Soufflé danish gummi bears tart. Pie wafer icing. Gummies jelly beans powder. Chocolate bar pudding macaroon candy canes chocolate apple pie chocolate cake. Sweet caramels sesame snaps halvah bear claw wafer. Sweet roll soufflé muffin topping muffin brownie. Tart bear claw cake tiramisu chocolate bar gummies dragée lemon drops brownie.</p>
                     </div>
                   </div>
-                  <form action="addReview.do" method="post">
-                    <div class="row">
-                          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">                
-                            <div class="form-group">
-                              <label>별점<span></span></label>
-                              <select class="ps-rating">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 ">
-                            <div class="form-group">
-                              <label>리뷰 내용</label>
-                              <textarea class="form-control" rows="6"></textarea>
-                            </div>
-                            <div class="form-group">
-                              <input type="submit" value="등록" id="btn" class="ps-btn ps-btn--sm"/>                                 
-                            </div>
-                          </div>
-                    </div>
-                  </form>
+                  
                 </div>               
               </div>
             </div>

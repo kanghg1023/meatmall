@@ -614,7 +614,8 @@
 		  FROM BASKET
 		 WHERE USER_NUM = #{user_num}
 	</select>
-	
+
+<!-- 장바구니 존재여부 -->
 	<select id="beBasket">
 		SELECT COUNT(OPTION_NUM)
 		  FROM BASKET

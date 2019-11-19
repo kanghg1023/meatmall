@@ -75,8 +75,8 @@
             <div class="ps-widget__content">
               <ul class="ps-list--checked">                
                 <li class="current"><a href="myPage.do" class="myPage"><span>내 정보보기</span></a></li>
-                <li><a href="orderList.do?user_num=${ldto.user_num}" class="category"><span>1구매내역</span></a></li>
-                <li><a href="faqlist.do" class="faqlist"><span>알림</span></a></li>
+                <li><a href="orderList.do?user_num=${ldto.user_num}" class="category"><span>구매내역</span></a></li>
+                <li><a href="myboardlist.do?pnum=1" class="faqlist"><span>내가 쓴 글</span></a></li>
                 <li><a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a></li>        
               </ul>
             </div>

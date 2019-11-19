@@ -158,6 +158,16 @@ public class BoardService implements IBoardService {
 		return boardDao.deleteMessage2(message_num);
 	}
 
+	@Override
+	public int myboardPcount(int user_num) {
+		return boardDao.myboardPcount(user_num);
+	}
+
+	@Override
+	public List<BoardDto> myboardList(int user_num, String pnum) {
+		return boardDao.myboardList(user_num, pnum);
+	}
+
 	
 	
 
