@@ -318,8 +318,8 @@
 		  		  WHERE MESSAGE_TO_DELFLAG = 1
 		  	   ) M
 		 	 , USER_INFO U
-		 WHERE M.USER_NUM = U.USER_NUM
-		   AND U.USER_NUM = #{user_num}
+		 WHERE M.MESSAGE_FROM_NUM = U.USER_NUM
+		   AND M.USER_NUM = #{user_num}
 		   AND CEIL(M.RN/20) = #{pnum}
 	</select>
 	
@@ -341,7 +341,7 @@
 		  		  WHERE MESSAGE_FROM_DELFLAG = 1
 		  	   ) M
 		 	 , USER_INFO U
-		 WHERE M.MESSAGE_FROM_NUM = U.USER_NUM
+		 WHERE M.USER_NUM = U.USER_NUM
 		   AND M.MESSAGE_FROM_NUM = #{message_from_num}
 		   AND CEIL(M.RN/20) = #{pnum}
 	</select>

@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hk.meatmall.dtos.BannerDto;
 import com.hk.meatmall.dtos.BasketDto;
 import com.hk.meatmall.dtos.CouponDto;
 import com.hk.meatmall.dtos.GoodsDto;
@@ -395,6 +396,27 @@ public class GoodsDao implements IGoodsDao {
 	@Override
 	public List<Integer> AllCouponList() {
 		return sqlSession.selectList(nameSpace+"AllCouponList");
+	}
+
+	@Override
+	public int bannerPcount() {
+		return sqlSession.selectOne(nameSpace+"bannerPcount");
+	}
+
+	@Override
+	public List<BannerDto> bannerList(String pnum) {
+		return sqlSession.selectList(nameSpace+"bannerList", pnum);
+	}
+
+	@Override
+	public boolean insertBanner(BannerDto dto) {
+		int count = sqlSession.insert(nameSpace+"insertBanner",dto);
+		return count>0 ? true : false;
+	}
+
+	@Override
+	public List<BannerDto> mainBanner() {
+		return sqlSession.selectList(nameSpace+"mainBanner");
 	}
 
 	

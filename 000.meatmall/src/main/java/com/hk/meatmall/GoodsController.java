@@ -77,6 +77,20 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			session.setAttribute("noticeList", noticeList);
 		}
 		
+		//배너
+		if(session.getAttribute("mainBanner") == null) {
+			List<BannerDto> mainBanner = GoodsService.mainBanner();
+			
+			while(mainBanner.size()<4) {
+				BannerDto dto = new BannerDto();
+				dto.setBanner_num(0);
+				dto.setBanner_name("고기고기괴기");
+				dto.setBanner_img_name("img\\logo9.png");
+				mainBanner.add(dto);
+			}
+			session.setAttribute("mainBanner", mainBanner);
+		}
+		
 		List<GoodsDto> mainList = GoodsService.getMainList();
 		
 		model.addAttribute("mainList",mainList);
@@ -753,6 +767,32 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 
 	}
 	
+	@RequestMapping(value = "/bannerList.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String bannerList(HttpSession session, Model model, String pnum) {
+		logger.info("배너 목록");
+		
+		if(pnum==null) {
+			pnum=(String)session.getAttribute("pnum");
+		}else {
+			session.setAttribute("pnum", pnum);
+		}
+		
+		int pcount = GoodsService.bannerPcount();
+		Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
+		List<BannerDto> bannerlist = GoodsService.bannerList(pnum);
+
+		model.addAttribute("map",map);
+		model.addAttribute("bannerlist", bannerlist);
+		return "bannerList";
+	}
+	
+	@RequestMapping(value = "/insertBannerForm.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String insertBannerForm(Model model) {
+		logger.info("배너생성폼으로");
+
+		return "insertBannerForm";
+	}
+	
 	@RequestMapping(value = "/insertBanner.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String insertBanner( Model model
 							  , BannerDto dto
@@ -771,10 +811,10 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 
 		dto.setBanner_img_name("imgUpload" + ymdPath_T + File.separator + fileName_T);
 		
-		boolean isInsert = true;
+		boolean isInsert = GoodsService.insertBanner(dto);
 		
 		if(isInsert) {
-			return "redirect:adminCouponList.do";
+			return "redirect:bannerList.do";
 		}else {
 			model.addAttribute("msg", "추가 실패");
 			model.addAttribute("url", "insertCouponForm.do");

@@ -2,6 +2,7 @@ package com.hk.meatmall.idaos;
 
 import java.util.List;
 
+import com.hk.meatmall.dtos.BannerDto;
 import com.hk.meatmall.dtos.BasketDto;
 import com.hk.meatmall.dtos.CouponDto;
 import com.hk.meatmall.dtos.GoodsDto;
@@ -114,4 +115,15 @@ public interface IGoodsDao {
 	public int basketCount(int user_num);
 	//장바구니에 존재하는지 체크
 	public boolean beBasket(int option_num);
+	
+	//배너 페이징
+	public int bannerPcount();
+	//배너 리스트
+	public List<BannerDto> bannerList(String pnum);
+	//배너 등록
+	public boolean insertBanner(BannerDto dto);
+	
+	//메인 배너
+	public List<BannerDto> mainBanner();
+	
 }

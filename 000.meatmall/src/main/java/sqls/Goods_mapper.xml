@@ -81,13 +81,13 @@
 	
 <!-- 전체 페이지 수 -->         
 	<select id="allPcount" resultType="int">
-		SELECT CEIL(COUNT(*)/6)
+		SELECT CEIL(COUNT(GOODS_NUM)/6)
 		  FROM GOODS
 	</select>
 	
 <!-- 전체 페이지 수 (삭제여부) -->         
 	<select id="enabledPcount" resultType="int">
-		SELECT CEIL(COUNT(*)/6)
+		SELECT CEIL(COUNT(GOODS_NUM)/6)
 		  FROM GOODS
 		 WHERE GOODS_DELFLAG = 1
 	</select>
@@ -174,7 +174,7 @@
 	</select>
 	
 	<sql id="pcount">
-		SELECT CEIL(COUNT(*)/6)
+		SELECT CEIL(COUNT(GOODS_NUM)/6)
 		  FROM GOODS
 		 WHERE KIND_NUM = #{kind_num}
 	</sql>
@@ -445,7 +445,7 @@
 	
 <!-- 쿠폰페이징  -->
 	<select id="CouponPcount" resultType="int">
-		SELECT CEIL(COUNT(*)/6)
+		SELECT CEIL(COUNT(COUPON_NUM)/6)
 		  FROM COUPON
 	</select>
 	
@@ -625,5 +625,59 @@
 	<select id="AllCouponList" resultType="int">
 		SELECT COUPON_NUM
           FROM COUPON
+	</select>
+	
+<!-- 배너페이징  -->
+	<select id="bannerPcount" resultType="int">
+		SELECT CEIL(COUNT(BANNER_NUM)/6)
+		  FROM BANNER
+		 WHERE BANNER_END_DATE > SYSDATE
+	</select>
+	
+	<select id="bannerList" parameterType="String" resultType="BannerDto">
+		SELECT BANNER_NUM
+			 , BANNER_NAME
+			 , BANNER_IMG_NAME
+			 , BANNER_REGIST_DATE
+			 , BANNER_END_DATE
+		  FROM (
+			     SELECT ROW_NUMBER() OVER (ORDER BY BANNER_NUM DESC) AS RN
+					  , BANNER_NUM
+					  , BANNER_NAME
+					  , BANNER_IMG_NAME
+					  , BANNER_REGIST_DATE
+					  , BANNER_END_DATE
+				   FROM BANNER
+				  WHERE BANNER_END_DATE > SYSDATE
+			   )
+		 WHERE CEIL(RN/6) = #{pnum}
+	</select>
+	
+	<insert id="insertBanner" parameterType="BannerDto">
+		INSERT INTO BANNER
+		VALUES (
+				 BANNER_SEQ.NEXTVAL
+			   , #{banner_name}
+			   , #{banner_img_name}
+			   , SYSDATE
+			   , SYSDATE + 7
+			   )
+	</insert>
+	
+	<select id="mainBanner" resultType="BannerDto">
+		<![CDATA[
+			SELECT BANNER_NUM
+				 , BANNER_NAME
+				 , BANNER_IMG_NAME
+			  FROM (
+					 SELECT ROW_NUMBER() OVER (ORDER BY BANNER_END_DATE) AS RN
+						  , BANNER_NUM
+						  , BANNER_NAME
+						  , BANNER_IMG_NAME
+					   FROM BANNER
+					  WHERE BANNER_END_DATE > SYSDATE
+				   )
+			 WHERE RN < 5
+		 ]]>
 	</select>
 </mapper>

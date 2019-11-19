@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hk.meatmall.dtos.BannerDto;
 import com.hk.meatmall.dtos.BasketDto;
 import com.hk.meatmall.dtos.CouponDto;
 import com.hk.meatmall.dtos.GoodsDto;
@@ -298,6 +299,26 @@ public class GoodsService implements IGoodsService {
 	@Override
 	public List<Integer> AllCouponList() {
 		return GoodsDao.AllCouponList();
+	}
+
+	@Override
+	public int bannerPcount() {
+		return GoodsDao.bannerPcount();
+	}
+
+	@Override
+	public List<BannerDto> bannerList(String pnum) {
+		return GoodsDao.bannerList(pnum);
+	}
+
+	@Override
+	public boolean insertBanner(BannerDto dto) {
+		return GoodsDao.insertBanner(dto);
+	}
+
+	@Override
+	public List<BannerDto> mainBanner() {
+		return GoodsDao.mainBanner();
 	}
 	
 }

@@ -22,10 +22,9 @@
   <input type="radio" name="pos" id="pos3">
   <input type="radio" name="pos" id="pos4">
   <ul>
-    <li><a href="#"><img src="img/gogi.jpg" style="display: block; margin-left: auto ; margin-right: auto; height:400px;"></a></li>
-    <li><a href="#"><img src="img/coupon.png" style="display: block; margin-left: auto ; margin-right: auto; height:400px;"></a></li>
-    <li></li>
-    <li></li>
+  	<c:forEach items="${mainBanner}" var="dto">
+  		<li><a href="#"><img src="${dto.banner_img_name}" style="display: block; margin-left: auto ; margin-right: auto; height:400px;"></a></li>
+  	</c:forEach>
   </ul>
   <p class="pos">
     <label for="pos1"></label>

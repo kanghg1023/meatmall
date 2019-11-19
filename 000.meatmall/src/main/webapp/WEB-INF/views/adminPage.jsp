@@ -19,7 +19,7 @@
 		<a href="adminCouponList.do?pnum=1"><span>쿠폰관리</span></a>
 	</dd>
 	<dd>
-		<a href="bannerAdmin"><span>배너관리</span></a>
+		<a href="bannerList.do?pnum=1"><span>배너관리</span></a>
 	</dd>
 </dl>
 </body>
