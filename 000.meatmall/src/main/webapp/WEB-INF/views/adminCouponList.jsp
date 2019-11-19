@@ -7,10 +7,69 @@
 <head>
 <meta charset="UTF-8">
 <title>쿠폰 관리 페이지</title>
+
+<style type="text/css">
+
+
+body {
+        font-family: "Montserrat", sans-serif; font-size:0.75em; color:#333
+
+}
+
+.list-table {
+    margin:50px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: center;
+  padding:10px;               
+}
+
+.list-table th{
+   height:40px;
+   width: 200px;
+   border-top:2px solid #2AC37D;
+   border-bottom:1px solid #CCC;
+   font-weight: bold;
+   font-size: 17px;
+}
+.list-table td{
+   text-align:center;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
+.list-table .buttonsignup {
+    width: 15%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+    
+}
+
+.list-table .actionbutton {
+	
+    margin-top:0%;
+}
+
+
+
+</style>
+
 </head>
 <body>
 <jsp:include page="header.jsp" />
-<table border="1">
+<table class="list-table">
+	
+	
 	<tr>
 		<th>쿠폰 이미지</th>
 		<th>쿠폰명</th>
@@ -52,9 +111,11 @@
 	
 	<tr>
 		<td colspan="4">
-			<input type="button" value="쿠폰생성" onclick="location.href='insertCouponForm.do'" />
+			<input type="button" value="쿠폰생성" class="buttonsignup actionbutton" onclick="location.href='insertCouponForm.do'" />
 		</td>
 	</tr>
 </table>
+<br/><br/>
+<jsp:include page="footer.jsp" />
 </body>
 </html>
