@@ -7,14 +7,46 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
+
+<style type="text/css" media="screen">
+
+.list-table {
+    margin:0px auto 50px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  padding:10px;
+                 
+}
+
+.list-table th{
+   height:40px;
+   
+   border-bottom:1px solid #2AC37D;
+   font-weight: bold;
+   font-size: 17px;
+   
+}
+.list-table td{
+   
+   padding:15px 0;
+   border-bottom:1px solid #2AC37D; height:20px;
+   font-size: 14px
+   
+    
+}
+
+</style>
+
 </head>
 <body>
 <jsp:include page="header.jsp" />
 
-<h3>"${search_word}" 검색 결과입니다.</h3>
+<h3 style="text-align: center;">"${search_word}" 검색 결과입니다.</h3>
 
-<h4>카테고리</h4>
-<table border="1">
+<h4 style="text-align: center;">카테고리</h4>
+<table class="list-table">
 	<c:choose>
 		<c:when test="${empty caList}">
 			<tr>
@@ -31,8 +63,8 @@
 	</c:choose>
 </table>
 
-<h4>상품</h4>
-<table border="1">
+<h4 style="text-align: center;">상품</h4>
+<table class="list-table">
 	<c:choose>
 		<c:when test="${empty goodsList}">
 			<tr>
@@ -51,8 +83,8 @@
 	</c:choose>
 </table>
 
-<h4>게시판</h4>
-<table border="1">
+<h4 style="text-align: center;">게시판</h4>
+<table class="list-table">
 	<c:choose>
 		<c:when test="${empty bList}">
 			<tr>
