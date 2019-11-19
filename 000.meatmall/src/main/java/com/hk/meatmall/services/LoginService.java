@@ -118,5 +118,15 @@ public class LoginService implements ILoginService {
 	public int userPcount() {
 		return loginDao.userPcount();
 	}
+
+	@Override
+	public UserDto adminUserInfo(int user_num) {
+		return loginDao.adminUserInfo(user_num);
+	}
+
+	@Override
+	public boolean userStop(int user_num) {
+		return loginDao.userStop(user_num);
+	}
 	
 }

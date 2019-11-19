@@ -237,4 +237,29 @@
 		SELECT CEIL(COUNT(*)/10)
 		  FROM USER_INFO
 	</select>
+	
+	<select id="adminUserInfo" parameterType="int" resultType="UserDto">
+		SELECT USER_NUM
+			 , USER_ID
+			 , USER_NAME
+			 , USER_NICK
+			 , USER_PH
+			 , USER_ADDR
+			 , USER_ADDR_DETAIL
+			 , USER_EMAIL
+			 , USER_ENABLED
+			 , USER_BUSINESSNUM
+			 , LICENSE_LEVEL
+			 , USER_ROLE
+			 , USER_STOP_DATE
+		  FROM USER_INFO
+		 WHERE USER_NUM = #{user_num}
+	</select>
+	
+	<update id="userStop">
+		UPDATE USER_INFO
+		   SET USER_STOP_DATE = SYSDATE+(1/24/60)
+			 , USER_ENABLED = 2
+		 WHERE USER_NUM = #{user_num}
+	</update>
 </mapper>

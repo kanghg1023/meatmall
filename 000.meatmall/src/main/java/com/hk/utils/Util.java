@@ -15,7 +15,7 @@ import com.hk.meatmall.dtos.BasketDto;
 public class Util {
 	
 	public static String dateFormatChange(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 HH시mm분");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일 HH시mm분ss초");
 		
 		return sdf.format(date);
 	}

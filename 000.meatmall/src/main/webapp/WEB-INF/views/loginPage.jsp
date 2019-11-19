@@ -100,6 +100,12 @@
 
 <jsp:include page="header.jsp" />
 
+<c:if test="${loginError != null}">
+	<script type="text/javascript">
+		alert("${loginError}"); 
+	</script>
+</c:if>
+
 <div class="container-fluid">
    <form action="login.do" method="post" class="paypal-form">
         <div class="logo text-center">

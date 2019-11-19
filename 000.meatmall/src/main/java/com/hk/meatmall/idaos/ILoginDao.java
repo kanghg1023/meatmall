@@ -29,4 +29,9 @@ public interface ILoginDao {
 	// ㄴ페이지수
 	public int userPcount();
 	
+	//관리자가보는 유저정보
+	public UserDto adminUserInfo(int user_num);
+	//유저 정지
+	public boolean userStop(int user_num);
+	
 }

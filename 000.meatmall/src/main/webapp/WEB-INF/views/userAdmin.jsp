@@ -79,6 +79,17 @@ body {
 }
 	
 </style>
+<script type="text/javascript">
+	$(function(){
+		
+		$(".user").click(function(){
+			var user_num = $(this).prev().val();
+			
+			location.href = "adminUserInfo.do?user_num="+user_num
+		});
+		
+	});
+</script>
 </head>
 <body>
 <!-- <div id="header" class="header" style="outline: none;"> -->
@@ -112,7 +123,8 @@ body {
 								${dto.user_nick}
 							</c:when>
 							<c:otherwise>
-								<a href="#">${dto.user_nick}(${dto.user_id})</a>
+								<input type="hidden" value="${dto.user_num}" />
+								<a class="user">${dto.user_nick}(${dto.user_id})</a>
 							</c:otherwise>
 						</c:choose>
 					</td>

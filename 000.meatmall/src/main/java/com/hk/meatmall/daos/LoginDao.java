@@ -189,6 +189,18 @@ public class LoginDao implements ILoginDao {
 		return sqlSession.selectOne(nameSpace+"userPcount");
 	}
 
+	@Override
+	public UserDto adminUserInfo(int user_num) {
+		return sqlSession.selectOne(nameSpace+"adminUserInfo",user_num);
+	}
+
+	@Override
+	public boolean userStop(int user_num) {
+		int count = 0;
+		count = sqlSession.update(nameSpace+"userStop",user_num);
+		return count>0 ? true : false;
+	}
+
 	
 	
 }

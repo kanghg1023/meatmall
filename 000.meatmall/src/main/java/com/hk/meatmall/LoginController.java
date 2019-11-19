@@ -68,8 +68,9 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 			boolean isLogin = loginService.idLockCheck(user_num);
 			
 			if(isLogin){
-				UserDto ldto = loginService.login(user_id,user_pw);
 				loginService.stopClear(user_id);
+				UserDto ldto = loginService.login(user_id,user_pw);
+				
 				if(ldto == null) {
 					//비밀번호 틀림
 					loginService.loginFail(user_num);
@@ -345,8 +346,16 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	}
 	
 	@RequestMapping(value = "/userAdmin.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String userAdmin(Model model, String pnum) {
+	public String userAdmin( HttpSession session
+						   , Model model
+						   , String pnum) {
 		logger.info("회원 관리페이지");
+		
+		if(pnum == null) {
+			pnum = (String)session.getAttribute("pnum");
+		}else {
+			session.setAttribute("pnum", pnum);
+		}
 		
 		List<UserDto> userlist = loginService.userlist(pnum);
 		int pcount = loginService.userPcount();
@@ -355,6 +364,27 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		model.addAttribute("userlist", userlist);
 		model.addAttribute("pmap", pmap);
 		return "userAdmin";
+	}
+	
+	@RequestMapping(value = "/adminUserInfo.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String adminUserInfo(Model model, int user_num) {
+		logger.info("회원 관리페이지");
+		
+		UserDto udto = loginService.adminUserInfo(user_num);
+		System.out.println("udto = "+udto);
+		
+		model.addAttribute("udto", udto);
+		return "adminUserInfo";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/userStop.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public boolean userStop(Model model, int user_num) {
+		logger.info("회원 정지");
+		
+		boolean isStop = loginService.userStop(user_num);
+		
+		return isStop;
 	}
 	
 }
