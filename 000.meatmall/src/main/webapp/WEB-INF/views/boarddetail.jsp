@@ -153,26 +153,29 @@
 
 .list-table, .list-table th , .list-table td{         
 
-  text-align: center;
-  padding:10px;               
+  padding:10px;
+                 
 }
 
 .list-table th{
-   height:20px;
+   height:40px;
    
-   border-bottom:1px solid #CCC;
+   border-bottom:1px solid #2AC37D;
    font-weight: bold;
-   font-size: 15px;
+   font-size: 17px;
+   
 }
 .list-table td{
-   text-align:center;
-   padding:10px 0;
-   border-bottom:1px solid #CCC; height:20px;
-   font-size: 14px 
+   
+   padding:15px 0;
+   border-bottom:1px solid #2AC37D; height:20px;
+   font-size: 14px
+   
+    
 }
 
 .list-table .buttonsignup {
-    width: 15%;
+    width: 80px;
     height: 30px;
     padding: 0;
     border: 0;
@@ -185,7 +188,7 @@
 }
 
 .list-table .actionbutton {
-    margin-top:0%;
+	margin-top:0%;
 }
 
 .commentlist{         
@@ -216,8 +219,23 @@
 		
 }
 
+.buttonsignup2 {
+    width: 80px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
 
-
+.actionbutton2 {
+	margin-top:0%;
+	margin-left:85% 
+}
 
 </style>
 </head>
@@ -239,7 +257,7 @@
 	</tr>
 	<tr>
 		<th>작성자</th>
-		<td>${boarddto.user_num}</td>
+		<td>${boarddto.user_nick}</td>
 	</tr>
 	<tr>
 		<th>제목</th>
@@ -288,7 +306,7 @@
 							<c:when test="${cdto.comment_re_check > 0 && cdto.comment_delflag > 0}">
 								
 								<li class="comm">								
-									<strong>&nbsp;${cdto.user_num}</strong>
+									<strong>&nbsp;${dto.user_num}</strong>
 									<fmt:formatDate value="${cdto.comment_regdate}" pattern="yyyy-MM-dd HH:mm"/>
 									<c:if test="${cdto.user_num eq ldto.user_num}">
 										<button type="button" onclick="delcomment(${cdto.comment_num})">삭제</button>
@@ -299,7 +317,7 @@
 								&nbsp;
 							</c:when>							
 							<c:when test="${cdto.comment_re_check == 0 && cdto.comment_delflag > 0}">
-									<strong>&nbsp;${cdto.user_num}</strong>
+									<strong>&nbsp;${cdto.user_nick}</strong>
 									<fmt:formatDate value="${cdto.comment_regdate}" pattern="yyyy-MM-dd HH:mm"/>
 									<c:if test="${ldto != null}">
 										<button type="button" class="recommentForm" value="${cdto.comment_num}">답글</button>
@@ -317,16 +335,18 @@
 					</div>
 				</c:forEach>
 			</c:if>
+			<br/>
 			<c:if test="${boarddto != null}">
 				<div style="width: 600px; margin: 0 auto;" >
 					<textarea rows="2" cols="75" name="comment_content" ></textarea>
-					<input type="submit" value="등록" id="btn" />
+					<input type="submit" value="등록" id="btn" class="buttonsignup2 actionbutton2" />
 				</div>
 			</c:if>
 		</c:if>
 	</form>
 </div>
 </div>
+<br/><br/>
 <jsp:include page="footer.jsp" /> 
 </body>
 </html>

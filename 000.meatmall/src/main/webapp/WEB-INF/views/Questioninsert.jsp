@@ -35,16 +35,65 @@ $(function(){
 	});
 });
 </script>
+
+<style type="text/css">
+
+.list-table {
+    margin:100px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  padding:10px;
+                 
+}
+
+.list-table th{
+   height:40px;
+   
+   border-bottom:1px solid #2AC37D;
+   font-weight: bold;
+   font-size: 17px;
+   
+}
+.list-table td{
+   
+   padding:15px 0;
+   border-bottom:1px solid #2AC37D; height:20px;
+   font-size: 14px
+   
+    
+}
+
+.list-table .buttonsignup {
+    width: 80px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.list-table .actionbutton {
+	margin-top:0%;
+}
+
+</style>
+
 </head>
 <body>
 <jsp:include page="header.jsp" />
-<h1>1:1문의글 추가하기</h1>
+
 <form action="questioninsert.do" method="post" >
 	<input type="hidden" name="user_num" value="${ldto.user_num}"/>
-	<table border="1">
+	<table class="list-table">
 		<tr>
 			<th>작성자</th>
-			<td>${ldto.user_num}</td>
+			<td>${ldto.user_nick}</td>
 		</tr>
 		<tr>
 			<th>문의제목</th>
@@ -56,13 +105,14 @@ $(function(){
 		</tr>
 		<tr>
 			<td colspan="2">
-				<input type="submit" value="글등록"/>
-				<input type="button" value="목록" 
+				<input type="submit" class="buttonsignup actionbutton" value="글등록"/>
+				<input type="button" class="buttonsignup actionbutton" value="목록" 
 				          onclick="location.href='questionlist.do?user_num=${ldto.user_num}'"/>
 			</td>
 		</tr>
 	</table>
 </form>
+<br/><br/>
 <script>
 //id가 ckeditor인 태그에 ckeditor를 적용시킴
 CKEDITOR.replace("ckeditor",{

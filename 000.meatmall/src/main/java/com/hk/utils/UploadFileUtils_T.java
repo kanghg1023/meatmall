@@ -24,7 +24,7 @@ public class UploadFileUtils_T {
   File target = new File(imgPath, newFileName);
   
   FileCopyUtils.copy(fileData, target);
-
+  
   return newFileName;
  }
 

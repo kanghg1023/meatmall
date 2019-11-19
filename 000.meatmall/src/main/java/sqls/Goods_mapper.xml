@@ -614,4 +614,10 @@
 		  FROM BASKET
 		 WHERE USER_NUM = #{user_num}
 	</select>
+	
+	<select id="beBasket">
+		SELECT COUNT(OPTION_NUM)
+		  FROM BASKET
+		 WHERE OPTION_NUM = #{option_num}
+	</select>
 </mapper>
