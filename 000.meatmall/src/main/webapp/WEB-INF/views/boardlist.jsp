@@ -193,6 +193,7 @@ body {
 		</td>
 	</tr>
 </table>
+<br/><br/>
 <jsp:include page="footer.jsp" /> 
 </body>
 </html>
