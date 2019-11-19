@@ -388,8 +388,12 @@ public class GoodsDao implements IGoodsDao {
 	}
 
 	@Override
-	public boolean beBasket(int option_num) {
-		int count = sqlSession.selectOne(nameSpace+"beBasket", option_num);
+	public boolean beBasket(int user_num, int option_num) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("user_num", user_num);
+		map.put("option_num", option_num);
+		
+		int count = sqlSession.selectOne(nameSpace+"beBasket", map);
 		return count>0 ? true : false;
 	}
 

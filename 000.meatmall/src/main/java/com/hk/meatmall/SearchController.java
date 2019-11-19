@@ -39,11 +39,30 @@ public class SearchController {
 			}
 		}
 		
-		model.addAttribute("search_word",search_word);
-		model.addAttribute("caList",caList);
-		model.addAttribute("goodsList",goodsList);
-		model.addAttribute("bList",bList);
-		return "searchResult";
+		//검색된적 있는지 체크
+		boolean isBe = SearchService.beSearch(search_word);
+		boolean isSearch = true;
+		
+		if(isBe) {
+			//검색 횟수 증가
+			isSearch = SearchService.addSearch(search_word);
+		}else {
+			//새로운 단어 추가
+			isSearch = SearchService.addWord(search_word);
+		}
+		
+		if(isSearch){
+			model.addAttribute("search_word",search_word);
+			model.addAttribute("caList",caList);
+			model.addAttribute("goodsList",goodsList);
+			model.addAttribute("bList",bList);
+			return "searchResult";
+		}else {
+			model.addAttribute("msg", "검색 실패");
+			model.addAttribute("url", "main.do");
+			return "error";
+		}
+		
 	}
 	
 

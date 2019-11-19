@@ -140,7 +140,7 @@ public interface IGoodsService {
 	//장바구니 담겨있는갯수
 	public int basketCount(int user_num);
 	//장바구니에 존재하는지 체크
-	public boolean beBasket(int option_num);
+	public boolean beBasket(int user_num, int option_num);
 	
 	//배너 페이징
 	public int bannerPcount();

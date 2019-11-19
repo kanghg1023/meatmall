@@ -60,5 +60,12 @@
 		   AND CEIL(B.RN/5) = 1
 	</select>
 	
+	<select id="beSearch" parameterType="String" resultType="int">
+		SELECT COUNT(SEARCH_WORD)
+		  FROM SEARCH
+		 WHERE SEARCH_WORD = #{search_word}
+	</select>
+	
+	
 	
 </mapper>

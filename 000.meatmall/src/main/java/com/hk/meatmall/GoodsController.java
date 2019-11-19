@@ -477,7 +477,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		bDto.setGoods_num(goods_num);
 		
 		for(int i=0;i<option_num.size();i++) {
-			boolean isBe = GoodsService.beBasket(option_num.get(i));
+			boolean isBe = GoodsService.beBasket(user_num,option_num.get(i));
 			if(isBe) {
 				isInsert = true;
 			}else {

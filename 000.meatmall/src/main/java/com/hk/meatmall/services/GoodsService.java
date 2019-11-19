@@ -292,8 +292,8 @@ public class GoodsService implements IGoodsService {
 	}
 
 	@Override
-	public boolean beBasket(int option_num) {
-		return GoodsDao.beBasket(option_num);
+	public boolean beBasket(int user_num, int option_num) {
+		return GoodsDao.beBasket(user_num, option_num);
 	}
 
 	@Override
