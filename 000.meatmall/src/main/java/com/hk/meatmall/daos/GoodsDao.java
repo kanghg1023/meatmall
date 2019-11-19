@@ -388,7 +388,7 @@ public class GoodsDao implements IGoodsDao {
 
 	@Override
 	public boolean beBasket(int option_num) {
-		int count = sqlSession.insert(nameSpace+"beBasket", option_num);
+		int count = sqlSession.selectOne(nameSpace+"beBasket", option_num);
 		return count>0 ? true : false;
 	}
 

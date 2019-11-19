@@ -37,5 +37,7 @@ public class ReviewDto {
 	private String goods_title;
 	//옵션명
 	private String option_name;
+	//
+	private String user_nick;
 	
 }

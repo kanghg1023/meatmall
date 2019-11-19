@@ -73,6 +73,11 @@ margin:10px;
 $(function() {
    
    $("#basket").click(function() {
+	  if(${ldto.user_id == null}){
+	     location.href = "loginPage.do";
+	     return false;
+	  }
+	  
       if($("#optionSelect").val() == "") {
          alert("옵션을 선택해주세요!");
          return false;
@@ -80,8 +85,6 @@ $(function() {
       
       var option_num = $(".option_num").get();
       var basket_count = $(".basket_count").get();
-      
-      alert(basket_count[0].value+","+option_num[0].value);
       
       var optionArray = [];
       var countArray = [];
@@ -106,8 +109,13 @@ $(function() {
          success:function(insertBasket){
         	 var a = insertBasket.split(",");
             if(a[0]){
-               alert("추가했습니다.");
-               $("#basketCount").html(a[1]); 
+               var basketCount = $("#basketCount").html();
+               if(eval(basketCount)==eval(a[1])){
+            	   alert("이미 장바구니에 담긴 옵션입니다.")
+               }else{
+            	   alert("추가했습니다.");
+                   $("#basketCount").html(a[1]);    
+               }
             }else {
                alert("error:추가실패");
             }
@@ -178,7 +186,6 @@ $(function() {
       
       sum.val(eval(sum.val())-(weight/100*${gDto.goods_cost}));
    });
-   
 });   
 </script>
 </head>
@@ -279,22 +286,37 @@ $(function() {
                   <p style="text-align: center;">${gDto.goods_img_detail}</p>
                 </div>
                 <div class="tab-pane" role="tabpanel" id="tab_02">
-                  <p class="mb-20"><strong>상품 리뷰</strong></p>
                   <div class="ps-review">
                     <div class="ps-review__thumbnail"><img src="images/user/1.jpg" alt=""></div>
-                    <div class="ps-review__content">
-                      <header>
-                        <select class="ps-rating">
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                        </select>
-                        <p>By<a href=""> Alena Studio</a> - November 25, 2017</p>
-                      </header>
-                      <p>Soufflé danish gummi bears tart. Pie wafer icing. Gummies jelly beans powder. Chocolate bar pudding macaroon candy canes chocolate apple pie chocolate cake. Sweet caramels sesame snaps halvah bear claw wafer. Sweet roll soufflé muffin topping muffin brownie. Tart bear claw cake tiramisu chocolate bar gummies dragée lemon drops brownie.</p>
-                    </div>
+                    <c:choose>
+                    	<c:when test="${empty rList}">
+                    		
+                    	</c:when>
+                    	<c:otherwise>
+                    		<c:forEach items="${rList}" var="dto">
+                    			<div class="ps-review__content">
+			                      <header>
+			                        <select class="ps-rating">
+			                        	<c:forEach var="i" begin="1" end="5" step="1" >
+			                        		<c:choose>
+			                        			<c:when test="${i==dto.review_score}">
+			                        				<option value="${i}" selected>${i}</option>
+			                        			</c:when>
+			                        			<c:otherwise>
+			                        				<option value="${i}">${i}</option>
+			                        			</c:otherwise>
+			                        		</c:choose>
+			                        	</c:forEach>
+			                        </select>
+			                        <p>By<a href="#">${dto.user_nick}</a><fmt:formatDate value="${dto.review_date}" pattern="yy-MM-dd [hh:mm]"/></p>
+			                      </header>
+			                      <p>${dto.review_content}</p>
+			                    </div>
+                    		</c:forEach>
+                    	</c:otherwise>
+                    </c:choose>
+                    
+                    
                   </div>
                   
                 </div>               

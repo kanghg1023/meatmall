@@ -76,6 +76,9 @@
               <ul class="ps-list--checked">                
                 <li class="current"><a href="myPage.do" class="myPage"><span>내 정보보기</span></a></li>
                 <li><a href="orderList.do?user_num=${ldto.user_num}" class="category"><span>구매내역</span></a></li>
+                <c:if test="${ldto.user_role ne 'USER'}">
+                	<li><a href="selOrderList.do?user_num=${ldto.user_num}" class="category"><span>내 상품관리</span></a></li>
+                </c:if>
                 <li><a href="myboardlist.do?pnum=1" class="faqlist"><span>내가 쓴 글</span></a></li>
                 <li><a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a></li>        
               </ul>

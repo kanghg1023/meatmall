@@ -29,6 +29,11 @@
 <body>
 <jsp:include page="header.jsp" />
 <h3>구매한 상품</h3>
+<c:if test="${addReview != null}">
+<script type="text/javascript">
+	alert("${addReview}");
+</script>
+</c:if>
 <table border="1" class="table">
 	<tr>
 		<td colspan="2">상품명</td>

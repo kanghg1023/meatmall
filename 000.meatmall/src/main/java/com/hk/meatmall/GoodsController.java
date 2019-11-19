@@ -653,11 +653,18 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/orderList.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String orderList( Model model
+	public String orderList( HttpSession session
+						   , Model model
 						   , int user_num) {
 		logger.info("구매내역");
 		
 		List<OrderDto> olist = GoodsService.orderList(user_num);
+		String addReview = (String)session.getAttribute("addReview");
+		
+		if(addReview != null) {
+			model.addAttribute("addReview", addReview);
+			session.removeAttribute("addReview");
+		}
 		
 		model.addAttribute("olist", olist);
 		return "orderList";
@@ -686,7 +693,12 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		
 		if(isUpdate) {
 			UserDto ldto = (UserDto)session.getAttribute("ldto");
-			return "redirect:orderList.do?user_num="+ldto.getUser_num();
+			if(ldto.getUser_role().equals("USER")) {
+				return "redirect:orderList.do?user_num="+ldto.getUser_num();
+			}else {
+				return "redirect:selOrderList.do?user_num="+ldto.getUser_num();
+			}
+			
 		}else {
 			model.addAttribute("msg", "상태변경 실패");
 			model.addAttribute("url", "orderList.do");
@@ -718,13 +730,15 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		
 		//랜덤으로 쿠폰 증정
 		List<Integer> coulist = GoodsService.AllCouponList();
-        int ran = (int)(Math.random() * coulist.size()) -1;
+        int ran = (int)(Math.random() * coulist.size());
         int coupon_num = coulist.get(ran);
         
 		CouponDto cdto = GoodsService.couponDetail(coupon_num);
 		boolean isCoupon = GoodsService.insertUserCoupon(ldto.getUser_num(),cdto);
 		
 		if(isInsert && isUpdate && isCoupon) {
+			String addReview = "랜덤 쿠폰이 지급되었습니다.";
+			session.setAttribute("addReview", addReview);
 			return "redirect:orderList.do?user_num="+ldto.getUser_num();
 		}else {
 			model.addAttribute("msg", "상태변경 실패");
