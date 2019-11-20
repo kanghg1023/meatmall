@@ -772,7 +772,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/reviewForm.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String reviewForm(Model model, int order_num) {
-		logger.info("리뷰 폼으로");
+		logger.info("후기 폼으로");
 		
 		OrderDto odto = GoodsService.getOrder(order_num);
 		
@@ -785,7 +785,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 						   , ReviewDto dto
 						   , int order_num
 						   , HttpSession session) {
-		logger.info("리뷰 등록");
+		logger.info("후기 등록");
 		
 		UserDto ldto = (UserDto)session.getAttribute("ldto");
 		
@@ -800,7 +800,19 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		CouponDto cdto = GoodsService.couponDetail(coupon_num);
 		boolean isCoupon = GoodsService.insertUserCoupon(ldto.getUser_num(),cdto);
 		
-		if(isInsert && isUpdate && isCoupon) {
+		//평점에 따라 사업자 등급 변경
+		int review_score = GoodsService.scoreAVG(dto.getUser_num());
+		boolean isLevel = true;
+		
+		if(review_score >= 4) {
+			isLevel = GoodsService.levelChange(dto.getUser_num(),3);
+		}else if(review_score >= 3) {
+			isLevel = GoodsService.levelChange(dto.getUser_num(),2);
+		}else {
+			isLevel = GoodsService.levelChange(dto.getUser_num(),1);
+		}
+		
+		if(isInsert && isUpdate && isCoupon && isLevel) {
 			String addReview = "랜덤 쿠폰이 지급되었습니다.";
 			session.setAttribute("addReview", addReview);
 			return "redirect:orderList.do?user_num="+ldto.getUser_num();
@@ -877,6 +889,28 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			model.addAttribute("url", "insertCouponForm.do");
 			return "error";
 		}
+	}
+	
+	@RequestMapping(value = "/myCouponList.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String myCouponList( HttpSession session
+							  , Model model
+							  , String pnum
+							  , int user_num) {
+		logger.info("관리자 쿠폰 목록");
+		
+		if(pnum==null) {
+			pnum=(String)session.getAttribute("pnum");
+		}else {
+			session.setAttribute("pnum", pnum);
+		}
+		
+		int pcount = GoodsService.myCouponPcount(user_num);
+		Map<String, Integer> map=Paging.pagingValue(pcount, pnum, 5);
+		List<User_couponDto> clist = GoodsService.myCouponList(pnum,user_num);
+		
+		model.addAttribute("map",map);
+		model.addAttribute("clist", clist);
+		return "myCouponList";
 	}
 	
 }

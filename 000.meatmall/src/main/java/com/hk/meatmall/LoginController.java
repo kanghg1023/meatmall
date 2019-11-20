@@ -391,4 +391,13 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		return isStop;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/levelChk.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public int levelChk(Model model, int license_level) {
+		logger.info("배너생성폼으로");
+
+		int license_discount = loginService.levelChk(license_level);
+		
+		return license_discount;
+	}
 }

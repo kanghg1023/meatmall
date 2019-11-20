@@ -285,20 +285,14 @@ public class GoodsDao implements IGoodsDao {
 		return count > 0 ? true : false;
 	}
 
-	//쿠폰페이징
-	@Override
-	public int CouponPcount() {
-		return sqlSession.selectOne(nameSpace+"CouponPcount");
-	}
-
 	//쿠폰목록(사용자)
 	@Override
-	public List<User_couponDto> userCouponList(String pnum, int user_num) {
+	public List<User_couponDto> myCouponList(String pnum, int user_num) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pnum", pnum);
 		map.put("user_num", user_num);
 		
-		return sqlSession.selectList(nameSpace+"userCouponList", map);
+		return sqlSession.selectList(nameSpace+"myCouponList", map);
 	}
 	
 	//쿠폰상세정보
@@ -307,7 +301,19 @@ public class GoodsDao implements IGoodsDao {
 		return sqlSession.selectOne(nameSpace+"couponDetail",coupon_num);
 	}
 	
-	//쿠폰 등록(사용자)
+	//쿠폰페이징
+	@Override
+	public int CouponPcount() {
+		return sqlSession.selectOne(nameSpace+"CouponPcount");
+	}
+	
+	//내 쿠폰 페이징
+	@Override
+	public int myCouponPcount(int user_num) {
+		return sqlSession.selectOne(nameSpace+"myCouponPcount",user_num);
+	}
+	
+	//내 쿠폰보기
 	@Override
 	public boolean insertUserCoupon(int user_num, CouponDto dto) {
 		Map<String, Integer> map = new HashMap<>();
@@ -422,6 +428,23 @@ public class GoodsDao implements IGoodsDao {
 	public List<BannerDto> mainBanner() {
 		return sqlSession.selectList(nameSpace+"mainBanner");
 	}
+
+	@Override
+	public int scoreAVG(int user_num) {
+		return sqlSession.selectOne(nameSpace+"scoreAVG",user_num);
+	}
+
+	@Override
+	public boolean levelChange(int user_num, int license_level) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("user_num", user_num);
+		map.put("license_level", license_level);
+		
+		int count = sqlSession.update(nameSpace+"levelChange",map);
+		return count>0 ? true : false;
+	}
+
+	
 
 	
 

@@ -134,8 +134,6 @@ $(function() {
 		changeBcount(num);
 	});
 	
-	
-	
 	function changeBcount(num){
 		var sell_price = num.parent().next("td").find(".fmtNum");
 		var sum = num.parent().next().find(".sum");

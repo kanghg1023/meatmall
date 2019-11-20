@@ -315,7 +315,7 @@
 			<button class="buttonsignup actionbutton" onclick="location.href='boardlist.do?pnum=${pnum}'">글목록</button>
 			<button id="commentBtn" class="buttonsignup actionbutton" >댓글</button>
 			<c:choose>
-				<c:when test="${boarddto != null}">			
+				<c:when test="${ldto != null}">			
 					<a href="" id="like"><img id="im" alt="좋아요" src="img/heart${like ? '2' : '1'}.png">${likecount}</a>								
 				</c:when>
 				<c:otherwise>
@@ -371,7 +371,7 @@
 				</c:forEach>
 			</c:if>
 			<br/>
-			<c:if test="${boarddto != null}">
+			<c:if test="${ldto != null}">
 				<div style="width: 600px; margin: 0 auto;" >
 					<textarea rows="2" cols="75" name="comment_content" ></textarea>
 					<input type="submit" value="등록" id="btn" class="buttonsignup2 actionbutton2" />

@@ -128,5 +128,10 @@ public class LoginService implements ILoginService {
 	public boolean userStop(int user_num) {
 		return loginDao.userStop(user_num);
 	}
+
+	@Override
+	public int levelChk(int license_level) {
+		return loginDao.levelChk(license_level);
+	}
 	
 }

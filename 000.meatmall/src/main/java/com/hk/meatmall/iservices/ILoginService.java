@@ -34,4 +34,7 @@ public interface ILoginService {
 	//유저 정지
 	public boolean userStop(int user_num);
 	
+	//사업자 등급에 따른 할인률
+	public int levelChk(int license_level);
+	
 }

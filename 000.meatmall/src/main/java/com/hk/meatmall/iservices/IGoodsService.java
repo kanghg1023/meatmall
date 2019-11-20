@@ -111,9 +111,10 @@ public interface IGoodsService {
 	public boolean insertCoupon(CouponDto dto);
 	//쿠폰페이징
 	public int CouponPcount();
-	
-	//쿠폰목록(사용자)
-	public List<User_couponDto> userCouponList(String pnum, int user_num);
+	//내쿠폰 페이징
+	public int myCouponPcount(int user_num);
+	//내 쿠폰보기
+	public List<User_couponDto> myCouponList(String pnum, int user_num);
 	//쿠폰상세정보
 	public CouponDto couponDetail(int coupon_num);
 	//쿠폰 등록(사용자)
@@ -151,4 +152,10 @@ public interface IGoodsService {
 
 	//메인 배너
 	public List<BannerDto> mainBanner();
+	
+	//평점 구하기
+	public int scoreAVG(int user_num);
+	//사업자 등급 변경
+	public boolean levelChange(int user_num, int license_level);
+	
 }

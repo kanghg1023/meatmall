@@ -23,7 +23,9 @@ public class User_couponDto {
 	private int user_num;
 	//유효기간
 	private Date user_coupon_date;
-
+	//사용여부
+	private int user_coupon_use;
+	
 	//조인
 	//쿠폰이름
 	private String coupon_name;

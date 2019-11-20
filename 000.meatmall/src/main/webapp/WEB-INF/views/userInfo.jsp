@@ -268,7 +268,7 @@ $(function(){
 <div class="ps-sidebar" data-mh="product-listing" style="text-align: center;">
 	<aside class="ps-widget--sidebar ps-widget--category">
 		<div class="ps-widget__header">
-			<h3>마이페이지</h3>
+			<h3>내 정보보기</h3>
 		</div>
 		<div class="ps-widget__content">
 			<ul class="ps-list--checked">                
@@ -278,6 +278,7 @@ $(function(){
                 <li class="abcd"><a href="selOrderList.do?user_num=${ldto.user_num}" class="category"><span>내 상품관리</span></a></li>
 				</c:if>
                 <li class="abcd"><a href="myboardlist.do?pnum=1" class="myboardlist"><span>내가 쓴 글 보기</span></a></li>
+                <li class="abcd"><a href="myCouponList.do?pnum=1&user_num=${ldto.user_num}" class="myCouponList"><span>내 쿠폰</span></a></li>
                 <li class="abcd"><a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a></li>        
 			</ul>
 		</div>

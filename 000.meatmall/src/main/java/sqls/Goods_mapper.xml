@@ -449,21 +449,40 @@
 		  FROM COUPON
 	</select>
 	
-<!-- 쿠폰목록(사용자) -->
-	<select id="userCouponList" parameterType="String" resultType="User_couponDto">
+<!-- 내 쿠폰페이징  -->
+	<select id="myCouponPcount" parameterType="int" resultType="int">
+		SELECT CEIL(COUNT(USER_COUPON_NUM)/6)
+		  FROM (
+				 SELECT U.USER_COUPON_NUM
+				   FROM COUPON C
+				  	  , USER_COUPON U
+				  WHERE C.COUPON_NUM = U.COUPON_NUM
+				    AND U.USER_NUM = #{user_num}
+				    AND U.USER_COUPON_DATE > SYSDATE
+		       )
+	</select>
+	
+<!-- 내 쿠폰보기 -->
+	<select id="myCouponList" parameterType="Map" resultType="User_couponDto">
 		SELECT USER_COUPON_NUM
 			 , COUPON_NAME
+			 , COUPON_IMG
 			 , COUPON_MONEY
 			 , USER_COUPON_DATE
+			 , USER_COUPON_USE
 		  FROM (
-		         SELECT ROW_NUMBER() OVER (ORDER BY USER_COUPON_NUM DESC) AS RN
-					  , USER_COUPON_NUM
-					  , COUPON_NAME
-					  , COUPON_MONEY
-					  , USER_COUPON_DATE
-		           FROM COUPON C
-		           	  , USER_COUPON U
-		          WHERE C.COUPON_NUM = U.COUPON_NUM
+				 SELECT ROW_NUMBER() OVER (ORDER BY USER_COUPON_NUM DESC) AS RN
+				 	  , U.USER_COUPON_NUM
+					  , C.COUPON_NAME
+					  , C.COUPON_IMG
+					  , C.COUPON_MONEY
+					  , U.USER_COUPON_DATE
+					  , U.USER_COUPON_USE
+				   FROM COUPON C
+				  	  , USER_COUPON U
+				  WHERE C.COUPON_NUM = U.COUPON_NUM
+				    AND U.USER_NUM = #{user_num}
+				    AND U.USER_COUPON_DATE > SYSDATE
 		       )
 		 WHERE CEIL(RN/6) = #{pnum}
 	</select>
@@ -681,4 +700,18 @@
 			 WHERE RN < 5
 		 ]]>
 	</select>
+	
+	<select id="scoreAVG" parameterType="int" resultType="int">
+		SELECT TRUNC(AVG(REVIEW_SCORE))
+		  FROM REVIEW
+		 WHERE USER_NUM = #{user_num}
+		 GROUP BY USER_NUM
+	</select>
+	
+	<update id="levelChange" parameterType="Map">
+		UPDATE USER_INFO
+		   SET LICENSE_LEVEL = #{license_level}
+		 WHERE USER_NUM = #{user_num}
+	</update>
+	
 </mapper>

@@ -201,6 +201,11 @@ public class LoginDao implements ILoginDao {
 		return count>0 ? true : false;
 	}
 
+	@Override
+	public int levelChk(int license_level) {
+		return sqlSession.selectOne(nameSpace+"levelChk",license_level);
+	}
+
 	
 	
 }

@@ -262,4 +262,11 @@
 			 , USER_ENABLED = 2
 		 WHERE USER_NUM = #{user_num}
 	</update>
+	
+	<select id="levelChk" parameterType="int" resultType="int">
+		SELECT LICENSE_DISCOUNT
+		  FROM LICENSE
+		 WHERE LICENSE_LEVEL = #{license_level}
+	</select>
+	
 </mapper>

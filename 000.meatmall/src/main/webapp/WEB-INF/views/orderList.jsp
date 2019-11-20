@@ -94,6 +94,11 @@ body {
 </script>
 </head>
 <body>
+<c:if test="${addReview != null}">
+	<script type="text/javascript">
+		alert("${addReview}");
+	</script>
+</c:if>
 <jsp:include page="header.jsp" />
 <div class="ps-sidebar" data-mh="product-listing" style="text-align: center;">
 	<aside class="ps-widget--sidebar ps-widget--category">
@@ -108,6 +113,7 @@ body {
                 <li class="abcd"><a href="selOrderList.do?user_num=${ldto.user_num}" class="category"><span>내 상품관리</span></a></li>
 				</c:if>
                 <li class="abcd"><a href="myboardlist.do?pnum=1" class="myboardlist"><span>내가 쓴 글 보기</span></a></li>
+                <li class="abcd"><a href="myCouponList.do?pnum=1&user_num=${ldto.user_num}" class="myCouponList"><span>내 쿠폰</span></a></li>
                 <li class="abcd"><a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a></li>        
 			</ul>
 		</div>

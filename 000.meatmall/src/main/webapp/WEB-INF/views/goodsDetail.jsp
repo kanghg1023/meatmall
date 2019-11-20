@@ -173,7 +173,8 @@ $(function() {
       optionChoice.innerHTML += "<input type='hidden' name='option_weight' class='option_weight' value='"+option[1]+"' />";
       optionChoice.innerHTML += "<img src='img/minus.png' alt='수량감소' stlye='width:10px;height:10px;' class='bt_down' />";
       optionChoice.innerHTML += "<input type='text' name='basket_count' value='1' class='basket_count' style='width:30px;text-align:center;'/>";
-      optionChoice.innerHTML += "<img src='img/plus.png' alt='수량증가' stlye='width:8px;height:8px;' class='bt_up'/><br/>";
+      optionChoice.innerHTML += "<img src='img/plus.png' alt='수량증가' stlye='width:8px;height:8px;' class='bt_up'/>"
+      optionChoice.innerHTML += "<input type='hidden' value='"+option[2]+"' /><br/>";
       
       if(sum.value == ""){
          sum.value = 0;
@@ -182,9 +183,16 @@ $(function() {
       sum.value = eval(sum.value)+(option[1]/100*${gdto.goods_cost});
    });
    
-   $("body").on("click",".bt_up",function(){ 
+   $("body").on("click",".bt_up",function(){
+	  var count = $(this).next().val();
       var num = $(this).prev();
       var weight = $(this).prev().prev().prev().val();
+      
+      if(num.val() == count){
+    	  alert("최대 구매 수량은 "+count+"개 입니다.");
+    	  return;
+      }
+      
       num.val(parseInt(num.val())+1);
       var sum = $("#sum");
       
@@ -202,6 +210,23 @@ $(function() {
       
       sum.val(eval(sum.val())-(weight/100*${gdto.goods_cost}));
    });
+   
+   $("body").on("change",".basket_count",function(){
+		var num = $(this);
+		var count = $(this).next().next().val();
+		
+		var str = /^[0-9]+$/;
+		if(!(str.test(num.val()))){
+			num.val(1);
+		}
+		
+		if(num.val() > count){
+			alert("최대 구매 수량은 "+count+"개 입니다.");
+			num.val(count);
+		}
+		
+	});
+   
 });   
 </script>
 </head>
@@ -272,10 +297,10 @@ $(function() {
             <c:forEach items="${oList}" var="dto">
             	<c:choose>
             		<c:when test="${dto.option_count < 1}">
-            			<option id="${dto.option_num}" value="${dto.option_num},${dto.option_weight}" disabled>${dto.option_name} 품절</option>
+            			<option id="${dto.option_num}" value="품절" disabled>${dto.option_name} 품절</option>
             		</c:when>
             		<c:otherwise>
-            			<option id="${dto.option_num}" value="${dto.option_num},${dto.option_weight}">${dto.option_name}</option>
+            			<option id="${dto.option_num}" value="${dto.option_num},${dto.option_weight},${dto.option_count}">${dto.option_name}</option>
             		</c:otherwise>
             	</c:choose>
             </c:forEach>

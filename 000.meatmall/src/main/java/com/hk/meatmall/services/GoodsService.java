@@ -223,10 +223,16 @@ public class GoodsService implements IGoodsService {
 		return GoodsDao.CouponPcount();
 	}
 
-	//쿠폰 목록(사용자)
+	//내 쿠폰 페이징
 	@Override
-	public List<User_couponDto> userCouponList(String pnum, int user_num) {
-		return GoodsDao.userCouponList(pnum,user_num);
+	public int myCouponPcount(int user_num) {
+		return GoodsDao.myCouponPcount(user_num);
+	}
+	
+	//내 쿠폰보기
+	@Override
+	public List<User_couponDto> myCouponList(String pnum, int user_num) {
+		return GoodsDao.myCouponList(pnum,user_num);
 	}
 	
 	//쿠폰 상세정보
@@ -320,5 +326,17 @@ public class GoodsService implements IGoodsService {
 	public List<BannerDto> mainBanner() {
 		return GoodsDao.mainBanner();
 	}
+
+	@Override
+	public int scoreAVG(int user_num) {
+		return GoodsDao.scoreAVG(user_num);
+	}
+
+	@Override
+	public boolean levelChange(int user_num, int license_level) {
+		return GoodsDao.levelChange(user_num, license_level);
+	}
+
+	
 	
 }

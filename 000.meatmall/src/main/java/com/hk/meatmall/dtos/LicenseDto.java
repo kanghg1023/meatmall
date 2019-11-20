@@ -14,8 +14,8 @@ import lombok.ToString;
 public class LicenseDto {
 	
 	//사업자 등급
-	private String license_level;
+	private int license_level;
 	//할인율
-	private String license_discount;
+	private int license_discount;
 	
 }
