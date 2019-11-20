@@ -25,6 +25,47 @@
     padding-top: 10px;
     bottom: -10px;
     max-height: none; }
+    
+     #container_test{width:90%; overflow: auto; margin-left:25px;}    
+     #slide{float: left;}    
+     #test123{float:right;}    
+	
+	.list-table {   
+	text-align: left;
+}
+
+.list-table, .list-table th , .list-table td {         
+	text-align: left;
+	padding:10px;               
+}
+
+.list-table th{
+   height:40px;  
+   border-bottom:1px solid #2AC37D;
+   font-weight: bold;
+   font-size: 15px;
+}
+.list-table td{
+   text-align:left;
+   padding:10px 0;   
+   border-bottom:1px solid #CCC; 
+   height:20px;
+   font-size: 13px 
+}
+
+.list-table .list:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .notice:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .actionbutton {
+    margin-top:2%;
+}
 </style>
 </head>
 <body>
@@ -33,7 +74,8 @@
 <input type="hidden" name="page" value="main">
 
 <main class="ps-main">
-<div id="slide">
+<div id="container_test">
+<div id="slide" style="max-width: 100%; height: auto;">
   <input type="radio" name="pos" id="pos1" checked>
   <input type="radio" name="pos" id="pos2">
   <input type="radio" name="pos" id="pos3">
@@ -51,7 +93,9 @@
   </p>
 </div>
 <!-- 여기부터 -->
-<h4>인기검색어</h4>
+<div id="test123" style="max-width: 100%; height: auto; margin-top:40px;margin-right:50px;">
+<div style="width:50%;">
+<h4 style="margin-bottom: 10px;">인기검색어<span style="margin-left:11px;color: #2AC37D;font-weight: bold; font-size: 20px;">TOP 5</span></h4>
 <ul>
 	<c:choose>
 		<c:when test="${empty bestSearch}">
@@ -61,13 +105,15 @@
 			<c:set var="i" value="0" />
 			<c:forEach items="${bestSearch}" var="dto">
 				<c:set var="i" value="${i+1}" />
-				<li><strong>${i}</strong> <a href="search.do?search_word=${dto.search_word}">${dto.search_word}</a></li>
+				<li style="margin-bottom: 5px;"><strong style="color: #2AC37D;">${i}</strong> <a href="search.do?search_word=${dto.search_word}">${dto.search_word}</a></li>
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
 </ul>
-<h4>베스트 게시글</h4>
-<table border="1">
+</div>
+<h4 style="margin-top:80px;"><span style="margin-right: 10px;color: #2AC37D;font-weight: bold; font-size: 20px;">BEST</span>게시글</h4>
+<table class="list-table">
+	<col width="300px"/><col width="150px"/><col width="90px"/>
 	<tr>
 		<th>제목</th>
 		<th>작성자</th>
@@ -90,6 +136,8 @@
 		</c:otherwise>
 	</c:choose>
 </table>
+</div>
+</div>
 
 <!-- 여기까지 -->
       <div class="ps-section--features-product ps-section masonry-root pt-100 pb-100">
