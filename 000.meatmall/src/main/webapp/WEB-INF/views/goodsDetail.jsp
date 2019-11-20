@@ -99,7 +99,7 @@ $(function() {
         
       $.ajax({
          url:"insertBasket.do",
-         data:{"user_num":${ldto != null ? ldto.user_num : '0'}
+         data:{"user_num":"${ldto.user_num}"
          , "goods_num":"${gDto.goods_num}"
          , "option_num":optionArray
          , "basket_count":countArray},
@@ -127,10 +127,10 @@ $(function() {
    });
    
    $("#buy").click(function(){
-      if($("#optionSelect").val() == "") {
-         alert("옵션을 선택해주세요!");
-         return false;
-      }
+	      if($("#optionSelect").val() == "") {
+	         alert("옵션을 선택해주세요!");
+	         return false;
+	      }
    });
    
    $("#optionSelect").change(function(){
@@ -260,7 +260,7 @@ $(function() {
                 
                 <div class="ps-product__shopping">
                    <button id="basket" class="goodsbtn">장바구니 담기</button>
-                   <button id="buy" onclick="" class="goodsbtn">바로구매</button>                  
+                   <button id="buy" onclick="location.href='insertOrderForm.do?user_num=${ldto.user_num}'" class="goodsbtn">바로구매</button>                  
                 </div>
                 <div>
                <button 

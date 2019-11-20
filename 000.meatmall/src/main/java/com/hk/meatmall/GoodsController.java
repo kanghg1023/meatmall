@@ -103,12 +103,13 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		bestSearch = Util.bestSearch(bestSearch);
 		
 		//인기글
-//		List<BoardDto> bestBoard = boardService.bestBoard();
+		List<BoardDto> bestBoard = boardService.bestBoard();
 		
 		//상품
 		List<GoodsDto> mainList = GoodsService.getMainList();
 		
 		model.addAttribute("bestSearch",bestSearch);
+		model.addAttribute("bestBoard",bestBoard);
 		model.addAttribute("mainList",mainList);
 		return "main";
 	}

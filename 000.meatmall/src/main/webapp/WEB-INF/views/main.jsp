@@ -30,9 +30,6 @@
 <body>
 <!-- <div id="header" class="header" style="outline: none;"> -->
 <!-- </div> -->
-<%
-   session.setAttribute("page", "main");
-%>
 <input type="hidden" name="page" value="main">
 
 <main class="ps-main">
@@ -53,6 +50,46 @@
     <label for="pos4"></label>
   </p>
 </div>
+<!-- 여기부터 -->
+<h4>인기검색어</h4>
+<ul>
+	<c:choose>
+		<c:when test="${empty bestSearch}">
+			<li>검색어가 없습니다.</li>
+		</c:when>
+		<c:otherwise>
+			<c:forEach items="${bestSearch}" var="dto">
+				<li><a href="search.do?search_word=${dto.search_word}">${dto.search_word}</a></li>
+			</c:forEach>
+		</c:otherwise>
+	</c:choose>
+</ul>
+<h4>베스트 게시글</h4>
+<table border="1">
+	<tr>
+		<th>제목</th>
+		<th>작성자</th>
+		<th>좋아요</th>
+	</tr>
+	<c:choose>
+		<c:when test="${empty bestBoard}">
+			<tr>
+				<td colspan="3">좋아요를 받은 게시글이 없습니다.</td>
+			</tr>
+		</c:when>
+		<c:otherwise>
+			<c:forEach items="${bestBoard}" var="dto">
+				<tr>
+					<td><a href="boarddetail.do?board_num=${dto.board_num}">${dto.board_title}</a></td>
+					<td>${dto.user_nick}</td>
+					<td>${dto.likecount}</td>
+				</tr>
+			</c:forEach>
+		</c:otherwise>
+	</c:choose>
+</table>
+
+<!-- 여기까지 -->
       <div class="ps-section--features-product ps-section masonry-root pt-100 pb-100">
         <div class="ps-container">
           <div class="ps-section__header mb-50">

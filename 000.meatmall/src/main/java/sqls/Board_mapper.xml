@@ -433,8 +433,27 @@
 	</select>
 	
 <!-- 베스트 게시글 -->
-	<select id="bestBoard">
-		
+	<select id="bestBoard" resultType="BoardDto">
+		<![CDATA[
+		SELECT B.BOARD_NUM
+			 , B.BOARD_TITLE
+			 , U.USER_NICK
+			 , L.LIKECOUNT
+		  FROM BOARD B
+			 , USER_INFO U
+			 , (
+			     SELECT COUNT(BOARD_NUM) AS LIKECOUNT
+					  , BOARD_NUM
+					  , ROW_NUMBER() OVER (ORDER BY COUNT(BOARD_NUM) DESC) AS RN
+				   FROM BOARD_LIKE
+				  GROUP BY BOARD_NUM
+				  ORDER BY RN
+			   ) L
+		 WHERE B.BOARD_NUM = L.BOARD_NUM
+		   AND B.USER_NUM = U.USER_NUM
+		   AND ROWNUM <= 5
+		 ORDER BY L.RN
+		 ]]>
 	</select>
 
 </mapper>

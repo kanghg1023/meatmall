@@ -36,4 +36,6 @@ public class BoardDto {
 	//닉네임
 	private String user_nick;
 	
+	//좋아요 갯수
+	private int likecount;
 }
