@@ -3142,7 +3142,7 @@ textarea.form-control {
       border-radius: 50%; }
   .ps-review .ps-review__content {
     float: left;
-    width: calc(100% - 100px);
+    width: calc(100% - 0px);
     padding: 25px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
