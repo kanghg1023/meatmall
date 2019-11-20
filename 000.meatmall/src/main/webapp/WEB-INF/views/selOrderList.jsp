@@ -124,8 +124,8 @@ body {
 			<c:otherwise>
 				<c:forEach items="${dlist}" var="dto">
 				<tr>
-					<td><img src="${dto.goods_img_title}" style="width:78px; height:78px;" /></td>
-					<td>${dto.goods_title} (${dto.option_name}) x ${dto.order_count}</td>
+					<td><img src="${dto.goods_img_title}" style="width:78px; height:78px;" />${dto.goods_title} (${dto.option_name}) x ${dto.order_count}</td>
+					
 					<td>
 						<fmt:formatNumber value="${dto.order_money}" maxFractionDigits="0" /> 원
 					</td>

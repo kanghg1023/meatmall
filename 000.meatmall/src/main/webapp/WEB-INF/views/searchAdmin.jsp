@@ -9,6 +9,74 @@
 <meta charset="UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
+<style type="text/css">
+.abcd{
+	display: inline-block;
+	margin-left: 60px;
+}
+.list-table {
+    margin:100px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: center;
+  padding:10px;               
+}
+
+.list-table th{
+   height:40px;
+   border-top:2px solid #2AC37D;
+   border-bottom:1px solid #CCC;
+   font-weight: bold;
+   font-size: 17px;
+}
+.list-table td{
+   text-align:center;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
+.list-table .list:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .notice:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .buttonsignup {
+    width: 15%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.list-table .actionbutton {
+    margin-top:0%;
+} 
+
+#searchbtn {
+    width: 50px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+</style>
 </head>
 <body>
 <jsp:include page="header.jsp" />
@@ -29,7 +97,10 @@
 	</aside>            
 </div>
 <form action="insertBestSearch.do" method="post">
-<table border="1">
+	<h4 style="margin-left: 600px;margin-bottom: -120px;margin-top: 120px;">인기검색어 순위 변경</h4>
+<table class="list-table" style="margin-bottom: 250px;margin-top: 150px;">	
+	<col width="350px">
+	<col width="350px">
 	<tr>
 		<th>순위</th>
 		<th>검색어</th>
@@ -44,8 +115,7 @@
 	</c:forEach>
 	<tr>
 		<td colspan="2">
-			<input type="text" name="search_word" />
-			순위
+			<span>순위</span>
 			<select name=search_fake_ranking>
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -53,10 +123,14 @@
 				<option value="4">4</option>
 				<option value="5">5</option>
 			</select>
-			<input type="submit" value="등록" />
+			<span style="margin-left: 20px;">검색어</span>
+			<input type="text" name="search_word" style="width:50%;"/>
+			
+			<input type="submit" value="등록" id="searchbtn" />
 		</td>
 	</tr>
 </table>
 </form>
 </body>
+<jsp:include page="footer.jsp" />
 </html>

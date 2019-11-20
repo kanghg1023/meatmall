@@ -10,6 +10,10 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
 <style type="text/css" media="screen">
+.abcd{
+	display: inline-block;
+	margin-left: 60px;
+}
 .notice {
 	color: red;
 	text-decoration: none;
@@ -111,7 +115,7 @@ body {
 	</aside>            
 </div>
 
-<table class="list-table">	
+<table class="list-table" style="margin-bottom: 100px;">	
 	<col width="100px" />
 	<col width="150px" />
 	<col width="400px" />

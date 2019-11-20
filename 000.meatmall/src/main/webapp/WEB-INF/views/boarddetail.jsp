@@ -286,7 +286,6 @@
 	<col width="100px">
 	<col width="500px">
 	
-	
 	<tr>
 		<th>번호</th>
 		<td>${boarddto.board_num}</td>
@@ -301,8 +300,8 @@
 	</tr>
 	<tr>
 		
-		<td colspan="4" style="height: 200px;">
-			<div style="height: 100%;overflow: auto;">
+		<td colspan="4" style="height: 400px;">
+			<div style="height: 100%;">
 				${boarddto.board_content}
 			</div>
 		</td>

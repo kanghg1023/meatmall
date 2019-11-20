@@ -9,7 +9,10 @@
 <title>쿠폰 관리 페이지</title>
 
 <style type="text/css">
-
+.abcd{
+	display: inline-block;
+	margin-left: 60px;
+}
 
 body {
         font-family: "Montserrat", sans-serif; font-size:0.75em; color:#333
@@ -83,7 +86,7 @@ body {
 		</div>
 	</aside>            
 </div>
-<table class="list-table">
+<table class="list-table" style="width:60%;">
 	
 	
 	<tr>
