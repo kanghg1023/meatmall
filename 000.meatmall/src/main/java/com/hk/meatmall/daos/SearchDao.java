@@ -20,18 +20,37 @@ public class SearchDao implements ISearchDao {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
+	public List<Goods_kindDto> CategorySearch(String search_word) {
+		return sqlSession.selectList(nameSpace+"CategorySearch",search_word);
+	}
+	
+	@Override
 	public List<GoodsDto> goodsSearch(String search_word) {
 		
 		return sqlSession.selectList(nameSpace+"goodsSearch", search_word);
 	}
 
 	@Override
-	public List<Goods_kindDto> CategorySearch(String search_word) {
-		return sqlSession.selectList(nameSpace+"CategorySearch",search_word);
-	}
-
-	@Override
 	public List<BoardDto> boardSearch(String search_word) {
 		return sqlSession.selectList(nameSpace+"boardSearch",search_word);
 	}
+
+	@Override
+	public boolean beSearch(String search_word) {
+		int count = sqlSession.selectOne(nameSpace+"beSearch",search_word);
+		return count>0 ? true : false;
+	}
+
+	@Override
+	public boolean addSearch(String search_word) {
+		int count = sqlSession.update(nameSpace+"beSearch",search_word);
+		return count>0 ? true : false;
+	}
+
+	@Override
+	public boolean addWord(String search_word) {
+		int count = sqlSession.insert(nameSpace+"beSearch",search_word);
+		return count>0 ? true : false;
+	}
+	
 }

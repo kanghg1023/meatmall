@@ -616,10 +616,11 @@
 	</select>
 
 <!-- 장바구니 존재여부 -->
-	<select id="beBasket" parameterType="int" resultType="int">
+	<select id="beBasket" parameterType="Map" resultType="int">
 		SELECT COUNT(OPTION_NUM)
 		  FROM BASKET
-		 WHERE OPTION_NUM = #{option_num}
+		 WHERE USER_NUM = #{user_num}
+		   AND OPTION_NUM = #{option_num}
 	</select>
 	
 	<select id="AllCouponList" resultType="int">

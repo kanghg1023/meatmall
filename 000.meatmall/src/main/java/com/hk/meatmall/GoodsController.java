@@ -477,7 +477,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		bDto.setGoods_num(goods_num);
 		
 		for(int i=0;i<option_num.size();i++) {
-			boolean isBe = GoodsService.beBasket(option_num.get(i));
+			boolean isBe = GoodsService.beBasket(user_num,option_num.get(i));
 			if(isBe) {
 				isInsert = true;
 			}else {
@@ -794,7 +794,8 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/insertBanner.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String insertBanner( Model model
+	public String insertBanner( HttpSession session
+							  , Model model
 							  , BannerDto dto
 							  , MultipartFile title_file) throws IOException, Exception {
 		logger.info("배너생성");
@@ -814,6 +815,17 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		boolean isInsert = GoodsService.insertBanner(dto);
 		
 		if(isInsert) {
+			List<BannerDto> mainBanner = GoodsService.mainBanner();
+			
+			while(mainBanner.size()<4) {
+				BannerDto bdto = new BannerDto();
+				bdto.setBanner_num(0);
+				bdto.setBanner_name("고기고기괴기");
+				bdto.setBanner_img_name("img\\logo9.png");
+				mainBanner.add(bdto);
+			}
+			session.setAttribute("mainBanner", mainBanner);
+			
 			return "redirect:bannerList.do";
 		}else {
 			model.addAttribute("msg", "추가 실패");
