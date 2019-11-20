@@ -126,12 +126,18 @@ $(function() {
       });
    });
    
-   $("#buy").click(function(){
-	      if($("#optionSelect").val() == "") {
-	         alert("옵션을 선택해주세요!");
-	         return false;
-	      }
-   });
+ 	$("form").submit(function(){
+		if(${ldto.user_id == null}){
+			location.href = "loginPage.do";
+			return false;
+		}
+	  
+		if($("#optionSelect").val() == "") {
+			alert("옵션을 선택해주세요!");
+			return false;
+		}
+		
+	});
    
    $("#optionSelect").change(function(){
       var aCount = document.getElementById("optionSelect"); //onum
@@ -191,6 +197,7 @@ $(function() {
 </head>
 <body>
 <jsp:include page="header.jsp" />
+
 <main class="ps-main">
       <div class="test">
         <div class="container">
@@ -217,6 +224,9 @@ $(function() {
               <div class="ps-product__thumbnail--mobile">
                 <div class="ps-product__main-img"><img src="${gDto.goods_img_title}" alt=""></div>
               </div>
+              
+           <form action="insertOrderForm.do" method="post">
+           	<input type="hidden" name="user_num" value="${ldto.user_num}" /> 
               <div class="ps-product__info">
 <!--  별점 -->
 <!--                 <div class="ps-product__rating"> -->
@@ -246,7 +256,6 @@ $(function() {
                    <input type="text" id="sum" name="sum" size="11" readonly="readonly" style="width:130px;border: none;font-size:20px;"><span>원</span>                 
                 </div>                                     
                 </div>  
-                               
                 <div class="ps-product__block ps-product__size">             
             <select class="ps-select selectpicker" id="optionSelect">
                <option value="" style="width: 340px;">옵션 선택</option>
@@ -259,21 +268,25 @@ $(function() {
                 </div>
                 
                 <div class="ps-product__shopping">
-                   <button id="basket" class="goodsbtn">장바구니 담기</button>
-                   <button id="buy" onclick="location.href='insertOrderForm.do?user_num=${ldto.user_num}'" class="goodsbtn">바로구매</button>                  
+                   <input type="button" id="basket" class="goodsbtn" value="장바구니 담기">
+                   <input type="submit" id="buy" class="goodsbtn" value="바로구매">              
                 </div>
                 <div>
-               <button 
+               <input type="button" 
                onclick="window.open
                ('https://www.mtrace.go.kr/mtracesearch/cattleNoSearch.do?btsProgNo=0109008401&btsActionMethod=SELECT&cattleNo=002117250633'
-               ,'beef traceability system','width=800px,height=900px,location=no,status=no,scrollbars=no')" class="goodsbtn">축산물이력정보</button>
-            <button onclick="location.href='allGoods.do?pnum=${pnum}'" class="goodsbtn">제품목록</button>
+               ,'beef traceability system','width=800px,height=900px,location=no,status=no,scrollbars=no')" class="goodsbtn" value="축산물이력정보"> 
+            <input type="button" onclick="location.href='allGoods.do?pnum=${pnum}'" class="goodsbtn" value="제품목록"> 
                 </div>
                 <div>
-                   <button onclick="location.href='upGoodsForm.do?goods_num=${gDto.goods_num}'" class="goodsbtn">상품 수정</button>
-             <button onclick="location.href='delAllGoods.do?chk=${gDto.goods_num}&pnum=${pnum}'" name="delBtn" class="goodsbtn">상품 삭제</button>
+                <c:if test="${gDto.user_num == ldto.user_num || ldto.user_role eq 'ADMIN'}">
+                   <input type="button" onclick="location.href='upGoodsForm.do?goods_num=${gDto.goods_num}'" class="goodsbtn" value="상품 수정">
+             		<input type="button" onclick="location.href='delAllGoods.do?chk=${gDto.goods_num}&pnum=${pnum}'" name="delBtn" class="goodsbtn" value="상품 삭제">
+                </c:if>
                 </div>
               </div>
+           </form>
+           
               <div class="clearfix"></div>
               <div class="ps-product__content mt-50">
                 <ul class="tab-list" role="tablist">
@@ -315,10 +328,7 @@ $(function() {
                     		</c:forEach>
                     	</c:otherwise>
                     </c:choose>
-                    
-                    
                   </div>
-                  
                 </div>               
               </div>
             </div>

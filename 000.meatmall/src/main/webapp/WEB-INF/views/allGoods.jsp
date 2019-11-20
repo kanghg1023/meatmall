@@ -105,38 +105,23 @@
                  <c:choose>
                     <c:when test="${kind_num eq dto.kind_num}">
                        <li class="current">
-                         <c:if test="${ldto.user_role eq 'ADMIN'}">
-                           <input type="checkbox" name="chk" value="${dto.kind_num}" />
-                        </c:if>
                           <a href="allGoods.do?kind_num=${dto.kind_num}&pnum=1">${dto.kind_name}</a>            
                       </li>
                     </c:when>
                     <c:otherwise>
                        <li>
-                         <c:if test="${ldto.user_role eq 'ADMIN'}">
-                           <input type="checkbox" name="chk" value="${dto.kind_num}" />
-                        </c:if>
                           <a href="allGoods.do?kind_num=${dto.kind_num}&pnum=1">${dto.kind_name}</a>            
                       </li>
                     </c:otherwise>
                  </c:choose>
                  </c:forEach>
               </ul>
-              <c:if test="${ldto.user_role eq 'ADMIN'}">
+              <c:if test="${ldto.user_role ne 'USER'}">
 	            <input type="button" value="상품 등록" 
 	            	onclick="location.href='insertGoodsForm.do'" class="catebtn" />
 	         </c:if>
             </div>
           </aside>
-        <c:if test="${ldto.user_role eq 'ADMIN'}">
-		<aside class="ps-widget--sidebar ps-widget--filter">    
-			<div>      		
-            	<input type="button" value="카테고리 추가" 
-            	onclick="window.open('insertCategoryForm.do','insertCategory','width=450px,height=30px,location=no,status=no,scrollbars=no')" class="catebtn" />
-            	<input type="submit" value="카테고리 삭제" class="catebtn" />         		
-			</div>
-		</aside>
-		</c:if>
         </div>
       </div>
     </main>

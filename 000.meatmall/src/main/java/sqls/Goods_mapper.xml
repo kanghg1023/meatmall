@@ -178,7 +178,7 @@
 		  FROM GOODS
 		 WHERE KIND_NUM = #{kind_num}
 	</sql>
-	<!-- 카테고리 페이지 수 -->         
+	<!-- 카테고리 페이지 수 -->
 	<select id="allCatePcount" resultType="int" parameterType="String">
 		<include refid="pcount" />
 	</select>
