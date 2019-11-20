@@ -242,7 +242,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@RequestMapping(value = "/insertGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String insertAllGoods( Model model
-								, GoodsDto gDto
+								, GoodsDto gdto
 								, String[] option_name
 								, int[] option_count
 								, int[] option_weight
@@ -262,7 +262,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			fileName_T = uploadPath + File.separator + "images" + File.separator + "none.png";
 		}
 
-		gDto.setGoods_img_title("imgUpload" + ymdPath_T + File.separator + fileName_T);
+		gdto.setGoods_img_title("imgUpload" + ymdPath_T + File.separator + fileName_T);
 		
 		//상세이미지
 		List<MultipartFile> detail_file = mtfRequest.getFiles("detail_file");
@@ -285,8 +285,8 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			fileName_D.add(uploadPath + File.separator + "images" + File.separator + "none.png");
 		}
 
-		gDto.setGoods_img_detail(fileName_D_html);
-		boolean isInsertGoods = GoodsService.insertGoods(gDto);
+		gdto.setGoods_img_detail(fileName_D_html);
+		boolean isInsertGoods = GoodsService.insertGoods(gdto);
 		
 		boolean isInsertOption = false;
 		
@@ -317,11 +317,11 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	public String goodsDetail(Model model, int goods_num) {
 		logger.info("상세");
 		
-		GoodsDto gDto = GoodsService.getGoods(goods_num);
+		GoodsDto gdto = GoodsService.getGoods(goods_num);
 		List<Goods_optionDto> oList = GoodsService.getGoods_option(goods_num);
 		List<ReviewDto> rList = GoodsService.reviewList(goods_num);
 		
-		model.addAttribute("gDto", gDto);
+		model.addAttribute("gdto", gdto);
 		model.addAttribute("oList", oList);
 		model.addAttribute("rList", rList);
 		return "goodsDetail";
@@ -358,18 +358,18 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		logger.info("상품 수정 폼");
 		
 		List<Goods_kindDto> kList = GoodsService.kind_num();
-		GoodsDto gDto = GoodsService.getGoods(goods_num);
+		GoodsDto gdto = GoodsService.getGoods(goods_num);
 		List<Goods_optionDto> oDto = GoodsService.getGoods_option(goods_num);
 		
 		model.addAttribute("kList",kList);
-		model.addAttribute("gDto", gDto);
+		model.addAttribute("gdto", gdto);
 		model.addAttribute("oDto", oDto);
 		return "updateGoods";
 	}
 	
 	@RequestMapping(value = "/upGoods.do", method = {RequestMethod.POST, RequestMethod.GET})
 	public String upAllGoods( Model model
-							, GoodsDto gDto
+							, GoodsDto gdto
 							, int goods_num
 							, int[] option_num
 							, String[] option_name
@@ -394,11 +394,11 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			String ymdPath = UploadFileUtils_T.calcPath(imgUploadPath);
 			String fileName = UploadFileUtils_T.fileUpload_T(imgUploadPath, title_file.getOriginalFilename(), title_file.getBytes(), ymdPath);
 		  
-			gDto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
+			gdto.setGoods_img_title("imgUpload" + ymdPath + File.separator + fileName);
 		  
 		}else {  // 새로운 파일이 등록되지 않았다면
 			// 기존 이미지를 그대로 사용
-			gDto.setGoods_img_title(null);
+			gdto.setGoods_img_title(null);
 		}
 		
 		//상세이미지
@@ -426,14 +426,14 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			}
 			System.out.println(fileName_D_html);
 			
-			gDto.setGoods_img_detail(fileName_D_html);
+			gdto.setGoods_img_detail(fileName_D_html);
 		  
 		}else {  // 새로운 파일이 등록되지 않았다면
 			// 기존 이미지를 그대로 사용
-			gDto.setGoods_img_detail(null);
+			gdto.setGoods_img_detail(null);
 		}
 		
-		boolean isUpGoods = GoodsService.upGoods(gDto);
+		boolean isUpGoods = GoodsService.upGoods(gdto);
 		boolean isUpOption = false;
 		boolean isInsertOption = false;
 		int i = 0;
@@ -468,7 +468,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		}
 		
 		if(isUpGoods && isUpOption && isInsertOption) {
-			return "redirect:goodsDetail.do?goods_num="+gDto.getGoods_num();
+			return "redirect:goodsDetail.do?goods_num="+gdto.getGoods_num();
 		}else {
 			model.addAttribute("msg", "수정 실패");
 			model.addAttribute("url", "upGoodsForm.do");

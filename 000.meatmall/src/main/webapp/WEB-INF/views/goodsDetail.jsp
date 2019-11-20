@@ -73,6 +73,11 @@ margin:10px;
 $(function() {
    
    $("#basket").click(function() {
+	  if(${ldto.user_num == gdto.user_num}){
+		  alert("본인이 등록한 상품은 담을 수 없습니다.");
+		  return false;
+	  }
+	  
 	  if(${ldto.user_id == null}){
 	     location.href = "loginPage.do";
 	     return false;
@@ -100,7 +105,7 @@ $(function() {
       $.ajax({
          url:"insertBasket.do",
          data:{"user_num":"${ldto.user_num}"
-         , "goods_num":"${gDto.goods_num}"
+         , "goods_num":"${gdto.goods_num}"
          , "option_num":optionArray
          , "basket_count":countArray},
          method:"post",
@@ -127,6 +132,11 @@ $(function() {
    });
    
  	$("form").submit(function(){
+ 		if(${ldto.user_num == gdto.user_num}){
+ 			  alert("본인이 등록한 상품은 구매할 수 없습니다.");
+ 			  return false;
+ 		  }
+ 		
 		if(${ldto.user_id == null}){
 			location.href = "loginPage.do";
 			return false;
@@ -169,7 +179,7 @@ $(function() {
          sum.value = 0;
       }
       
-      sum.value = eval(sum.value)+(option[1]/100*${gDto.goods_cost});
+      sum.value = eval(sum.value)+(option[1]/100*${gdto.goods_cost});
    });
    
    $("body").on("click",".bt_up",function(){ 
@@ -178,7 +188,7 @@ $(function() {
       num.val(parseInt(num.val())+1);
       var sum = $("#sum");
       
-      sum.val(eval(sum.val())+(weight/100*${gDto.goods_cost}));
+      sum.val(eval(sum.val())+(weight/100*${gdto.goods_cost}));
    });
    
    $("body").on("click",".bt_down",function(){
@@ -190,7 +200,7 @@ $(function() {
       num.val(parseInt(num.val())-1);
       var sum = $("#sum");
       
-      sum.val(eval(sum.val())-(weight/100*${gDto.goods_cost}));
+      sum.val(eval(sum.val())-(weight/100*${gdto.goods_cost}));
    });
 });   
 </script>
@@ -214,15 +224,15 @@ $(function() {
               <div class="ps-product__thumbnail">
                 <div class="ps-product__preview">
                   <div class="ps-product__variants">
-                    <div class="item"><img src="${gDto.goods_img_title}" alt=""></div>              
+                    <div class="item"><img src="${gdto.goods_img_title}" alt=""></div>              
                   </div><a class="popup-youtube ps-product__video" href="https://www.youtube.com/watch?v=CP3qzW16QKA"><img src="images/shoe-detail/1.jpg" alt=""><i class="fa fa-play"></i></a>
                 </div>                                          
                 <div class="ps-product__image">
-                  <div class="item"><img class="zoom a" src="${gDto.goods_img_title}" alt="" data-zoom-image="${gDto.goods_img_title}"></div>
+                  <div class="item"><img class="zoom a" src="${gdto.goods_img_title}" alt="" data-zoom-image="${gdto.goods_img_title}"></div>
                 </div>
               </div>
               <div class="ps-product__thumbnail--mobile">
-                <div class="ps-product__main-img"><img src="${gDto.goods_img_title}" alt=""></div>
+                <div class="ps-product__main-img"><img src="${gdto.goods_img_title}" alt=""></div>
               </div>
               
            <form action="insertOrderForm.do" method="post">
@@ -238,7 +248,7 @@ $(function() {
 <!--                     <option value="2">5</option> -->
 <!--                   </select><a href="#">(Read all 8 reviews)</a> -->
 <!--                 </div> -->
-                <h1>${gDto.goods_title}</h1>
+                <h1>${gdto.goods_title}</h1>
                 <br />
                 <div>
                 <div id="left" class="leftright">
@@ -249,9 +259,9 @@ $(function() {
                    <p class="abc">총 상품금액</p> 
                 </div>
                 <div id="right" class="leftright">
-                   <p class="def">${gDto.user_nick}</p>
-                   <p class="def">${gDto.goods_cost}</p>
-                   <p class="def">${gDto.user_nick}</p>                   
+                   <p class="def">${gdto.user_nick}</p>
+                   <p class="def">${gdto.goods_cost}</p>
+                   <p class="def">${gdto.user_nick}</p>                   
                    <hr style="border: none;border: 2px solid red;margin-bottom: 20px;width:145px;"/> 
                    <input type="text" id="sum" name="sum" size="11" readonly="readonly" style="width:130px;border: none;font-size:20px;"><span>원</span>                 
                 </div>                                     
@@ -260,7 +270,14 @@ $(function() {
             <select class="ps-select selectpicker" id="optionSelect">
                <option value="" style="width: 340px;">옵션 선택</option>
             <c:forEach items="${oList}" var="dto">
-               <option id="${dto.option_num}" value="${dto.option_num},${dto.option_weight}">${dto.option_name}</option>
+            	<c:choose>
+            		<c:when test="${dto.option_count < 1}">
+            			<option id="${dto.option_num}" value="${dto.option_num},${dto.option_weight}" disabled>${dto.option_name} 품절</option>
+            		</c:when>
+            		<c:otherwise>
+            			<option id="${dto.option_num}" value="${dto.option_num},${dto.option_weight}">${dto.option_name}</option>
+            		</c:otherwise>
+            	</c:choose>
             </c:forEach>
             </select>
             <div id="optionChoice">
@@ -279,9 +296,9 @@ $(function() {
             <input type="button" onclick="location.href='allGoods.do?pnum=${pnum}'" class="goodsbtn" value="제품목록"> 
                 </div>
                 <div>
-                <c:if test="${gDto.user_num == ldto.user_num || ldto.user_role eq 'ADMIN'}">
-                   <input type="button" onclick="location.href='upGoodsForm.do?goods_num=${gDto.goods_num}'" class="goodsbtn" value="상품 수정">
-             		<input type="button" onclick="location.href='delAllGoods.do?chk=${gDto.goods_num}&pnum=${pnum}'" name="delBtn" class="goodsbtn" value="상품 삭제">
+                <c:if test="${gdto.user_num == ldto.user_num || ldto.user_role eq 'ADMIN'}">
+                   <input type="button" onclick="location.href='upGoodsForm.do?goods_num=${gdto.goods_num}'" class="goodsbtn" value="상품 수정">
+             		<input type="button" onclick="location.href='delAllGoods.do?chk=${gdto.goods_num}&pnum=${pnum}'" name="delBtn" class="goodsbtn" value="상품 삭제">
                 </c:if>
                 </div>
               </div>
@@ -296,7 +313,7 @@ $(function() {
               </div>
               <div class="tab-content mb-60">
                 <div class="tab-pane active" role="tabpanel" id="tab_01">
-                  <p style="text-align: center;">${gDto.goods_img_detail}</p>
+                  <p style="text-align: center;">${gdto.goods_img_detail}</p>
                 </div>
                 <div class="tab-pane" role="tabpanel" id="tab_02">
                   <div class="ps-review">
