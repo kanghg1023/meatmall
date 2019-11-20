@@ -73,7 +73,7 @@
 	</tr>
 	<c:choose>
 		<c:when test="${empty bestBoard}">
-			<tr>
+			<tr> 
 				<td colspan="3">좋아요를 받은 게시글이 없습니다.</td>
 			</tr>
 		</c:when>
