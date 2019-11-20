@@ -10,6 +10,10 @@
 <meta charset="UTF-8">
 <title></title>
 <style type="text/css">
+.abcd{
+	display: inline-block;
+	margin-left: 60px;
+}
 .catebtn { 
    width: 40%;
     height: 30px;
@@ -21,6 +25,49 @@
     cursor:pointer;
     color:white;
     font-weight: bold;
+}
+.list-table {
+    margin:50px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: center;
+  padding:10px;               
+}
+
+.list-table th{
+   height:40px;
+   width: 200px;
+   border-top:2px solid #2AC37D;
+   border-bottom:1px solid #CCC;
+   font-weight: bold;
+   font-size: 17px;
+}
+.list-table td{
+   text-align:center;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
+.list-table .buttonsignup {
+    width: 15%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+    
+}
+
+.list-table .actionbutton {
+	
+    margin-top:0%;
 }
 </style>
 <script type="text/javascript"
@@ -65,13 +112,15 @@ $(function() {
 		</div>
 	</aside>            
 </div>
-<h4>부위별 카테고리</h4>
+<h4 style="margin-left: 500px; margin-bottom: -20px;margin-top: 100px;">부위별 카테고리</h4>
 	<form action="delCategory.do" method="post">
-		<div id="container">
-			<table border="1" class="table">
+		<div id="container" style="width:100%;">
+			<table class="list-table" style="margin-bottom: 150px;text-align: center;">
+			<col width="400px">
+			<col width="500px">
 				<tr>
 					<th><input type="checkbox" name="all" onclick="allSel(this)" /></th>
-					<th>번호</th>
+					<th>부위별 종류</th>
 				</tr>
 					<c:forEach items="${category}" var="dto">
 						<tr align="center">
