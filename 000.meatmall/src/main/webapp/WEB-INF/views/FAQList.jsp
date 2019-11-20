@@ -28,7 +28,7 @@
    }
    
    .content {
-   padding: 5px 10px;
+   padding: 5px 5px 1px 5px;
    background-color:#E2E2E2;
    }
    

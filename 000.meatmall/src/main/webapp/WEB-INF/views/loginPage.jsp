@@ -106,7 +106,7 @@
 	</script>
 </c:if>
 
-<div class="container-fluid">
+<div class="container-fluid" style="margin-bottom: 50px;">
    <form action="login.do" method="post" class="paypal-form">
         <div class="logo text-center">
         <img src="img/logo9.png" alt="">

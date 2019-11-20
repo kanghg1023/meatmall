@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%request.setCharacterEncoding("utf-8"); %>
 <%response.setContentType("text/html; charset=UTF-8"); %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,6 +144,9 @@ function emailChkfun(){
 }
 
 $(function(){
+	$("#user_id").blur(function(){
+		idChkfun();
+	});
 	
 	$("#user_pw").blur(function(){
 		pwChkfun();
@@ -199,42 +203,26 @@ $(function(){
 			}
 		}
 	});
-	
-	$("#withdraw").click(function(){
-		var isS = confirm("정말 탈퇴 하시겠습니까?");
-		if(isS){
-			location.href="withdraw.do?user_num=${ldto.user_num}"
-		}
-	});
-	
 });
 </script>
 
 <style type="text/css">
-
-#ps-products-wrap{
-   width:60%; text-align:left; margin:0px auto;
+.abcd{
+	display: inline-block;
+	margin-left: 60px;
 }
 
-body {
-        font-family: "Montserrat", sans-serif; font-size:0.75em; color:#333
-
+.list-table {   
+	text-align: left;
 }
 
-.list-table {
-   
-    text-align: left;
-}
-
-.list-table, .list-table th , .list-table td{         
-
-  text-align: left;
-  padding:10px;               
+.list-table, .list-table th , .list-table td {         
+	text-align: left;
+	padding:10px;               
 }
 
 .list-table th{
-   height:40px;
-   
+   height:40px;  
    border-bottom:1px solid #2AC37D;
    font-weight: bold;
    font-size: 15px;
@@ -242,7 +230,8 @@ body {
 .list-table td{
    text-align:left;
    padding:10px 0;   
-   border-bottom:1px solid #CCC; height:20px;
+   border-bottom:1px solid #CCC; 
+   height:20px;
    font-size: 13px 
 }
 
@@ -258,10 +247,9 @@ body {
 
 .list-table .buttonsignup {
     width: 35%;
-    height: 30px;
+    height: 28px;
     padding: 0;
     border: 0;
-    display: block;
     background-color: #2AC37D;
     border-radius:5px;
     cursor:pointer;
@@ -272,25 +260,36 @@ body {
 .list-table .actionbutton {
     margin-top:2%;
 }
-
-
 </style>
 
 </head>
 <body>
+<jsp:include page="header.jsp" />
+<div class="ps-sidebar" data-mh="product-listing" style="text-align: center;">
+	<aside class="ps-widget--sidebar ps-widget--category">
+		<div class="ps-widget__header">
+			<h3>마이페이지</h3>
+		</div>
+		<div class="ps-widget__content">
+			<ul class="ps-list--checked">                
+                <li class="current abcd"><a href="myPage.do" class="myPage"><span>내 정보보기</span></a></li>
+                <li class="abcd"><a href="orderList.do?user_num=${ldto.user_num}" class="category"><span>구매내역</span></a></li>
+	         	<c:if test="${ldto.user_role ne 'USER'}">
+                <li class="abcd"><a href="selOrderList.do?user_num=${ldto.user_num}" class="category"><span>내 상품관리</span></a></li>
+				</c:if>
+                <li class="abcd"><a href="myboardlist.do?pnum=1" class="myboardlist"><span>내가 쓴 글 보기</span></a></li>
+                <li class="abcd"><a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a></li>        
+			</ul>
+		</div>
+	</aside>            
+</div> 
 
-	<jsp:include page="header.jsp" />
-
-
-<div class="ps-products-wrap pt-80 pb-80" id="ps-products-wrap">
-   <div class="ps-products" data-mh="product-listing">
-      <div class="ps-product__columns"> 
-
+<div class="ps-products-wrap pt-80 pb-80" style="width:500px;margin: 0 auto;">
 <form action="userUpdate.do">
 	<input type="hidden" name="user_num" value="${ldto.user_num}" />	
-	<table class="list-table">
-	
-	
+	<table class="list-table" style="text-align: center;margin-top:-50px;">
+		<col width="500px">
+		<col width="500px">
 		<tr>
 			<th>아이디</th>
 			<td>${ldto.user_id}</td>
@@ -333,30 +332,13 @@ body {
 		<tr>
 			<td colspan="2" align="right">
 				<input type="submit" class="buttonsignup actionbutton" value="정보수정"/>
-				<input type="button" id="withdraw" class="buttonsignup actionbutton" value="회원탈퇴"/>
+				<input type="button" class="buttonsignup actionbutton" value="회원탈퇴"/>
 			</td>
 		</tr>
-	</table>
-	
+	</table>	
 </form>
- </div>
-   </div> 
-    <div class="ps-sidebar" data-mh="product-listing">
-          <aside class="ps-widget--sidebar ps-widget--category">
-            <div class="ps-widget__header">
-              <h3>마이페이지</h3>
-            </div>
-            <div class="ps-widget__content">
-              <ul class="ps-list--checked">                
-                <li class="current"><a href="myPage.do" class="myPage"><span>내 정보보기</span></a></li>
-                <li><a href="category.do" class="category"><span>구매내역</span></a></li>
-                <li><a href="faqlist.do" class="faqlist"><span>알림</span></a></li>
-                <li><a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a></li>        
-              </ul>
-            </div>
-          </aside>            
-        </div>        
-      </div>
+</div>
+
 <jsp:include page="footer.jsp" />   
 </body>
 </html>

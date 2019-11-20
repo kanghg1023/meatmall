@@ -8,11 +8,31 @@
 <head>
 <meta charset="UTF-8">
 <title>메인 화면</title>
+   <jsp:include page="header.jsp" />
+<style type="text/css">
+	.ps-shoe:hover:before {
+    visibility: visible;
+    opacity: 1;
+    border: 1px solid #2AC37D;
+    -webkit-transform: scale(1, 0.85);
+    -moz-transform: scale(1, 0.85);
+    -ms-transform: scale(1, 0.85);
+    -o-transform: scale(1, 0.85);
+    transform: scale(1, 0.85); 
+	top:-45px;
+    }
+    .ps-shoe:hover .ps-shoe__content {
+    padding-top: 10px;
+    bottom: -10px;
+    max-height: none; }
+</style>
 </head>
 <body>
 <!-- <div id="header" class="header" style="outline: none;"> -->
-   <jsp:include page="header.jsp" />
 <!-- </div> -->
+<%
+   session.setAttribute("page", "main");
+%>
 <input type="hidden" name="page" value="main">
 
 <main class="ps-main">
@@ -22,7 +42,7 @@
   <input type="radio" name="pos" id="pos3">
   <input type="radio" name="pos" id="pos4">
   <ul>
-  	<c:forEach items="${mainBanner}" var="dto">
+    <c:forEach items="${mainBanner}" var="dto">
   		<li><a href="#"><img src="${dto.banner_img_name}" style="display: block; margin-left: auto ; margin-right: auto; height:400px;"></a></li>
   	</c:forEach>
   </ul>
@@ -45,13 +65,15 @@
                 <!-- 반복 -->
                 <c:forEach items="${mainList}" var="dto"> 
                 <div class="grid-item kids">
-                  <div class="grid-item__content-wrapper">
-                    <div class="ps-shoe mb-30">
+               
+                  <div class="grid-item__content-wrapper" >
+					
+                    <div class="ps-shoe mb-30" >
                       <div class="ps-shoe__thumbnail">
-                        <a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a><img src="${dto.goods_img_title}" alt=""><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a>
+                        <a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a><img src="${dto.goods_img_title}" alt="" style="height:250px;"><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a>
                       </div>
-                      <div class="ps-shoe__content">
-                      <div class="ps-shoe__variants">
+                      <div class="ps-shoe__content" >
+                      <div class="ps-shoe__variants" >
                          </div>
                         <div class="ps-shoe__detail"><a class="ps-shoe__name" href="#">${dto.goods_title}</a>
                           <p>100g 당</p>

@@ -10,6 +10,11 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
 <style type="text/css" media="screen">
+.abcd{
+	display: inline-block;
+	margin-left: 60px;
+}
+
 .notice {
 	color: red;
 	text-decoration: none;
@@ -82,12 +87,31 @@ body {
 </head>
 <body>
 <jsp:include page="header.jsp" />
+<div class="ps-sidebar" data-mh="product-listing" style="text-align: center;">
+	<aside class="ps-widget--sidebar ps-widget--category">
+		<div class="ps-widget__header">
+			<h3>나의 활동 내역</h3>
+		</div>
+		<div class="ps-widget__content">
+			<ul class="ps-list--checked">                
+                <li class="abcd"><a href="myPage.do" class="myPage"><span>내 정보보기</span></a></li>
+                <li class="abcd"><a href="orderList.do?user_num=${ldto.user_num}" class="category"><span>구매내역</span></a></li>
+                <c:if test="${ldto.user_role ne 'USER'}">
+                <li class="abcd"><a href="selOrderList.do?user_num=${ldto.user_num}" class="category"><span>내 상품관리</span></a></li>
+				</c:if>
+                <li class="current abcd"><a href="myboardlist.do?pnum=1" class="myboardlist"><span>내가 쓴 글 보기</span></a></li>
+                <li class="abcd"><a href="loginRecord.do" class="loginRecord"><span>접속기록</span></a></li>     
+			</ul>
+		</div>
+	</aside>            
+</div>
+<div class="ps-products-wrap pt-80 pb-80" style="width:70%;margin: auto 0 auto 15% ;">
+<h4 style="margin:-50px 0px -70px 10px;">내가 쓴 글 보기</h4>
 <table class="list-table">	
-	<col width="100px" />
-	<col width="150px" />
-	<col width="400px" />
 	<col width="200px" />
-	<col width="150px" />
+	<col width="400px" />
+	<col width="400px" />
+	<col width="300px" />
 	
 	<tr>		
 		<th>번호</th>
@@ -133,5 +157,7 @@ body {
 			</td>
 		</tr>
 </table>
+</div>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

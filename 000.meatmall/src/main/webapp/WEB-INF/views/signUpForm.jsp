@@ -139,7 +139,7 @@ margin: 10px 0 0 0;
 
    <jsp:include page="header.jsp" />
 
-<div class="container-fluid">
+<div class="container-fluid" style="margin-bottom: 50px;">
    <form action="signUp.do"  method="post" class="paypal-form">
         <div class="logo text-center">
         <img src="img/logo.png" alt="">

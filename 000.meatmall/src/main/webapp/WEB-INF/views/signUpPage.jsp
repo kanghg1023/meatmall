@@ -26,17 +26,17 @@
 </style>
 </head>
 <body>
+<jsp:include page="header.jsp" />
 
-   <jsp:include page="header.jsp" />
+<div id="container-fluid" style="margin-bottom: 50px;">
+	<div style="margin:0 115px;">
+			<div id="line">
+		<a href="normalSignUp.do" class="normalSignUp"><img src="img/일반회원2.png"></a>
+			</div>
+		<a href="licenseeSignUp.do" class="licenseeSignUp"><img src="img/기업회원2.png"></a>
+	</div>
+</div>
 
-<div id="container-fluid">
-<div style="margin:0 115px;">
-<div id="line">
-<a href="normalSignUp.do" class="normalSignUp"><img src="img/일반회원2.png"></a>
-</div>
-<a href="licenseeSignUp.do" class="licenseeSignUp"><img src="img/기업회원2.png"></a>
-</div>
-</div>
 <jsp:include page="footer.jsp" /> 
 </body>
 </html>

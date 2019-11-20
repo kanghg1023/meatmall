@@ -8,10 +8,84 @@
 <head>
 <meta charset="UTF-8">
 <title>쿠폰 관리 페이지</title>
+<style type="text/css">
+.abcd{
+	display: inline-block;
+	margin-left: 60px;
+}
+.list-table {   
+	text-align: left;
+}
+
+.list-table, .list-table th , .list-table td {         
+	text-align: left;
+	padding:10px;               
+}
+
+.list-table th{
+   height:40px;  
+   border-bottom:1px solid #2AC37D;
+   font-weight: bold;
+   font-size: 15px;
+}
+.list-table td{
+   text-align:left;
+   padding:10px 0;   
+   border-bottom:1px solid #CCC; 
+   height:20px;
+   font-size: 13px 
+}
+
+.list-table .list:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .notice:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .actionbutton {
+    margin-top:2%;
+}
+.bannerbtn {
+    width: 100px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+</style>
 </head>
 <body>
 <jsp:include page="header.jsp" />
-<table border="1">
+
+<div class="ps-sidebar" data-mh="product-listing" style="text-align: center;">
+	<aside class="ps-widget--sidebar ps-widget--category">
+		<div class="ps-widget__header">
+			<h3>관리자페이지</h3>
+		</div>
+		<div class="ps-widget__content">
+			<ul class="ps-list--checked">                             
+                <li class="abcd"><a href="userAdmin.do?pnum=1"><span>회원관리</span></a></li>
+                <li class="abcd"><a href="adminCouponList.do?pnum=1"><span>쿠폰관리</span></a></li>    
+                <li class="current abcd"><a href="bannerAdmin"><span>배너관리</span></a></li>             
+			</ul>
+		</div>
+	</aside>            
+</div>
+
+<div class="ps-products-wrap pt-80 pb-80" style="width:70%;margin: auto 0 auto 17% ;">
+<table class="list-table">
+	<col width="300px">
+	<col width="300px">
+	<col width="300px">
+	<col width="300px">
 	<tr>
 		<th>배너 이미지</th>
 		<th>배너명</th>
@@ -37,7 +111,7 @@
 			</c:forEach>
 			<c:if test="${map != null}">
 				<tr>
-					<td colspan="4" align="center">
+					<td colspan="4" align="center" style="text-align: center;">
 					<c:if test="${pnum != 1}">
 						<a href="adminCouponList.do?pnum=${map.prePageNum}">◀</a>
 					</c:if>	
@@ -61,9 +135,10 @@
 	</c:choose>
 	<tr>
 		<td colspan="4">
-			<input type="button" value="배너 추가" onclick="location.href='insertBannerForm.do'" />
+			<input type="button" value="배너 추가" onclick="location.href='insertBannerForm.do'" class="bannerbtn"/>
 		</td>
 	</tr>
 </table>
+</div>
 </body>
 </html>

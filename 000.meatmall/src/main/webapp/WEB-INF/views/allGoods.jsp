@@ -41,14 +41,14 @@
               <div class="ps-shoe mb-30">
                 <div class="ps-shoe__thumbnail">
                   <c:choose>
-                        <c:when test="${dto.goods_delflag eq 0}"><img src="" alt="삭제된 이미지"></c:when>
+                        <c:when test="${dto.goods_delflag eq 0}"><img src="img/삭제상품.png" alt="삭제된 이미지" style="height:200px;"><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a></c:when>
                         <c:otherwise>
-                  <a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a><img src="${dto.goods_img_title}" alt=""><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a>
+                  <a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a><img src="${dto.goods_img_title}"  alt="" id="abcd" style="height:200px;" ><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a>
                         </c:otherwise>
                   </c:choose>
                 </div>
                 <div class="ps-shoe__content">
-                  <div class="ps-shoe__detail"><a class="ps-shoe__name" href="#">등심이</a>
+                  <div class="ps-shoe__detail"><a class="ps-shoe__name" href="#">${dto.goods_title}</a>
                     <p class="ps-shoe__categories">500만원</p>
                     <p>1kg단위</p>
                   </div>
@@ -90,7 +90,7 @@
             <div class="ps-widget__header">
               <h3>Category</h3>
             </div>
-               
+                 
             <div class="ps-widget__content">
               <ul class="ps-list--checked">
             <c:choose>
@@ -105,27 +105,38 @@
                  <c:choose>
                     <c:when test="${kind_num eq dto.kind_num}">
                        <li class="current">
+                         <c:if test="${ldto.user_role eq 'ADMIN'}">
+                           <input type="checkbox" name="chk" value="${dto.kind_num}" />
+                        </c:if>
                           <a href="allGoods.do?kind_num=${dto.kind_num}&pnum=1">${dto.kind_name}</a>            
                       </li>
                     </c:when>
                     <c:otherwise>
                        <li>
+                         <c:if test="${ldto.user_role eq 'ADMIN'}">
+                           <input type="checkbox" name="chk" value="${dto.kind_num}" />
+                        </c:if>
                           <a href="allGoods.do?kind_num=${dto.kind_num}&pnum=1">${dto.kind_name}</a>            
                       </li>
                     </c:otherwise>
                  </c:choose>
                  </c:forEach>
               </ul>
-              <c:if test="${ldto.user_role ne 'USER'}">
+              <c:if test="${ldto.user_role eq 'ADMIN'}">
 	            <input type="button" value="상품 등록" 
 	            	onclick="location.href='insertGoodsForm.do'" class="catebtn" />
 	         </c:if>
             </div>
           </aside>
-         <aside class="ps-widget--sidebar ps-widget--filter">    
-         <div>
-            </div>
-          </aside>
+        <c:if test="${ldto.user_role eq 'ADMIN'}">
+		<aside class="ps-widget--sidebar ps-widget--filter">    
+			<div>      		
+            	<input type="button" value="카테고리 추가" 
+            	onclick="window.open('insertCategoryForm.do','insertCategory','width=450px,height=30px,location=no,status=no,scrollbars=no')" class="catebtn" />
+            	<input type="submit" value="카테고리 삭제" class="catebtn" />         		
+			</div>
+		</aside>
+		</c:if>
         </div>
       </div>
     </main>

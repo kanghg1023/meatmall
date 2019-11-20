@@ -9,6 +9,71 @@
 <meta charset="UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title>보유 쿠폰목록</title>
+<style type="text/css">
+
+.list-table, .list-table th , .list-table td{         
+
+  text-align: center;
+  padding:10px;               
+}
+
+.list-table th{
+   height:40px;
+   width: 400px;
+   border-top:2px solid #2AC37D;
+   border-bottom:1px solid #CCC;
+   font-weight: bold;
+   font-size: 17px;
+}
+.list-table td{
+   text-align:center;
+   padding:10px 0;
+   border-bottom:1px solid #CCC; height:20px;
+   font-size: 14px 
+}
+
+.list-table .list:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .notice:hover td{
+   background-color: #eee;
+   cursor : pointer;
+}
+
+.list-table .buttonsignup {
+    width: 15%;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+    
+}
+
+.list-table .actionbutton {
+	
+    margin-top:0%;
+}
+
+.couponSelect {
+    width: 50px;
+    height: 27px;
+    padding: 0;
+    border: 0;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:white;
+    font-weight: bold;
+    transition: background-color .4s ease-out;
+}
+</style>
 <script type="text/javascript">
 	
 	$(function(){
@@ -48,7 +113,7 @@
 </script>
 </head>
 <body>
-<table border="1">
+<table class="list-table">
 	<tr>
 		<th>이미지</th>
 		<th>쿠폰명</th>
@@ -57,7 +122,7 @@
 	</tr>
 	<c:forEach items="${clist}" var="dto">
 		<tr>
-			<td><img src="${dto.coupon_img}" /></td>
+			<td><img src="${dto.coupon_img}" style="width:250px;height: 100px;"/></td>
 			<td>${dto.coupon_name}</td>
 			<td>
 				<strong>
@@ -69,7 +134,7 @@
 			<td><fmt:formatDate value="${dto.user_coupon_date}" pattern="yyyy년MM월dd일"/> 까지</td>
 			<td>
 				<input type="hidden" value="${dto.user_coupon_num}" />
-				<input type="button" class="couponSelect" value="선택" />
+				<input type="button" class="couponSelect" value="선택"/>
 			</td>
 		</tr>
 	</c:forEach>
