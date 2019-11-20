@@ -58,8 +58,10 @@
 			<li>검색어가 없습니다.</li>
 		</c:when>
 		<c:otherwise>
+			<c:set var="i" value="0" />
 			<c:forEach items="${bestSearch}" var="dto">
-				<li><a href="search.do?search_word=${dto.search_word}">${dto.search_word}</a></li>
+				<c:set var="i" value="${i+1}" />
+				<li><strong>${i}</strong> <a href="search.do?search_word=${dto.search_word}">${dto.search_word}</a></li>
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
