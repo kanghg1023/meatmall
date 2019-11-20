@@ -5,6 +5,7 @@ import java.util.List;
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
+import com.hk.meatmall.dtos.SearchDto;
 
 public interface ISearchDao {
 	
@@ -21,5 +22,10 @@ public interface ISearchDao {
 	public boolean addSearch(String search_word);
 	//새단어 추가
 	public boolean addWord(String search_word);
+	
+	//인기검색어 조회전 조작 초기화
+	public int searchClear();
+	//인기검색어 출력
+	public List<SearchDto> bestSearch();
 	
 }

@@ -72,4 +72,8 @@ public interface IBoardDao {
 	public int myboardPcount(int user_num);
 	//내가 쓴 글 목록
 	public List<BoardDto> myboardList(int user_num, String pnum);
+	
+	//베스트 게시글
+	public List<BoardDto> bestBoard();
+	
 }

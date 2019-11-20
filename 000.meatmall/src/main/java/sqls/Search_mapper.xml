@@ -66,6 +66,42 @@
 		 WHERE SEARCH_WORD = #{search_word}
 	</select>
 	
+	<update id="addSearch" parameterType="String">
+		UPDATE SEARCH
+		   SET SEARCH_COUNT = SEARCH_COUNT+1
+		 WHERE SEARCH_WORD = #{search_word}
+	</update>
 	
+	<insert id="addWord" parameterType="String">
+		INSERT INTO SEARCH
+		VALUES (
+				 #{search_word}
+			   , 1
+			   , NULL
+			   , NULL
+			   )
+	</insert>
+	
+	<update id="searchClear">
+		<![CDATA[
+		UPDATE SEARCH
+		   SET SEARCH_FAKE_RANKING = NULL
+			 , SEARCH_FAKE_DATE = NULL
+		 WHERE SEARCH_FAKE_DATE < SYSDATE
+		 ]]>
+	</update>
+	
+	<select id="bestSearch" resultType="SearchDto">
+		<![CDATA[
+		SELECT ROW_NUMBER() OVER (ORDER BY SEARCH_FAKE_RANKING, SEARCH_COUNT DESC) AS RN
+			 , ROW_NUMBER() OVER (ORDER BY SEARCH_COUNT DESC) AS RT
+			 , SEARCH_WORD
+			 , SEARCH_COUNT
+			 , SEARCH_FAKE_RANKING
+			 , SEARCH_FAKE_DATE
+		  FROM SEARCH
+		 WHERE ROWNUM < 6
+		 ]]>
+	</select>
 	
 </mapper>

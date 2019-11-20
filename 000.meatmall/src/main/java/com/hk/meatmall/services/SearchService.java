@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
+import com.hk.meatmall.dtos.SearchDto;
 import com.hk.meatmall.idaos.ISearchDao;
 import com.hk.meatmall.iservices.ISearchService;
 
@@ -45,6 +46,16 @@ public class SearchService implements ISearchService {
 	@Override
 	public boolean addWord(String search_word) {
 		return searchDao.addWord(search_word);
+	}
+
+	@Override
+	public int searchClear() {
+		return searchDao.searchClear();
+	}
+	
+	@Override
+	public List<SearchDto> bestSearch() {
+		return searchDao.bestSearch();
 	}
 
 }

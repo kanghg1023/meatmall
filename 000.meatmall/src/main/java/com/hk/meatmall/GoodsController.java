@@ -31,13 +31,16 @@ import com.hk.meatmall.dtos.Goods_kindDto;
 import com.hk.meatmall.dtos.Goods_optionDto;
 import com.hk.meatmall.dtos.OrderDto;
 import com.hk.meatmall.dtos.ReviewDto;
+import com.hk.meatmall.dtos.SearchDto;
 import com.hk.meatmall.dtos.UserDto;
 import com.hk.meatmall.dtos.User_couponDto;
 import com.hk.meatmall.iservices.IBoardService;
 import com.hk.meatmall.iservices.IGoodsService;
+import com.hk.meatmall.iservices.ISearchService;
 import com.hk.utils.Paging;
 import com.hk.utils.UploadFileUtils_D;
 import com.hk.utils.UploadFileUtils_T;
+import com.hk.utils.Util;
 
 @Controller
 public class GoodsController {
@@ -52,6 +55,9 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	
 	@Autowired
 	private IBoardService boardService;
+	
+	@Autowired
+	private ISearchService SearchService;
 	
 	@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String main( HttpSession session
@@ -91,8 +97,18 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			session.setAttribute("mainBanner", mainBanner);
 		}
 		
+		//인기검색어
+		SearchService.searchClear();
+		List<SearchDto> bestSearch = SearchService.bestSearch();
+		bestSearch = Util.bestSearch(bestSearch);
+		
+		//인기글
+//		List<BoardDto> bestBoard = boardService.bestBoard();
+		
+		//상품
 		List<GoodsDto> mainList = GoodsService.getMainList();
 		
+		model.addAttribute("bestSearch",bestSearch);
 		model.addAttribute("mainList",mainList);
 		return "main";
 	}

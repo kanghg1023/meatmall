@@ -3,6 +3,7 @@ package com.hk.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +12,7 @@ import java.util.UUID;
 import org.apache.commons.mail.HtmlEmail;
 
 import com.hk.meatmall.dtos.BasketDto;
+import com.hk.meatmall.dtos.SearchDto;
 
 public class Util {
 	
@@ -105,6 +107,36 @@ public class Util {
 		for (BasketDto dto:list) {
 			int cost = (dto.getOption_weight()/100)*dto.getGoods_cost();
 			dto.setBasket_cost(cost);
+		}
+		
+		return list;
+	}
+	
+	//인기검색어 순위조정
+	public static List<SearchDto> bestSearch(List<SearchDto> bestSearch){
+		int j = 1;
+		int k = 0;
+		List<SearchDto> list = new ArrayList<>();
+		
+		for(int i=0;i<bestSearch.size();i++) {
+			
+			String test = bestSearch.get(i).getSearch_fake_ranking();
+			
+			if(test != null) {
+				if( test.equals(String.valueOf(j)) ) {
+					list.add(bestSearch.get(i));
+				}else {
+					for(k=j;k<Integer.parseInt(test);k++) {
+						list.add(bestSearch.get(k));
+					}
+
+					list.add(bestSearch.get(i));
+					i = i+k-(i+1);
+				}
+			}else {
+				list.add(bestSearch.get(i));
+			}
+			j++;
 		}
 		
 		return list;

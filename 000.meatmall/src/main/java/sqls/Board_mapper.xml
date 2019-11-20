@@ -431,4 +431,10 @@
 		 WHERE USER_NUM = #{user_num}
 		   AND BOARD_DELFLAG = 1
 	</select>
+	
+<!-- 베스트 게시글 -->
+	<select id="bestBoard">
+		
+	</select>
+
 </mapper>

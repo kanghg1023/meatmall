@@ -168,6 +168,11 @@ public class BoardService implements IBoardService {
 		return boardDao.myboardList(user_num, pnum);
 	}
 
+	@Override
+	public List<BoardDto> bestBoard() {
+		return boardDao.bestBoard();
+	}
+
 	
 	
 

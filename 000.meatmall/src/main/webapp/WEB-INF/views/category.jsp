@@ -49,38 +49,6 @@ $(function() {
 <h4>부위별 카테고리</h4>
 <main class="ps-main">
       <div class="ps-products-wrap pt-80 pb-80">
-        <div class="ps-products" data-mh="product-listing">
-          <div class="ps-product__columns">
-            <!-- 반복 -->
-            <c:forEach begin="1" end="10" step="1"> 
-            <div class="ps-product__column">
-              <div class="ps-shoe mb-30">
-                <div class="ps-shoe__thumbnail">                  
-                  <a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a><img src="img/gogi3.jpg" alt=""><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=1"></a>
-                </div>
-                <div class="ps-shoe__content">                 
-                  <div class="ps-shoe__detail"><a class="ps-shoe__name" href="#">등심이</a>
-                    <p class="ps-shoe__categories">500만원</p>
-                    <p>1kg단위</p>                     
-                  </div>
-                </div>
-              </div>
-            </div>
-            </c:forEach>           
-          </div>
-          <div class="ps-product-action">
-            <div class="ps-pagination">
-              <ul class="pagination">
-                <li><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">...</a></li>
-                <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
         <div class="ps-sidebar" data-mh="product-listing">
           <aside class="ps-widget--sidebar ps-widget--category">
             <div class="ps-widget__header">
@@ -100,12 +68,10 @@ $(function() {
             </div>
           </aside>
          <aside class="ps-widget--sidebar ps-widget--filter">    
-         <div>       
-         <c:if test="${ldto.user_role eq 'ADMIN'}">
+         <div>
             <input type="button" value="카테고리 추가" 
             onclick="window.open('insertCategoryForm.do','insertCategory','width=450px,height=30px,location=no,status=no,scrollbars=no')" class="catebtn" />
             <input type="submit" value="카테고리 삭제" class="catebtn" />
-         </c:if>
             </div>
           </aside>     
         </div>        
