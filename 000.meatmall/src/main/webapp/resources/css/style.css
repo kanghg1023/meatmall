@@ -69,7 +69,7 @@
   #pos1:checked~ul{margin-left:0%;}
   #pos2:checked~ul{margin-left:-100%;}
   #pos3:checked~ul{margin-left:-200%;}
-  #pos4:checked~ul{margin-left:-300%;}
+  #pos4:checked~ul{margin-left:-300%;} 
   #pos1:checked~.pos>label:nth-child(1){background:#666;}
   #pos2:checked~.pos>label:nth-child(2){background:#666;}
   #pos3:checked~.pos>label:nth-child(3){background:#666;}
