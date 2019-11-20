@@ -101,7 +101,7 @@
                   <li><a href="allGoods.do?pnum=1">전체상품보기</a></li>
                </c:otherwise>
             </c:choose>
-            <c:forEach items="${cList}" var="dto">
+            <c:forEach items="${category}" var="dto">
                  <c:choose>
                     <c:when test="${kind_num eq dto.kind_num}">
                        <li class="current">

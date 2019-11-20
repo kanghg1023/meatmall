@@ -71,10 +71,12 @@
 			<h3>관리자페이지</h3>
 		</div>
 		<div class="ps-widget__content">
-			<ul class="ps-list--checked">                             
+			<ul class="ps-list--checked">                 
                 <li class="abcd"><a href="userAdmin.do?pnum=1"><span>회원관리</span></a></li>
-                <li class="abcd"><a href="adminCouponList.do?pnum=1"><span>쿠폰관리</span></a></li>    
-                <li class="current abcd"><a href="bannerAdmin"><span>배너관리</span></a></li>             
+                <li class="abcd"><a href="category.do"><span>카테고리 관리</span></a></li>
+                <li class="abcd"><a href="searchAdmin.do"><span>인기검색어 관리</span></a></li>
+                <li class="abcd"><a href="adminCouponList.do?pnum=1"><span>쿠폰관리</span></a></li>
+                <li class="current abcd"><a href="bannerList.do?pnum=1"><span>배너관리</span></a></li>
 			</ul>
 		</div>
 	</aside>            

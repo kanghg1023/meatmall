@@ -78,10 +78,11 @@ background-color: #e8e8e8;
       <h3>(주)고기고기괴기</h3>
    
       <footer>
+           <p>육성진 은현욱 강한결 백대윤</p>
            <p><strong>서울시 영등포구 양산로 53 메르디앙 4층 401<em>|</em>대표이사 : 000<em>|</em>사업자등록번호 : 000-00-00000 </strong></p>
            <p>개인정보 보호책임자 : 000<em>|</em>통신판매업 신고 : 제 2014-서울영등포-0000호</p>
-           <p>Email: <a href='mailto:support@store.com'>support@store.com</a></p>           
-           <p>고객센터: 02-6340-2233</p>
+           <p>Email: <a href='mailto:kanghg1023@gmail.com'>kanghg1023@gmail.com</a></p>           
+           <p>고객센터: 02-1234-1234</p>
         </footer>
    </div>
    

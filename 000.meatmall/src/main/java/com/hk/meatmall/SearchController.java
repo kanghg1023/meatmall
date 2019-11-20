@@ -2,6 +2,8 @@ package com.hk.meatmall;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
+import com.hk.meatmall.dtos.SearchDto;
 import com.hk.meatmall.iservices.ISearchService;
 import com.hk.utils.Util;
 
@@ -65,6 +68,38 @@ public class SearchController {
 		
 	}
 	
-
+	@RequestMapping(value = "/searchAdmin.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String searchAdmin() {
+		logger.info("인기검색어 관리 폼");
+		
+		return "searchAdmin";
+	}
+	
+	@RequestMapping(value = "/insertBestSearch.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String insertBestSearch( HttpSession session
+								  , Model model
+								  , SearchDto dto) {
+		logger.info("인기검색어 등록");
+		
+		boolean isBe = SearchService.beSearch(dto.getSearch_word());
+		boolean isInsert = true;
+		
+		if(isBe) {
+			isInsert = SearchService.updateBestSearch(dto);
+		}else {
+			isInsert = SearchService.insertBestSearch(dto);
+		}
+		
+		if(isInsert) {
+			List<SearchDto> bestSearch = SearchService.bestSearch();
+			bestSearch = Util.bestSearch(bestSearch);
+			session.setAttribute("bestSearch", bestSearch);
+			return "redirect:searchAdmin.do";
+		}else {
+			model.addAttribute("msg", "등록 실패");
+			model.addAttribute("url", "insertCategoryForm.do");
+			return "error";
+		}
+	}
 	
 }

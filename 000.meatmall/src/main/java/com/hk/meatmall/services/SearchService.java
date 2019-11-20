@@ -58,4 +58,14 @@ public class SearchService implements ISearchService {
 		return searchDao.bestSearch();
 	}
 
+	@Override
+	public boolean updateBestSearch(SearchDto dto) {
+		return searchDao.updateBestSearch(dto);
+	}
+	
+	@Override
+	public boolean insertBestSearch(SearchDto dto) {
+		return searchDao.insertBestSearch(dto);
+	}
+
 }

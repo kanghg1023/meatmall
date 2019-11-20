@@ -108,11 +108,11 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 					e.printStackTrace();
 				}
 	        }
-	        System.out.println("ip"+ip);
+	        
 	        if(ip.length()>15) {
 	        	ip = ip.substring(0,14);
 	        }
-	        System.out.println("ip"+ip);
+	        
 	        loginService.loginRecord(user_id, ip, record_check);
 		}else {
 			//아이디가 존재하지 않음

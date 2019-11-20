@@ -101,6 +101,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		SearchService.searchClear();
 		List<SearchDto> bestSearch = SearchService.bestSearch();
 		bestSearch = Util.bestSearch(bestSearch);
+		session.setAttribute("bestSearch", bestSearch);
 		
 		//인기글
 		List<BoardDto> bestBoard = boardService.bestBoard();
@@ -108,7 +109,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		//상품
 		List<GoodsDto> mainList = GoodsService.getMainList();
 		
-		model.addAttribute("bestSearch",bestSearch);
 		model.addAttribute("bestBoard",bestBoard);
 		model.addAttribute("mainList",mainList);
 		return "main";
@@ -160,9 +160,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			model.addAttribute("kind_num", kind_num);
 		}
 		
-		List<Goods_kindDto> cList = GoodsService.category();
-		
-		model.addAttribute("cList", cList);
 		model.addAttribute("map",map);
 		model.addAttribute("gList", gList);
 		return "allGoods";
@@ -172,7 +169,6 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	@RequestMapping(value = "/category.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String category(Model model) {
 		logger.info("부위별 카테고리");
-		
 		
 		return "category";
 	}
@@ -185,12 +181,17 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/insertCategory.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String insertCategory(Model model, String kind_name) {
+	public String insertCategory( HttpSession session
+								, Model model
+								, String kind_name) {
 		logger.info("카테고리 추가");
 		
 		boolean isInsert = GoodsService.insertCategory(kind_name);
 		
 		if(isInsert) {
+			List<Goods_kindDto> category = GoodsService.category();
+			session.setAttribute("category", category);
+			
 			return "redirect:category.do";
 		}else {
 			model.addAttribute("msg", "추가 실패");
@@ -200,12 +201,16 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 	}
 	
 	@RequestMapping(value = "/delCategory.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String delCategory(Model model, String[] chk) {
+	public String delCategory( HttpSession session
+							 , Model model
+							 , String[] chk) {
 		logger.info("카테고리 삭제");
 		
 		boolean isDelete = GoodsService.delCategory(chk);
 		
 		if(isDelete) {
+			List<Goods_kindDto> category = GoodsService.category();
+			session.setAttribute("category", category);
 			return "redirect:category.do";
 		}else {
 			model.addAttribute("msg", "삭제 실패");

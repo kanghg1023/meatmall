@@ -28,4 +28,9 @@ public interface ISearchService {
 	//인기검색어 출력
 	public List<SearchDto> bestSearch();
 	
+	//인기검색어 조작
+	public boolean updateBestSearch(SearchDto dto);
+	//인기검색어로 등록
+	public boolean insertBestSearch(SearchDto dto);
+	
 }

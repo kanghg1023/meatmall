@@ -85,7 +85,7 @@
                      	</c:forEach>
                      </ul>
                   </li>                
-                  <li class="menu-item menu-item-has-children dropdown"><a href="boardlist.do?pnum=1">커뮤니티</a></li>
+                  <li class="menu-item"><a href="boardlist.do?pnum=1">커뮤니티</a></li>
                   <li class="menu-item"><a href="recipe.do">레시피</a></li>
                   <li class="menu-item menu-item-has-children dropdown"><a href="#">고객센터</a>
                     <ul class="sub-menu">

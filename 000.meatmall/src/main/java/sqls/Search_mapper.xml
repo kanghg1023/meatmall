@@ -104,4 +104,21 @@
 		 ]]>
 	</select>
 	
+	<update id="updateBestSearch" parameterType="SearchDto">
+		UPDATE SEARCH
+		   SET SEARCH_FAKE_RANKING = #{search_fake_ranking}
+			 , SEARCH_FAKE_DATE = SYSDATE + (1/24/60)
+		 WHERE SEARCH_WORD = #{search_word}
+	</update>
+	
+	<insert id="insertBestSearch" parameterType="SearchDto">
+		INSERT INTO SEARCH
+		VALUES (
+				 #{search_word}
+			   , 0
+			   , #{search_fake_ranking}
+			   , SYSDATE + (1/24/60)
+			   )
+	</insert>
+	
 </mapper>

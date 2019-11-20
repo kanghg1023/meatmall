@@ -64,5 +64,17 @@ public class SearchDao implements ISearchDao {
 		return sqlSession.selectList(nameSpace+"bestSearch");
 	}
 
+	@Override
+	public boolean updateBestSearch(SearchDto dto) {
+		int count = sqlSession.update(nameSpace+"updateBestSearch",dto);
+		return count>0 ? true : false;
+	}
+	
+	@Override
+	public boolean insertBestSearch(SearchDto dto) {
+		int count = sqlSession.insert(nameSpace+"insertBestSearch",dto);
+		return count>0 ? true : false;
+	}
+
 	
 }
