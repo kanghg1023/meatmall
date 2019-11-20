@@ -77,7 +77,7 @@ body {
 	$(function(){
 		$(".stateUpdate").click(function(){
 			var order_num = $(this).next().val();
-			location.href="stateUpdate.do?order_num="+order_num;
+			location.href="stateUpdate.do?order_num="+order_num+"&chk=0";
 		});
 	});
 	
