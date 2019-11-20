@@ -9,11 +9,62 @@
 <meta charset="UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title>리뷰작성</title>
+
+<style type="text/css" media="screen">
+
+.list-table {
+    margin:100px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  padding:10px;
+                 
+}
+
+.list-table th{
+   height:40px;
+   border-top:2px solid #2AC37D;
+   border-bottom:1px solid #2AC37D;
+   font-weight: bold;
+   font-size: 17px;
+   
+}
+.list-table td{
+   
+   padding:15px 0;
+   border-bottom:1px solid #2AC37D; height:20px;
+   font-size: 14px
+   
+    
+}
+
+.buttonsignup {
+    width: 80px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.actionbutton {
+	margin-top:0%;
+}
+</style>
+
 </head>
 <body>
-	<table border="1">
+<jsp:include page="header.jsp" />
+	<table class="list-table">
+	<col width="300px" />
+	<col width="100px" />
 		<tr>
-			<td align="left" ><img src="${odto.goods_img_title}" style="width:78px; height:78px;"></td>
+			<td align="left" ><img src="${odto.goods_img_title}" style="width:300px; height:300px;"></td>
 			<td>${odto.goods_title}<br />(${odto.option_name})</td>
 		</tr>
 	</table>
@@ -23,8 +74,8 @@
 		<input type="hidden" name="user_num" value="${odto.order_seller}" />
 		<input type="hidden" name="user_id" value="${ldto.user_id}" />
 		<div class="row">
-			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-				<div class="form-group">
+			<div>
+				<div class="form-group" style="text-align: center;">
 					<label>별점<span></span></label>
 					<select class="ps-rating" name="review_score">
 						<option value="1">1</option>
@@ -35,13 +86,13 @@
 					</select>
 				</div>
 			</div>
-			<div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 ">
-				<div class="form-group">
+			<div>
+				<div class="form-group" style="text-align: center;">
 					<label>리뷰 내용</label>
-					<textarea class="form-control" name="review_content" rows="6"></textarea>
+					<textarea class="form-control" name="review_content" rows="6"  style="width: 50%; margin: auto;"></textarea>
 				</div>
-				<div class="form-group">
-					<input type="submit" value="등록" id="btn" class="ps-btn ps-btn--sm"/>
+				<div class="form-group" style="text-align: center;">
+					<input type="submit" value="등록" id="btn" class="buttonsignup actionbutton"/>
 				</div>
 			</div>
 		</div>
