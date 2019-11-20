@@ -230,19 +230,14 @@ input{
 
 <h1 style="text-align: center;">상품 수정</h1>
 <form action="upGoods.do" method="post" enctype="multipart/form-data">
-<input type="hidden" name="goods_num" value="${gDto.goods_num}"/>
+<input type="hidden" name="goods_num" value="${gdto.goods_num}"/>
+<input type="hidden" name="user_num" value="${gdto.user_num}"/>
 <table class="list-table">
 	<col width="150px" />
 	<col width="400px" />
 	<tr>
 		<th>상품명</th>
-		<td><input type="text" name="goods_title" class="inputval" value="${gDto.goods_title}" /></td>
-	</tr>
-	<tr>
-		<th>판매자</th>
-		<td>
-			<input type="text" name="user_num" class="inputval" value="${gDto.user_num}" />
-		</td>
+		<td><input type="text" name="goods_title" class="inputval" value="${gdto.goods_title}" /></td>
 	</tr>
 	<tr>
 		<th>대표이미지</th>
@@ -250,7 +245,7 @@ input{
 			<div class="inputArea">
  				<label for="goods_img_title">대표이미지</label>
  				<input type="file" id="goods_img_title" name="title_file" />
- 				<div class="select_img"><img src="${gDto.goods_img_title}" /></div>
+ 				<div class="select_img"><img src="${gdto.goods_img_title}" /></div>
 			</div>
 		</td>
 	</tr>
@@ -268,11 +263,11 @@ input{
 	</tr>
 	<tr>
 		<th>상품이력번호</th>
-		<td><input type="text" name="goods_history" placeholder="12자리" value="${gDto.goods_history}"/></td>
+		<td><input type="text" name="goods_history" placeholder="12자리" value="${gdto.goods_history}"/></td>
 	</tr>
 	<tr>
 		<th>100g당 가격</th>
-		<td><input type="text" name="goods_cost" value="${gDto.goods_cost}"/></td>
+		<td><input type="text" name="goods_cost" value="${gdto.goods_cost}"/></td>
 	</tr>
 	<tr>
 		<th>상세이미지</th>
@@ -280,13 +275,13 @@ input{
 			<div class="inputArea">
  				<label for="goods_img_detail">상세이미지</label>
  				<input multiple="multiple" type="file" id="goods_img_detail" name="detail_file" />
- 				<div class="select_detail_img" id="deImg">${gDto.goods_img_detail}</div>
+ 				<div class="select_detail_img" id="deImg">${gdto.goods_img_detail}</div>
 			</div>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<input type="button" value="수정취소" onclick="location.href='goodsDetail.do?goods_num=${gDto.goods_num}'" class="buttonsignup actionbutton"/>
+			<input type="button" value="수정취소" onclick="location.href='goodsDetail.do?goods_num=${gdto.goods_num}'" class="buttonsignup actionbutton"/>
 			<input type="submit" value="완료" class="buttonsignup actionbutton"/>
 		</td>
 	</tr>

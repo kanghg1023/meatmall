@@ -130,7 +130,7 @@ margin: 10px 0 0 0;
 <script type="text/javascript">
    $(function(){
       $("#jusoApi").click(function(){
-         window.open("getAddr.do","","width=400px,height=500px");
+         window.open("getAddr.do","","width=420px,height=360px");
       });
    });
 </script> 

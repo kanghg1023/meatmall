@@ -241,6 +241,7 @@ $(function(){
 	
 	$("#user_pw").blur(function(){
 		pwChkfun();
+		pw2Chkfun();
 	});
 	
 	$("#user_pw2").blur(function(){
