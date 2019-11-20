@@ -17,7 +17,7 @@ body {
 }
 
 .list-table {
-    margin:100px auto 0px auto;
+    margin:100px auto 50px auto;
 }
 
 .list-table, .list-table th , .list-table td{         
@@ -177,7 +177,7 @@ $(function() {
 
 	<jsp:include page="header.jsp" />
 
-<h1 style="text-align: center;">장바구니</h1>
+<!-- <h1 style="text-align: center;">장바구니</h1> -->
 <form action="delBasket.do" method="post" id="del">
 <table  class="list-table">
 		<colgroup>

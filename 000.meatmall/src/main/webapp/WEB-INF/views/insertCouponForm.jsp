@@ -24,11 +24,98 @@ $(function(){
 });
 
 </script>
+
+<style type="text/css">
+	.select_img img {margin:20px;}
+	
+
+.inputArea label { 
+	display: inline-block;
+	padding: .5em .75em; 
+	color: #fff; 
+	font-size: inherit; 
+	
+	line-height: normal; 
+	vertical-align: middle; 
+	background-color: #2AC37D; 
+	cursor: pointer; 
+	border: 1px solid #ebebeb;
+	border-bottom-color: #e2e2e2; 
+	border-radius: .25em; 
+}
+
+.inputArea input[type="file"] {
+ /* 파일 필드 숨기기 */ 
+ 	position: absolute;
+ 	width: 1px; 
+ 	height: 1px; 
+ 	padding: 0; 
+ 	margin: -1px; 
+ 	overflow: hidden; 
+ 	clip:rect(0,0,0,0); 
+ 	border: 0; 
+}
+
+.list-table {
+    margin:70px auto 0px auto;
+}
+
+.list-table, .list-table th , .list-table td{         
+
+  padding:10px;
+                 
+}
+
+.list-table th{
+   height:40px;
+   
+   border-bottom:1px solid #2AC37D;
+   font-weight: bold;
+   font-size: 17px;
+   
+}
+.list-table td{
+   
+   padding:15px 0;
+   border-bottom:1px solid #2AC37D; height:20px;
+   font-size: 14px
+   
+    
+}
+
+.buttonsignup {
+    width: 80px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    background-color: #2AC37D;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+}
+
+.actionbutton {
+	margin-top:0%;
+}
+
+
+
+input{
+    width: 100%;
+    
+}
+	
+</style>
+
 </head>
 <body>
-
+<jsp:include page="header.jsp" />
 <form action="insertCoupon.do" method="post" enctype="multipart/form-data">
-<table border="1" class="table">
+<table class="list-table">
+	<col width="150px" />
+	<col width="400px" />
 	<tr>
 		<th>쿠폰명</th>
 		<td><input type="text" name="coupon_name" class="inputval" /></td>
@@ -55,12 +142,13 @@ $(function(){
 	</tr>
 	<tr>
 		<td colspan="2">
-			<input type="button" value="목록" onclick="location.href='adminCouponList.do'" class="button"/>
-			<input type="submit" value="완료" class="button"/>
+			<input type="button" value="목록" onclick="location.href='adminCouponList.do'" class="buttonsignup actionbutton"/>
+			<input type="submit" value="완료" class="buttonsignup actionbutton"/>
 		</td>
 	</tr>
 </table>
 </form>
-
+<br/><br/>
+<jsp:include page="footer.jsp" /> 
 </body>
 </html>

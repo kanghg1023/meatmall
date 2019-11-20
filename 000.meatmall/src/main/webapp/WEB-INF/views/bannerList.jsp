@@ -142,5 +142,7 @@
 	</tr>
 </table>
 </div>
+<br/><br/>
+<jsp:include page="footer.jsp" />
 </body>
 </html>
