@@ -205,10 +205,9 @@ public class BoardDao implements IBoardDao {
 		return sqlSession.selectList(nameSpace+"myboardList",map);
 	}
 
-	
-
-	
-
-
+	@Override
+	public List<BoardDto> bestBoard() {
+		return sqlSession.selectList(nameSpace+"bestBoard");
+	}
 	
 }

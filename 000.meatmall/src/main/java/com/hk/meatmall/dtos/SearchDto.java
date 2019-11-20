@@ -20,7 +20,7 @@ public class SearchDto {
 	//검색 횟수
 	private int search_count;
 	//조작한 순위
-	private int search_fake_ranking;
+	private String search_fake_ranking;
 	//조작할 시간
 	private Date search_fake_date;
 

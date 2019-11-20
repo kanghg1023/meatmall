@@ -115,7 +115,7 @@ $(function(){
 </table>
 </form>
 <script>
-//id가 board_content인 태그에 ckeditor를 적용시킴
+//id가 ckeditor인 태그에 ckeditor를 적용시킴
 CKEDITOR.replace("ckeditor",{
     filebrowserUploadUrl : "/meatmall"+"/imageUpload.do",			//,width : '800px'
     width : '800px' , height : '500px'

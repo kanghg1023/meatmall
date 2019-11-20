@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.hk.meatmall.dtos.BoardDto;
 import com.hk.meatmall.dtos.GoodsDto;
 import com.hk.meatmall.dtos.Goods_kindDto;
+import com.hk.meatmall.dtos.SearchDto;
 import com.hk.meatmall.idaos.ISearchDao;
 
 @Repository
@@ -43,14 +44,25 @@ public class SearchDao implements ISearchDao {
 
 	@Override
 	public boolean addSearch(String search_word) {
-		int count = sqlSession.update(nameSpace+"beSearch",search_word);
+		int count = sqlSession.update(nameSpace+"addSearch",search_word);
 		return count>0 ? true : false;
 	}
 
 	@Override
 	public boolean addWord(String search_word) {
-		int count = sqlSession.insert(nameSpace+"beSearch",search_word);
+		int count = sqlSession.insert(nameSpace+"addWord",search_word);
 		return count>0 ? true : false;
 	}
+
+	@Override
+	public int searchClear() {
+		return sqlSession.update(nameSpace+"searchClear");
+	}
+	
+	@Override
+	public List<SearchDto> bestSearch() {
+		return sqlSession.selectList(nameSpace+"bestSearch");
+	}
+
 	
 }

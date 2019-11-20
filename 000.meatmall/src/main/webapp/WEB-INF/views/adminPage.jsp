@@ -16,6 +16,12 @@
 		<a href="userAdmin.do?pnum=1"><span>회원관리</span></a>
 	</dd>
 	<dd>
+		<a href="category.do"><span>쿠폰관리</span></a>
+	</dd>
+	<dd>
+		<a href=""><span>인기검색어</span></a>
+	</dd>
+	<dd>
 		<a href="adminCouponList.do?pnum=1"><span>쿠폰관리</span></a>
 	</dd>
 	<dd>
