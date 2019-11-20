@@ -241,7 +241,7 @@ input{
 	</tr>
 	<tr>
 		<th>판매자</th>
-		<td><input type="text" name="user_num" value="${ldto.user_num}" /></td>
+		<td><input type="hidden" name="user_num" value="${ldto.user_num}" />${ldto.user_nick}</td>
 	</tr>
 	<tr>
 		<th>대표이미지</th>

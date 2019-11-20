@@ -138,13 +138,22 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		
 		while(isList) {
 			if(ldto == null || !(ldto.getUser_role().equals("ADMIN"))) {
-				gList = GoodsService.getEnabled(String.valueOf(p));
-			
-				pcount = GoodsService.getEnabledPcount();
+				if(kind_num != null){
+					gList = GoodsService.getCateEnabled(kind_num,String.valueOf(p));
+					pcount = GoodsService.getEnabledCatePcount(kind_num);
+				}else {
+					gList = GoodsService.getEnabled(String.valueOf(p));
+					pcount = GoodsService.getEnabledPcount();
+				}
 				map=Paging.pagingValue(pcount, pnum, 5);
 			}else {
-				gList = GoodsService.allGoods(String.valueOf(p));
-				pcount = GoodsService.getAllPcount();
+				if(kind_num != null) {
+					gList = GoodsService.categoryGoods(kind_num,String.valueOf(p));
+					pcount = GoodsService.getAllCatePcount(kind_num);
+				}else {
+					gList = GoodsService.allGoods(String.valueOf(p));
+					pcount = GoodsService.getAllPcount();
+				}
 				map=Paging.pagingValue(pcount, pnum, 5);
 			}
 			
@@ -597,9 +606,23 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 				break;
 			}
 		}
+		boolean isBe = false;
 		
 		//장바구니삭제
-		boolean isDel = GoodsService.delBasket(option_num);
+		for(int i=0;i<option_num.length;i++) {
+			isBe = GoodsService.beBasket(user_num,option_num[i]);
+			
+			if(isBe) {
+				break;
+			}
+		}
+		
+		boolean isDel = true;
+		
+		if(isBe) {
+			isDel = GoodsService.delBasket(option_num);
+		}
+		
 		//쿠폰사용
 		boolean isUse = false;
 		
@@ -613,7 +636,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		if(isInsert && isCount && isDel && isUse) {
 			int basketCount = GoodsService.basketCount(user_num);
 			session.setAttribute("basketCount", basketCount);
-			return "redirect:allGoods.do?pnum=1";
+			return "redirect:orderList.do?user_num="+user_num;
 		}else {
 			model.addAttribute("msg", "주문 실패");
 			model.addAttribute("url", "main.do");
