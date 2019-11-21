@@ -135,10 +135,10 @@ $(function() {
 	
 	$("form").submit(function(){
 		var realSum = $("#realSum");
+		var cost = realSum.html().replace(/,/gi,"");
+		var bool = true;
 		
-		var cost = realSum.val().replace(/,/gi,"");
-		
-		if(${ldto.license_level} > 1){
+		if(${ldto.license_level==null ? 0 : ldto.license_level} > 1){
 			
 			$.ajax({
 				url:"levelChk.do",
@@ -147,24 +147,24 @@ $(function() {
 				datatype:"text",
 				async:false,
 				success:function(discount){
-					alert("여기1");
-					var total = round((eval(cost)*(100-eval(discount))/100)/10)*10;
-					alert("여기2");
+					var a = (eval(cost)*(100-eval(discount)));
+					var total = Math.round((a/100)/10)*10;
 					var totalSum = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-					alert("여기3");
-					alert("고객님의 사업자 등급에 따라 "+discount+"% 할인이 적용되어"
+					
+					alert("고객님의 사업자 등급에 따라 "+discount+"% 할인이 적용되어\n"
 							+"총 "+totalSum+"원이 결제됩니다.");
-					return false;
 				},
 				error:function(){
 					alert("서버통신에러: 관리자에게 문의주세요");
-					return false;
+					bool = false;
 				}
 			});
 		}else{
-			alert("총 "+realSum.value+"원이 결제됩니다.");
+			alert("총 "+realSum.html()+"원이 결제됩니다.");
+			bool = false;
 		}
-		return false;
+		
+		return bool;
 	});
 	
 	
