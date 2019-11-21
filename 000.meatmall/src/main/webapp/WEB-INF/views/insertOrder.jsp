@@ -161,7 +161,6 @@ $(function() {
 			});
 		}else{
 			alert("총 "+realSum.html()+"원이 결제됩니다.");
-			bool = false;
 		}
 		
 		return bool;
