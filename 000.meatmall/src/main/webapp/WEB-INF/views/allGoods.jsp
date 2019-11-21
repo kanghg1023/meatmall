@@ -2,6 +2,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
 <!DOCTYPE html>
@@ -49,8 +50,8 @@
                 </div>
                 <div class="ps-shoe__content">
                   <div class="ps-shoe__detail"><a class="ps-shoe__name" href="#">${dto.goods_title}</a>
-                    <p class="ps-shoe__categories">500만원</p>
-                    <p>1kg단위</p>
+                    <p>100g 당</p>
+                    <p class="ps-shoe__categories"><fmt:formatNumber value="${dto.goods_cost}" maxFractionDigits="0" />원</p>
                   </div>
                 </div>
               </div>

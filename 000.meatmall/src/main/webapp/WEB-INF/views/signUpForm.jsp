@@ -133,7 +133,7 @@ margin: 10px 0 0 0;
          window.open("getAddr.do","","width=420px,height=360px");
       });
    });
-</script> 
+</script>
 </head>
 <body>
 
