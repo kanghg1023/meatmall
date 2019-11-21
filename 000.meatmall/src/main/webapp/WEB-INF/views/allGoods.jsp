@@ -64,9 +64,9 @@
             <div class="ps-pagination">
               <ul class="pagination">
               	<c:if test="${pnum != 1}">
-					<li><a href="allGoods.do?pnum=${pmap.prePageNum}${statusPage==null?'':statusPage}"><i class="fa fa-angle-left"></i></a></li>				
+					<li><a href="allGoods.do?pnum=${map.prePageNum}${statusPage==null?'':statusPage}"><i class="fa fa-angle-left"></i></a></li>				
 				</c:if>
-				<c:forEach var="i" begin="${pmap.startPage}" end="${pmap.endPage}" step="1" >																			
+				<c:forEach var="i" begin="${map.startPage}" end="${map.endPage}" step="1" >																			
 					<c:choose>
 						<c:when test="${i == 0}">
 							<li class="active"><a href="#">1</a></li>
@@ -79,8 +79,8 @@
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-				<c:if test="${pnum < pmap.pcount}">
-					 <li><a href="allGoods.do?pnum=${pmap.nextPageNum}${statusPage==null?'':statusPage}"><i class="fa fa-angle-right"></i></a></li>
+				<c:if test="${pnum < map.pcount}">
+					 <li><a href="allGoods.do?pnum=${map.nextPageNum}${statusPage==null?'':statusPage}"><i class="fa fa-angle-right"></i></a></li>
 				</c:if>
               </ul>
             </div>

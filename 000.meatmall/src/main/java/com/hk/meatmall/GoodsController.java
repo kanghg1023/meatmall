@@ -169,6 +169,7 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 			model.addAttribute("kind_num", kind_num);
 		}
 		
+		session.setAttribute("pnum", pnum);
 		model.addAttribute("map",map);
 		model.addAttribute("gList", gList);
 		return "allGoods";
