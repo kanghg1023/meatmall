@@ -75,7 +75,7 @@
 			var aCount = $(this).parent();
 			aCount.after("<li id='recomment' class='boardlist123'>"
 							+"<textarea rows='2' cols='55' id='content2' ></textarea>"
-							+"<input type='button' id='recommentBtn' value='등록' />"
+							+"<input type='button' id='recommentBtn' value='등록' class='recommentBtn' />"
 						+"</li>");
 			$(this).attr('class','cancelBtn');
 		});
@@ -268,9 +268,21 @@
     color:#fff;
     transition: background-color .4s ease-out;
     font-size: 14px;
-    margin-top: 1px;
-    
-
+    margin-top: 1px;  
+}
+.recommentBtn {
+	width: 40px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    background-color: #008AC5;
+    border-radius:5px;
+    cursor:pointer;
+    color:#fff;
+    transition: background-color .4s ease-out;
+    font-size: 14px;
+    margin-left: 3px;
+  
 }
 
 </style>
