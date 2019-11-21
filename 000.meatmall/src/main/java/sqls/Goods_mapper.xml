@@ -51,7 +51,7 @@
 		       ) G
 		     , USER_INFO U
 		 WHERE G.USER_NUM = U.USER_NUM
-		   AND CEIL(G.RN/6) = #{pnum}
+		   AND CEIL(G.RN/10) = #{pnum}
 	</select>
 
 <!-- 전체상품 (삭제여부) + 페이징 -->
@@ -76,18 +76,18 @@
 		       ) G
 		     , USER_INFO U
 		 WHERE G.USER_NUM = U.USER_NUM
-		   AND CEIL(G.RN/6) = #{pnum}
+		   AND CEIL(G.RN/10) = #{pnum}
 	</select>	
 	
 <!-- 전체 페이지 수 -->         
 	<select id="allPcount" resultType="int">
-		SELECT CEIL(COUNT(GOODS_NUM)/6)
+		SELECT CEIL(COUNT(GOODS_NUM)/10)
 		  FROM GOODS
 	</select>
 	
 <!-- 전체 페이지 수 (삭제여부) -->         
 	<select id="enabledPcount" resultType="int">
-		SELECT CEIL(COUNT(GOODS_NUM)/6)
+		SELECT CEIL(COUNT(GOODS_NUM)/10)
 		  FROM GOODS
 		 WHERE GOODS_DELFLAG = 1
 	</select>
@@ -142,7 +142,7 @@
 		       ) G
 		     , USER_INFO U
 		 WHERE G.USER_NUM = U.USER_NUM
-		   AND CEIL(G.RN/6) = #{pnum}
+		   AND CEIL(G.RN/10) = #{pnum}
 	</select>
 	
 <!-- 카테고리별 상품 (삭제여부) -->
@@ -170,7 +170,7 @@
 		       ) G
 		     , USER_INFO U
 		 WHERE G.USER_NUM = U.USER_NUM
-		   AND CEIL(G.RN/6) = #{pnum}
+		   AND CEIL(G.RN/10) = #{pnum}
 	</select>
 	
 	<sql id="pcount">
