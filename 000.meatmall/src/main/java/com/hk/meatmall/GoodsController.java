@@ -321,6 +321,10 @@ private static final Logger logger = LoggerFactory.getLogger(GoodsController.cla
 		List<Goods_optionDto> oList = GoodsService.getGoods_option(goods_num);
 		List<ReviewDto> rList = GoodsService.reviewList(goods_num);
 		
+		String title = gdto.getGoods_img_title().replace("\\","/");
+		
+		gdto.setGoods_img_title(title);
+		
 		model.addAttribute("gdto", gdto);
 		model.addAttribute("oList", oList);
 		model.addAttribute("rList", rList);
