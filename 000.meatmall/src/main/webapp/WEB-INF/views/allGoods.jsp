@@ -44,7 +44,7 @@
                   <c:choose>
                         <c:when test="${dto.goods_delflag eq 0}"><img src="img/삭제상품.png" alt="삭제된 이미지" style="height:200px;"><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a></c:when>
                         <c:otherwise>
-                  <a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a><img src="${dto.goods_img_title}"  alt="" id="abcd" style="height:200px;" ><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a>
+                  			<img src="${dto.goods_img_title}"  alt="" id="abcd" style="height:200px;" ><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a>
                         </c:otherwise>
                   </c:choose>
                 </div>

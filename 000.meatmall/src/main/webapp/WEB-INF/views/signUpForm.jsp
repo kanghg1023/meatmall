@@ -146,27 +146,27 @@ margin: 10px 0 0 0;
         </div>
         <div class="content">
             <p class="info_color">아이디</p>
-            <input id="user_id" name="user_id" type="text"  autocomplete="off" placeholder="아이디" class="element">
+            <input id="user_id" name="user_id" type="text"  autocomplete="off" placeholder="아이디" class="element" maxlength="20">
             <p class="info_color">비밀번호</p>
-            <input id="user_pw" name="user_pw" type="password" autocomplete="off" placeholder="비밀번호" class="element">
+            <input id="user_pw" name="user_pw" type="password" autocomplete="off" placeholder="비밀번호" class="element" maxlength="16">
             <p class="info_color">비밀번호 확인</p>
-            <input id="user_pw2" name="user_pw2" type="password"  autocomplete="off" placeholder="비밀번호 확인" class="element">
+            <input id="user_pw2" name="user_pw2" type="password"  autocomplete="off" placeholder="비밀번호 확인" class="element" maxlength="16">
             <p class="info_color">이름</p>
-            <input id="user_name" name="user_name" type="text"  autocomplete="off" placeholder="이름" class="element">
+            <input id="user_name" name="user_name" type="text"  autocomplete="off" placeholder="이름" class="element" maxlength="20">
             <p class="info_color">별명</p>
-            <input id="user_nick" name="user_nick" type="text"  autocomplete="off" placeholder="별명" class="element">
+            <input id="user_nick" name="user_nick" type="text"  autocomplete="off" placeholder="별명" class="element" maxlength="20">
             <p class="info_color">전화번호</p>
             <input id="user_ph" name="user_ph" type="tel" autocomplete="off" placeholder="전화번호" class="element">
             <p class="info_color">주소</p>
             <input id="user_addr" name="user_addr" type="text"  autocomplete="off" placeholder="주소" class="element" readonly="readonly">
             <input type="button" id="jusoApi" value="주소검색" />
             <p class="info_color">상세주소</p>
-            <input id="user_addr_detail" name="user_addr_detail" type="text" autocomplete="off" placeholder="상세주소" class="element">
+            <input id="user_addr_detail" name="user_addr_detail" type="text" autocomplete="off" placeholder="상세주소" class="element" maxlength="50">
             <p class="info_color">이메일</p>
-            <input id="user_email" name="user_email" type="email" autocomplete="off" placeholder="이메일" class="element">
+            <input id="user_email" name="user_email" type="email" autocomplete="off" placeholder="이메일" class="element" maxlength="20">
       <c:if test="${licenseeSignUp != null}">
          <p class="info_color">사업자 등록번호</p>
-            <input id="user_businessnum" name="user_businessnum" type="text" autocomplete="off" placeholder="사업자 등록번호" class="element">
+            <input id="user_businessnum" name="user_businessnum" type="text" autocomplete="off" placeholder="사업자 등록번호" class="element" maxlength="10">
       </c:if>               
          <input type="submit" value="가입완료" class="buttonsignup actionbutton" />   
         </div>

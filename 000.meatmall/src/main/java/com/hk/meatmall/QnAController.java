@@ -264,7 +264,9 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 		
 		@ResponseBody
 		@RequestMapping(value = "/imageUpload.do",method= {RequestMethod.POST})
-		public String communityImageUpload(HttpServletRequest request, HttpServletResponse response, @RequestParam MultipartFile upload) throws Exception {
+		public String communityImageUpload( HttpServletRequest request
+										  , HttpServletResponse response
+										  , @RequestParam MultipartFile upload) throws Exception {
 			System.out.println("들어는옴");
 			//한글깨짐을 방지하기위해 문자셋 설정
 			response.setCharacterEncoding("utf-8");
@@ -281,27 +283,26 @@ private static final Logger logger = LoggerFactory.getLogger(QnAController.class
 	        byte[] bytes = upload.getBytes();
 	 
 	        // 이미지를 업로드할 디렉토리(배포 디렉토리로 설정)
-		        String uploadPath ="C:\\Users\\HKEDU\\git\\meatmall\\000.meatmall\\src\\main\\webapp\\resources\\ckimages\\";
-		        //한결집		    
-//		        String uploadPath = "C:\\Users\\10H\\git\\meatmall\\000.meatmall\\src\\main\\webapp\\resources\\ckimages\\";
-		        OutputStream out = new FileOutputStream(new File(uploadPath + stored_fname));
-		        
-		        // 서버로 업로드
-		        // write메소드의 매개값으로 파일의 총 바이트를 매개값으로 준다.
-		        // 지정된 바이트를 출력 스트립에 쓴다 (출력하기 위해서)
-		        out.write(bytes);
-		        	        
-		        // 서버=>클라이언트로 텍스트 전송(자바스크립트 실행)
-		        PrintWriter printWriter = response.getWriter();
-		        
-		        String fileUrl = "/meatmall/ckimages/" + stored_fname;	     
-		        System.out.println(fileUrl);
-		        printWriter.println("{\"fileName\" : \""+stored_fname+"\", \"uploaded\" : 1, \"url\":\""+fileUrl+"\"}");     
-		        printWriter.flush();
-		        out.close();
-		        printWriter.close(); 
-		        return null;
-		    }
+	        //한결집		    
+	        String uploadPath = "C:\\Users\\10H\\git\\meatmall\\000.meatmall\\src\\main\\webapp\\resources\\ckimages\\";
+	        OutputStream out = new FileOutputStream(new File(uploadPath + stored_fname));
+	        
+	        // 서버로 업로드
+	        // write메소드의 매개값으로 파일의 총 바이트를 매개값으로 준다.
+	        // 지정된 바이트를 출력 스트립에 쓴다 (출력하기 위해서)
+	        out.write(bytes);
+	        	        
+	        // 서버=>클라이언트로 텍스트 전송(자바스크립트 실행)
+	        PrintWriter printWriter = response.getWriter();
+	        
+	        String fileUrl = "/meatmall/ckimages/" + stored_fname;	     
+	        System.out.println(fileUrl);
+	        printWriter.println("{\"fileName\" : \""+stored_fname+"\", \"uploaded\" : 1, \"url\":\""+fileUrl+"\"}");     
+	        printWriter.flush();
+	        out.close();
+	        printWriter.close(); 
+	        return null;
+	    }
 		 
 			
 		

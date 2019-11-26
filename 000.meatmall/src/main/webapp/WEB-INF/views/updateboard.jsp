@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="/meatmall/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title></title>
 <script type="text/javascript" src="js/formCheck.js"></script>

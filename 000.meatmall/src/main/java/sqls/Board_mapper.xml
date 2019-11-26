@@ -31,6 +31,7 @@
 		     , USER_INFO U
 		 WHERE B.USER_NUM = U.USER_NUM
 		   AND CEIL(B.RN/5) = #{pnum}
+		 ORDER BY BOARD_NUM DESC
 	</select>
 
 <!--글목록전체보기+페이징 전체이용자-->

@@ -160,7 +160,7 @@ body {
 							<td><a href="boarddetail.do?board_num=${dto.board_num}">${dto.board_title}</a></td>
 						</c:otherwise>
 					</c:choose>										
-					<td><fmt:formatDate value="${dto.board_regdate}" pattern="yyyy년MM월dd일"/> </td>					
+					<td><fmt:formatDate value="${dto.board_regdate}" pattern="yy-MM-dd [hh:mm]"/> </td>					
 					<td>${dto.board_readcount}</td>
 				</tr>
 			</c:forEach>			

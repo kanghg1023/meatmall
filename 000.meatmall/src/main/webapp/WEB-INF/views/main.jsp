@@ -157,7 +157,7 @@
 					
                     <div class="ps-shoe mb-30" >
                       <div class="ps-shoe__thumbnail">
-                        <a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a><img src="${dto.goods_img_title}" alt="" style="height:250px;"><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a>
+                        <img src="${dto.goods_img_title}" alt="" style="height:250px;"><a class="ps-shoe__overlay" href="goodsDetail.do?goods_num=${dto.goods_num}"></a>
                       </div>
                       <div class="ps-shoe__content" >
                       <div class="ps-shoe__variants" >

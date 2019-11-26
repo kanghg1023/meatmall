@@ -10,7 +10,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <title>게시글 추가폼</title>
 <!-- ckeditor 사용을 위해 js 파일 연결 -->
-<script type="text/javascript" src="/meatmall/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 <!-- <script type="text/javascript" src="js/formCheck.js"></script> -->
 
 <script type="text/javascript">

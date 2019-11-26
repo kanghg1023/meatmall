@@ -134,10 +134,11 @@ function checkSearchedWord(obj){
 
 function enterSearch() {
    var evt_code = (window.netscape) ? ev.which : event.keyCode;
-   if (evt_code == 13) {    
-      event.keyCode = 0;  
-      getAddr(); //jsonp사용시 enter검색 
-   } 
+   if (evt_code == 13) {
+      event.keyCode = 0;
+      getAddr(); //jsonp사용시 enter검색
+      return false;
+   }
 }
 
 $(function(){
@@ -156,7 +157,7 @@ $(function(){
 </script>
 </head>
 <body>
-<form name="form" id="form" method="post">
+<form name="form" id="form" method="post" onsubmit="return false;">
    <input type="hidden" name="currentPage" value="1"/> <!-- 요청 변수 설정 (현재 페이지. currentPage : n > 0) -->
    <input type="hidden" name="countPerPage" value="10"/><!-- 요청 변수 설정 (페이지당 출력 개수. countPerPage 범위 : 0 < n <= 100) -->
    <input type="hidden" name="resultType" value="json"/> <!-- 요청 변수 설정 (검색결과형식 설정, json) --> 
